@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>حاسبة الكابلات — Cable Sizing Calculator</title>
+<style>
+:root{--bg:#0f1322;--card:#1a2040;--accent:#00d4ff;--gold:#f5c518;--green:#22c55e;--text:#e8ecf4;--muted:#9aa3bf;--border:#2a3150}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);padding:24px;min-height:100vh}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:28px;margin-bottom:8px;background:linear-gradient(90deg,var(--accent),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);margin-bottom:24px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+input,select{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px}
+.result{background:linear-gradient(135deg,#0a1a2e,#1a2a4e);border:2px solid var(--accent);border-radius:16px;padding:28px;margin-top:20px}
+.result h2{color:var(--accent);margin-bottom:16px;font-size:20px}
+.rrow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:15px}
+.rrow:last-child{border:none}
+.rrow .v{font-weight:800;color:var(--gold)}
+.rrow .ok{color:var(--green)}
+.btn{padding:12px 24px;border-radius:10px;border:none;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;margin-top:12px}
+.note{background:rgba(245,197,24,.1);border:1px solid rgba(245,197,24,.3);border-radius:10px;padding:14px;margin-top:16px;font-size:13px;color:var(--muted)}
+.warn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}
+th,td{padding:8px;border:1px solid var(--border);text-align:center}
+th{background:var(--bg);color:var(--accent)}
+.footer{text-align:center;color:var(--muted);font-size:12px;margin-top:32px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>⚡ حاسبة حجم الكابل (Cable Sizing)</h1>
+<p class="sub">حساب تيار التصميم، سقوط الجهد، واختيار حجم الكابل — وفق IEC/BS. للاستخدام الهندسي (تقديري).</p>
+
+<div class="card">
+<h3 style="margin-bottom:16px;color:var(--accent)">1. بيانات الحمل</h3>
+<div class="grid">
+  <div><label>قدرة الحمل (kW)</label><input type="number" id="kw" value="15" step="0.1"></div>
+  <div><label>جهد النظام (V)</label><select id="v"><option value="400">400V 3Φ</option><option value="230">230V 1Φ</option><option value="415">415V 3Φ</option></select></div>
+  <div><label>معامل القدرة (pf)</label><input type="number" id="pf" value="0.85" step="0.01" min="0.1" max="1"></div>
+  <div><label>كفاءة المحرك (η)</label><input type="number" id="eff" value="0.92" step="0.01" min="0.1" max="1"></div>
+</div>
+</div>
+
+<div class="card">
+<h3 style="margin-bottom:16px;color:var(--accent)">2. بيانات الكابل</h3>
+<div class="grid">
+  <div><label>طول الكابل (m)</label><input type="number" id="len" value="50" step="1"></div>
+  <div><label>عدد الكابلات (parallel)</label><input type="number" id="par" value="1" min="1"></div>
+  <div><label>درجة حرارة (°C)</label><select id="temp"><option value="1.0">30°C</option><option value="0.91">35°C</option><option value="0.82">40°C</option><option value="0.71">45°C</option></select></div>
+  <div><label>طريقة التمديد</label><select id="method"><option value="1.0">في هواء (spaced)</option><option value="0.95">في هواء (grouped)</option><option value="0.8">في تراب</option><option value="0.7">في conduit</option></select></div>
+</div>
+</div>
+
+<div class="card">
+<h3 style="margin-bottom:16px;color:var(--accent)">3. حدود سقوط الجهد</h3>
+<div class="grid">
+  <div><label>حد سقوط الجهد (%)</label><input type="number" id="vdlimit" value="5" step="0.5" min="1" max="10"></div>
+  <div><label>المقاومة (Ω/km) — Cu</label><input type="number" id="rho" value="0.0175" step="0.0001"></div>
+</div>
+</div>
+
+<button class="btn" onclick="calc()">🔍 احسب</button>
+
+<div class="result" id="result" style="display:none">
+  <h2>📊 النتائج</h2>
+  <div class="rrow"><span>تيار التصميم (Design Current)</span><span class="v" id="Ib">—</span></div>
+  <div class="rrow"><span>تيار الحماية (In)</span><span class="v" id="In">—</span></div>
+  <div class="rrow"><span>تيار تصميم الكابل (Iz)</span><span class="v" id="Iz">—</span></div>
+  <div class="rrow"><span>drops الجهد (V)</span><span class="v" id="Vd">—</span></div>
+  <div class="rrow"><span>drops الجهد (%)</span><span class="v" id="Vdp">—</span></div>
+  <div class="rrow"><span>حجم الكابل الموصى (mm²)</span><span class="v ok" id="size">—</span></div>
+  <div class="rrow"><span>الحالة</span><span class="v" id="status">—</span></div>
+  <div class="note" id="note"></div>
+</div>
+
+<div class="card">
+<h3 style="margin-bottom:12px;color:var(--accent)">📏 جدول مرجعي — Cu PVC (Ampacity)</h3>
+<table>
+<tr><th>mm²</th><th>في هواء (A)</th><th>في تراب (A)</th><th>R (Ω/km)</th></tr>
+<tr><td>1.5</td><td>20</td><td>16</td><td>12.1</td></tr>
+<tr><td>2.5</td><td>27</td><td>22</td><td>7.41</td></tr>
+<tr><td>4</td><td>37</td><td>29</td><td>4.61</td></tr>
+<tr><td>6</td><td>47</td><td>37</td><td>3.08</td></tr>
+<tr><td>10</td><td>65</td><td>50</td><td>1.83</td></tr>
+<tr><td>16</td><td>85</td><td>67</td><td>1.15</td></tr>
+<tr><td>25</td><td>110</td><td>87</td><td>0.727</td></tr>
+<tr><td>35</td><td>135</td><td>107</td><td>0.524</td></tr>
+<tr><td>50</td><td>165</td><td>131</td><td>0.387</td></tr>
+<tr><td>70</td><td>205</td><td>163</td><td>0.268</td></tr>
+<tr><td>95</td><td>250</td><td>198</td><td>0.193</td></tr>
+<tr><td>120</td><td>290</td><td>230</td><td>0.153</td></tr>
+</table>
+<p style="font-size:12px;color:var(--muted);margin-top:8px">* قيم تقريبية. راجع IEC 60364-5-52 / BS 7671 للتطبيق الفعلي.</p>
+</div>
+
+<div class="footer">EngineeringPro © 2026 — حاسبة Кابلات (تقديرية). استخدمها كأداة مساعدة، لا كبديل للمعايير.</div>
+</div>
+
+<script>
+const sizes=[{s:1.5,air:20,ground:16,R:12.1},{s:2.5,air:27,ground:22,R:7.41},{s:4,air:37,ground:29,R:4.61},{s:6,air:47,ground:37,R:3.08},{s:10,air:65,ground:50,R:1.83},{s:16,air:85,ground:67,R:1.15},{s:25,air:110,ground:87,R:0.727},{s:35,air:135,ground:107,R:0.524},{s:50,air:165,ground:131,R:0.387},{s:70,air:205,ground:163,R:0.268},{s:95,air:250,ground:198,R:0.193},{s:120,air:290,ground:230,R:0.153}];
+
+function calc(){
+  const kw=+document.getElementById('kw').value;
+  const V=+document.getElementById('v').value;
+  const pf=+document.getElementById('pf').value;
+  const eff=+document.getElementById('eff').value;
+  const len=+document.getElementById('len').value;
+  const par=+document.getElementById('par').value;
+  const temp=+document.getElementById('temp').value;
+  const method=+document.getElementById('method').value;
+  const vdlimit=+document.getElementById('vdlimit').value;
+  const rho=+document.getElementById('rho').value;
+
+  const threePhase = V>=400;
+  let Ib;
+  if(threePhase) Ib = (kw*1000)/(Math.sqrt(3)*V*pf*eff);
+  else Ib = (kw*1000)/(V*pf*eff);
+
+  const In = Ib; // simplified
+  const Iz_req = Ib / (temp*method);
+
+  // find cable size
+  let chosen=null;
+  for(const c of sizes){
+    const amp = (method<=0.8? c.ground : c.air);
+    const derated = amp * temp * method;
+    if(derated >= Ib && derated >= Iz_req){ chosen=c; break; }
+  }
+  if(!chosen) chosen=sizes[sizes.length-1];
+
+  // voltage drop
+  const R = chosen.R/1000; // ohm/m
+  // Vd = sqrt3 * I * (R*cosφ + X*sinφ) * L  (simplified resistive)
+  let Vd;
+  if(threePhase) Vd = Math.sqrt(3)*Ib*R*len/par;
+  else Vd = 2*Ib*R*len/par;
+  const Vdp = (Vd/V)*100;
+
+  document.getElementById('result').style.display='block';
+  document.getElementById('Ib').textContent=Ib.toFixed(2)+' A';
+  document.getElementById('In').textContent=In.toFixed(2)+' A';
+  document.getElementById('Iz').textContent=(Ib/(temp*method)).toFixed(2)+' A';
+  document.getElementById('Vd').textContent=Vd.toFixed(2)+' V';
+  document.getElementById('Vdp').textContent=Vdp.toFixed(2)+' %';
+  document.getElementById('size').textContent=chosen.s+' mm²';
+  const ok = Vdp <= vdlimit;
+  document.getElementById('status').textContent = ok ? '✅ مقبول (ضمن الحد)' : '⚠️ تجاوز حد سقوط الجهد';
+  document.getElementById('status').className = 'v '+(ok?'ok':'');
+  let note = `تم اختيار ${chosen.s} mm². `;
+  if(!ok) note += '⚠️ سقوط الجهد تجاوز الحد — ا consider كابل أكبر أو تقليل الطول. ';
+  note += 'تأكد من فحص ظروف التمديد ودرجة الحرارة.';
+  document.getElementById('note').textContent=note;
+  document.getElementById('note').className='note'+(ok?'':' warn');
+}
+</script>
+</body>
+</html>

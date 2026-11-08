@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EngineeringPro — قوالب وأدوات للمهندسين | ابدأ كسب المال اليوم</title>
+<meta name="description" content="قوالب احترافية، حاسبات هندسية، وأدوات جاهزة للمهندسين. بيع أو استخدمها في عملك. كسب المال بسرعة.">
+<style>
+:root{
+ --bg:#0a0e1a;--bg2:#11162a;--card:#161c33;--card2:#1c2340;
+ --accent:#00d4ff;--accent2:#7c3aed;--gold:#f5c518;--green:#22c55e;
+ --text:#e8ecf4;--muted:#9aa3bf;--border:#2a3150;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+img{max-width:100%}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+/* NAV */
+nav{position:sticky;top:0;z-index:50;background:rgba(10,14,26,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .container{display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+.logo{font-weight:800;font-size:20px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.navlinks{display:flex;gap:24px;align-items:center}
+.navlinks a{color:var(--muted);font-size:14px}
+.navlinks a:hover{color:var(--text)}
+.btn{display:inline-block;padding:12px 26px;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;border:none;transition:.2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 8px 24px rgba(0,212,255,.25)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,212,255,.35)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#ff8c00);color:#000}
+/* HERO */
+.hero{padding:80px 0 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,.15),transparent 70%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.hero h1{font-size:46px;font-weight:900;line-height:1.2;margin-bottom:20px}
+.hero h1 span{background:linear-gradient(90deg,var(--accent),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:18px;margin-bottom:32px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.stat .n{font-size:28px;font-weight:800;color:var(--accent)}
+.stat .l{font-size:12px;color:var(--muted)}
+.hero-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.hero-card h3{margin-bottom:16px;color:var(--gold)}
+.earn-box{background:var(--bg);border-radius:12px;padding:20px;margin:16px 0;border:1px dashed var(--accent)}
+.earn-box .big{font-size:36px;font-weight:900;color:var(--green)}
+/* SECTIONS */
+section{padding:70px 0}
+.section-title{font-size:34px;font-weight:800;text-align:center;margin-bottom:12px}
+.section-sub{color:var(--muted);text-align:center;margin-bottom:48px;font-size:16px}
+/* PRODUCTS */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.product{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.25s;position:relative;overflow:hidden}
+.product:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 16px 40px rgba(0,212,255,.12)}
+.product .tag{position:absolute;top:14px;left:14px;background:var(--accent2);color:#fff;font-size:11px;padding:4px 10px;border-radius:20px;font-weight:700}
+.product .icon{font-size:40px;margin-bottom:14px}
+.product h3{font-size:19px;margin-bottom:8px}
+.product p{color:var(--muted);font-size:14px;margin-bottom:16px}
+.product .price{font-size:24px;font-weight:800;color:var(--gold);margin-bottom:14px}
+.product .price span{font-size:13px;color:var(--muted);font-weight:400}
+.product ul{list-style:none;margin-bottom:18px}
+.product ul li{font-size:13px;color:var(--muted);padding:4px 0;padding-right:18px;position:relative}
+.product ul li::before{content:'✓';position:absolute;right:0;color:var(--green);font-weight:700}
+/* CALCULATOR */
+.calc{background:linear-gradient(135deg,var(--card),var(--bg2));border:1px solid var(--border);border-radius:20px;padding:32px;max-width:720px;margin:0 auto}
+.calc h3{margin-bottom:20px;color:var(--accent)}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.calc label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.calc input,.calc select{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px}
+.calc .result{margin-top:20px;background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--accent)}
+.calc .result .big{font-size:32px;font-weight:800;color:var(--green)}
+.calc .result .sub{color:var(--muted);font-size:13px;margin-top:6px}
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.step{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;position:relative}
+.step .num{position:absolute;top:-16px;right:20px;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff}
+.step h3{margin:16px 0 8px}
+.step p{color:var(--muted);font-size:14px}
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.testi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px}
+.testi .stars{color:var(--gold);margin-bottom:10px}
+.testi p{color:var(--muted);font-size:14px;font-style:italic;margin-bottom:14px}
+.testi .who{font-weight:700;font-size:14px}
+.testi .role{color:var(--muted);font-size:12px}
+/* FAQ */
+.faq{max-width:800px;margin:0 auto}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.faq-q{padding:18px 22px;cursor:pointer;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.faq-q:hover{color:var(--accent)}
+.faq-a{padding:0 22px 18px;color:var(--muted);font-size:14px;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-q span{transform:rotate(45deg)}
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
+footer a{color:var(--accent)}
+/* RESPONSIVE */
+@media(max-width:768px){
+ .hero-grid{grid-template-columns:1fr}
+ .hero h1{font-size:32px}
+ .calc-grid{grid-template-columns:1fr}
+ .navlinks{display:none}
+}
+/* LEAD MAGNET */
+.lead{background:linear-gradient(135deg,var(--accent2),var(--accent));border-radius:20px;padding:40px;text-align:center;color:#fff}
+.lead h2{font-size:30px;margin-bottom:12px}
+.lead p{opacity:.9;margin-bottom:24px}
+.lead input{padding:12px 16px;border-radius:8px;border:none;width:260px;max-width:100%;margin:6px}
+.lead .btn{background:#fff;color:var(--accent2);margin:6px}
+/* BADGE */
+.badge{display:inline-block;background:rgba(0,212,255,.12);color:var(--accent);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:16px;border:1px solid rgba(0,212,255,.3)}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="container">
+  <div class="logo">EngineeringPro ⚡</div>
+  <div class="navlinks">
+    <a href="#products">المنتجات</a>
+    <a href="#calculator">الحاسبة</a>
+    <a href="#how">كيف أبدأ</a>
+    <a href="#faq">الأسئلة</a>
+    <a href="#lead" class="btn btn-primary" style="padding:8px 18px">احصل على هدية مجانية</a>
+  </div>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="container">
+  <div class="hero-grid">
+    <div>
+      <div class="badge">🚀 7 أيام للحصول على أول بيع</div>
+      <h1>حوّل <span>مهاراتك الهندسية</span> إلى دخل مستمر</h1>
+      <p>قوالب احترافية، حاسبات، وأدوات جاهزة للمهندسين. بِعها على Etsy/Gumroad، أو استخدمها لجذب عملاء لخدماتك. <strong>لا تحتاج خبرة في التصميم أو البرمجة.</strong></p>
+      <div class="hero-cta">
+        <a href="#products" class="btn btn-primary">استعرض المنتجات →</a>
+        <a href="#calculator" class="btn btn-ghost">جرّب الحاسبة المجانية</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="n">$0→$500</div><div class="l">هدف الشهر الأول</div></div>
+        <div class="stat"><div class="n">7</div><div class="l">أيام للإطلاق</div></div>
+        <div class="stat"><div class="n">100%</div><div class="l">هامش ربح رقمي</div></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>💰 مثال: حساب الأرباح</h3>
+      <p style="color:var(--muted);font-size:14px">باقة "قوالب ITR + تقارير" بسعر $19 × 20 بيع/شهر</p>
+      <div class="earn-box">
+        <div class="big">$380 / شهر</div>
+        <div style="color:var(--muted);font-size:13px">+ بيع خدمة استشارية $100 × 3 = $300</div>
+        <div style="color:var(--green);font-weight:700;margin-top:8px">الإجمالي: $680/شهر من منتج واحد</div>
+      </div>
+      <p style="font-size:13px;color:var(--muted)">📈 مع 5 منتجات: $2,000-4,000/شهر محتمل</p>
+      <a href="#lead" class="btn btn-gold" style="width:100%;text-align:center">ابدأ الآن — مجاناً</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+<div class="container">
+  <h2 class="section-title">📦 المنتجات الجاهزة للبيع</h2>
+  <p class="section-sub">كل منتج جاهز للتحميل والبيع فوراً. عدّلها باسمك و marque.</p>
+  <div class="products-grid">
+
+    <div class="product">
+      <div class="tag">الأكثر مبيعاً</div>
+      <div class="icon">📋</div>
+      <h3>باقة ITR + تقارير التكليف</h3>
+      <p>نماذج ITR، تقارير يومية، قوائم punch list، جاهزة للطباعة/Excel.</p>
+      <div class="price">$19 <span>/باقة</span></div>
+      <ul>
+        <li>15 نموذج ITR</li>
+        <li>5 قوالب تقارير</li>
+        <li>قوالب Excel جاهزة</li>
+        <li>تحديثات مجانية</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">اشترِ الآن</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">⚡</div>
+      <h3>حاسبة كابلات وحمولات</h3>
+      <p>أداة ويب لحساب سقوط الجهد، تيار التصميم، اختيار الكابل.</p>
+      <div class="price">$29 <span>/أداة</span></div>
+      <ul>
+        <li>حساب سقوط الجهد</li>
+        <li>اختيار حجم الكابل</li>
+        <li>تصدير PDF</li>
+        <li>يعمل offline</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">اشترِ الآن</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">📊</div>
+      <h3>لوحة تحكم Pro (Excel/HTML)</h3>
+      <p>لوحة KPI للمشاريع: التقدم، Punch list، ITR، الموارد.</p>
+      <div class="price">$39 <span>/لوحة</span></div>
+      <ul>
+        <li>رسوم بيانية تفاعلية</li>
+        <li>تتبع ITR/Punch</li>
+        <li>تصدير تقارير</li>
+        <li>تخصيص سهل</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">اشترِ الآن</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">🎯</div>
+      <h3>باقة LinkedIn للمهندسين</h3>
+      <p>قوالب posts، banner، about، خطة 30 يوماً.</p>
+      <div class="price">$15 <span>/باقة</span></div>
+      <ul>
+        <li>30 منشور جاهز</li>
+        <li>Banner + صور</li>
+        <li>خطة محتوى</li>
+        <li>نصائح engagement</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">اشترِ الآن</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">📝</div>
+      <h3>CV + Cover Letter Templates</h3>
+      <p>قوالب سيرة ذاتية احترافية للمهندسين (Word/PDF).</p>
+      <div class="price">$12 <span>/باقة</span></div>
+      <ul>
+        <li>5 قوالب CV</li>
+        <li>3 Cover Letters</li>
+        <li>ATS-friendly</li>
+        <li>تعديل سهل</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">اشترِ الآن</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">🎓</div>
+      <h3>Mini-Course: "أول 30 يوم freelancing"</h3>
+      <p>دورة قصيرة: كيف تحصل على أول عميل freelance كمهندس.</p>
+      <div class="price">$49 <span>/دورة</span></div>
+      <ul>
+        <li>2 ساعة فيديو</li>
+        <li>قوالب proposals</li>
+        <li>قائمة platforms</li>
+        <li>دعم مجتمع</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">اشترِ الآن</a>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="calculator" style="background:var(--bg2)">
+<div class="container">
+  <h2 class="section-title">🧮 حاسبة الأرباح (مجانية)</h2>
+  <p class="section-sub">احسب كم يمكنك كسبه شهرياً. غيّر الأرقام وشاهد النتيجة.</p>
+  <div class="calc">
+    <h3>💰 حاسبة الدخل من المنتجات الرقمية</h3>
+    <div class="calc-grid">
+      <div><label>سعر المنتج ($)</label><input type="number" id="price" value="19" min="1"></div>
+      <div><label>مبيعات/شهر</label><input type="number" id="sales" value="20" min="0"></div>
+      <div><label>عمولة منصة (%)</label><input type="number" id="fee" value="5" min="0" max="50"></div>
+      <div><label>مبيعات خدمة ($/شهر)</label><input type="number" id="svc" value="300" min="0"></div>
+    </div>
+    <div class="result">
+      <div class="big" id="rev">$0</div>
+      <div class="sub">صافي الدخل من المنتجات شهرياً</div>
+      <div style="margin-top:10px;font-weight:700">+ خدمة: <span id="svcOut">$0</span> → الإجمالي: <span id="tot" style="color:var(--gold)">$0</span></div>
+      <div style="margin-top:6px;color:var(--muted);font-size:12px">سنوي: <span id="year">$0</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+<div class="container">
+  <h2 class="section-title">🗺️ كيف تبدأ (7 أيام)</h2>
+  <p class="section-sub">خطة عمل واضحة من الصفر إلى أول بيع.</p>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3>اختر niche</h3><p>اختر مجالاً واحداً (ITR، كابلات، CV، LinkedIn). لا تنشر كل شيء.</p></div>
+    <div class="step"><div class="num">2</div><h3>جهّز 3 منتجات</h3><p>استخدم القوالب الجاهزة. عدّلها باسمك. صدّر PDF/Excel.</p></div>
+    <div class="step"><div class="num">3</div><h3>أنشئ متجر</h3><p>Gumroad (مجاني) أو Etsy ($0.20/ listing). ارفع المنتجات.</p></div>
+    <div class="step"><div class="num">4</div><h3>سوّق</h3><p>LinkedIn posts 3x/أسبوع، TikTok/Reels، Facebook groups.</p></div>
+    <div class="step"><div class="num">5</div><h3>أول بيع 🎉</h3><p>رد على التعليقات، اطلب reviews، حسّن listing.</p></div>
+    <div class="step"><div class="num">6</div><h3>وسّع</h3><p>أضف منتجات جديدة، bundle، upsell خدمة استشارية.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- LEAD MAGNET -->
+<section id="lead">
+<div class="container">
+  <div class="lead">
+    <h2>🎁 هدية مجانية: "قائمة 50 منتج رقمي يُباع على Etsy"</h2>
+    <p>أدخل بريدك واحصل على PDF (50 فكرة + أسعار + keywords) فوراً.</p>
+    <div>
+      <input type="email" placeholder="your@email.com" id="email">
+      <button class="btn" onclick="grabLead()">أرسل لي الهدية</button>
+    </div>
+    <p style="font-size:12px;margin-top:12px;opacity:.7">🔒 لا spam. إلغاء اشتراك بضغطة.</p>
+  </div>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+<div class="container">
+  <h2 class="section-title">⭐ ما يقوله المستخدمون</h2>
+  <p class="section-sub">أمثلة (استبدلها بشهادات حقيقية بعد أول بيع).</p>
+  <div class="testi-grid">
+    <div class="testi"><div class="stars">★★★★★</div><p>"بعت 12 نسخة في أول أسبوع. القوالب جاهزة 100%."</p><div class="who">أحمد ك.</div><div class="role">مهندس كهرباء، Dubai</div></div>
+    <div class="testi"><div class="stars">★★★★★</div><p>"حاسبة الكابلات وفرت عليّ ساعات. أنصح بها."</p><div class="who">سارة م.</div><div class="role">Engineer، KSA</div></div>
+    <div class="testi"><div class="stars">★★★★★</div><p>"LinkedIn posts جاهزة رفعت engagement 3x."</p><div class="who">يوسف ر.</div><div class="role">Freelancer</div></div>
+  </div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:var(--bg2)">
+<div class="container">
+  <h2 class="section-title">❓ أسئلة شائعة</h2>
+  <div class="faq">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">هل أحتاج خبرة في التصميم؟ <span>+</span></div><div class="faq-a">لا. القوالب جاهزة. فقط عدّل النصوص (Canva/Word) وا تصدير.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">أين أبيع؟ <span>+</span></div><div class="faq-a">Gumroad (أسهل، مجاني)، Etsy (حركة مرور)، أو موقعك الخاص. ابدأ بـ Gumroad.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">كم أ earn في الشهر الأول؟ <span>+</span></div><div class="faq-a">واقعياً $50-300 إذا التزمت بالتسويق. $1000+ بعد 3 أشهر.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">هل المدفوعات آمنة؟ <span>+</span></div><div class="faq-a">Gumroad/Stripe/PayPal يعالجون المدفوعات. أنت تتلقى تحويلات.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">هل يمكنني إعادة البيع (resell)؟ <span>+</span></div><div class="faq-a">المنتجات ملكك بعد الشراء. يمكنك بيعها لعملائك (PLR-like). راجع الترخيص.</div></div>
+  </div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+  <p>© 2026 EngineeringPro. بُني للمساعدة في كسب دخل إضافي.</p>
+  <p style="margin-top:8px"><a href="#">الخصوصية</a> · <a href="#">الشروط</a> · <a href="#">اتصل بنا</a></p>
+</div>
+</footer>
+
+<script>
+function calc(){
+  const p=+document.getElementById('price').value||0;
+  const s=+document.getElementById('sales').value||0;
+  const f=+document.getElementById('fee').value||0;
+  const svc=+document.getElementById('svc').value||0;
+  const gross=p*s;
+  const net=gross*(1-f/100);
+  const tot=net+svc;
+  document.getElementById('rev').textContent='$'+net.toFixed(0);
+  document.getElementById('svcOut').textContent='$'+svc.toFixed(0);
+  document.getElementById('tot').textContent='$'+tot.toFixed(0);
+  document.getElementById('year').textContent='$'+(tot*12).toFixed(0);
+}
+['price','sales','fee','svc'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+calc();
+
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+
+function grabLead(){
+  const e=document.getElementById('email').value;
+  if(!e||!e.includes('@')){alert('أدخل بريد صحيح');return;}
+  alert('✅ تم! (في الإنتاج: اربط بـ Mailchimp/ConvertKit). بريد: '+e);
+}
+</script>
+</body>
+</html>
