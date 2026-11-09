@@ -789,7 +789,9 @@ function symMotor(c){
   return wrap(c,
     `<line x1="8" y1="55" x2="29" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
     + `<line x1="81" y1="55" x2="102" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<circle cx="55" cy="45" r="28" fill="${on?'#12233f':'#101a2e'}" stroke="${on?accent:CL.edge}" stroke-width="2.5"/>`
+    + `<circle cx="55" cy="45" r="28" fill="url(#bodyGrad)" stroke="${on?accent:CL.edge}" stroke-width="2.5"/>`
+    + `<rect x="40" y="8" width="30" height="12" rx="3" fill="url(#bodyGrad)" stroke="${CL.edge}" stroke-width="1.5"/>`
+    + txt(55,17,'TB',6,CL.text)
     + `<g class="${on?'spin':''}">`
     + `<line x1="37" y1="45" x2="73" y2="45" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
     + `<line x1="55" y1="27" x2="55" y2="63" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
