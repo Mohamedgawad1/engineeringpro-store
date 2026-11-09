@@ -26,6 +26,12 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
 .compbtn{display:flex;align-items:center;gap:6px;width:100%;padding:7px 8px;margin-bottom:5px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;font-size:11.5px;cursor:pointer;text-align:left;transition:.15s}
 .compbtn:hover{border-color:var(--green);color:var(--green);transform:translateX(2px)}
 .compbtn.active{background:var(--green);color:#052e16;border-color:var(--green);font-weight:800}
+.pgroup{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;padding:4px 6px;background:rgba(15,23,42,.5)}
+.pgroup>summary{cursor:pointer;color:var(--accent);font-weight:800;font-size:11px;padding:4px 2px;list-style:none}
+.pgroup>summary::-webkit-details-marker{display:none}
+.pgroup>summary::before{content:'▸ ';color:var(--muted)}
+.pgroup[open]>summary::before{content:'▾ '}
+.pgroup .compbtn{margin-top:4px}
 .canvasWrap{display:flex;padding:6px;overflow:hidden}
 .canvas{position:relative;flex:1;height:100%;min-height:600px;background:#0a1020;border:2px solid var(--border);border-radius:10px;overflow:auto;touch-action:none}
 .stage{position:relative;min-width:900px;min-height:640px;width:100%;height:100%;background-image:linear-gradient(rgba(0,212,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.05) 1px,transparent 1px);background-size:24px 24px}
@@ -129,55 +135,62 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
 
 <div class="main">
   <aside class="pane palette">
-    <h3>المكوّنات · Components</h3>
-    <button class="compbtn" data-type="power" onclick="selectPlace('power')">🔌 Power Supply</button>
-    <button class="compbtn" data-type="mcb" onclick="selectPlace('mcb')">🛑 MCB / Breaker</button>
-    <button class="compbtn" data-type="pb_no" onclick="selectPlace('pb_no')">🟢 Push Button (NO)</button>
-    <button class="compbtn" data-type="pb_nc" onclick="selectPlace('pb_nc')">🔴 Push Button (NC)</button>
-    <button class="compbtn" data-type="estop" onclick="selectPlace('estop')">⛔ E-STOP</button>
-    <button class="compbtn" data-type="selector" onclick="selectPlace('selector')">🎚 Selector Switch</button>
-    <button class="compbtn" data-type="contactor" onclick="selectPlace('contactor')">⚡ Contactor</button>
-    <button class="compbtn" data-type="relay" onclick="selectPlace('relay')">🔁 Aux Relay</button>
-    <button class="compbtn" data-type="timer" onclick="selectPlace('timer')">⏱ Timer</button>
-    <button class="compbtn" data-type="ol" onclick="selectPlace('ol')">📐 Overload Relay</button>
-    <button class="compbtn" data-type="lamp" onclick="selectPlace('lamp')">💡 Indicator Lamp</button>
-    <h3>Motors / مواتير</h3>
-    <button class="compbtn" data-type="motor" onclick="selectPlace('motor')">⚙️ Motor 3-Phase</button>
-    <button class="compbtn" data-type="motor_1ph" onclick="selectPlace('motor_1ph')">⚙️ Motor 1-Phase</button>
-    <button class="compbtn" data-type="motor_dc" onclick="selectPlace('motor_dc')">⚙️ DC Motor</button>
-    <button class="compbtn" data-type="motor_stepper" onclick="selectPlace('motor_stepper')">⚙️ Stepper Motor</button>
-    <button class="compbtn" data-type="motor_servo" onclick="selectPlace('motor_servo')">⚙️ Servo Motor</button>
-    <button class="compbtn" data-type="alarm" onclick="selectPlace('alarm')">🚨 Alarm (Horn)</button>
-    <h3>Protection &amp; Sources</h3>
-    <button class="compbtn" data-type="mccb" onclick="selectPlace('mccb')">🔲 MCCB</button>
-    <button class="compbtn" data-type="rccb" onclick="selectPlace('rccb')">🛡 RCCB / RCBO</button>
-    <button class="compbtn" data-type="fuse" onclick="selectPlace('fuse')">🧯 Fuse</button>
-    <button class="compbtn" data-type="spd" onclick="selectPlace('spd')">⚡ SPD Surge</button>
-    <button class="compbtn" data-type="phase" onclick="selectPlace('phase')">🟢 Phase Monitor</button>
-    <button class="compbtn" data-type="generator" onclick="selectPlace('generator')">🔋 Generator</button>
-    <button class="compbtn" data-type="ats" onclick="selectPlace('ats')">🔀 ATS Changeover</button>
-    <h3>Timers &amp; Sensors</h3>
-    <button class="compbtn" data-type="timer_off" onclick="selectPlace('timer_off')">⏱ Off-Delay Timer</button>
-    <button class="compbtn" data-type="flasher" onclick="selectPlace('flasher')">🔔 Flasher Relay</button>
-    <button class="compbtn" data-type="float" onclick="selectPlace('float')">🌊 Level / Float</button>
-    <button class="compbtn" data-type="pressure" onclick="selectPlace('pressure')">🎛 Pressure Switch</button>
-    <button class="compbtn" data-type="thermostat" onclick="selectPlace('thermostat')">🌡 Thermostat</button>
-    <button class="compbtn" data-type="ctmeter" onclick="selectPlace('ctmeter')">📟 CT / Ammeter</button>
-    <h3>Wiring</h3>
-    <button class="compbtn" data-type="terminal" onclick="selectPlace('terminal')">🔗 Terminal Block</button>
-    <button class="compbtn" data-type="busbar" onclick="selectPlace('busbar')">🟫 Busbar</button>
-    <h3>PLC &amp; Drives</h3>
-    <button class="compbtn" data-type="plc" onclick="selectPlace('plc')">🧠 PLC (Ladder)</button>
-    <button class="compbtn" data-type="vfd" onclick="selectPlace('vfd')">🎛 VFD Motor Drive</button>
-    <h3>How to use</h3>
-    <div class="hint">
-      1. اختر مكوّن ثم انقر على اللوحة لوضعه.<br>
-      2. اسحب المكوّن لتحريكه.<br>
-      3. انقر منفذين (نقاط) لتوصيل سلك.<br>
-      4. انقر جسم المكوّن: تشغيل/فصل، ضغط زر، فصل أوفرلود.<br>
-      5. زر <b>تشغيل</b> اضغط واستمر (momentary).<br>
-      6. كليك يمين على المكوّن = حذف.
-    </div>
+    <details open class="pgroup"><summary>⚡ التحكم · Control</summary>
+      <button class="compbtn" data-type="power" onclick="selectPlace('power')">🔌 Power Supply</button>
+      <button class="compbtn" data-type="mcb" onclick="selectPlace('mcb')">🛑 MCB / Breaker</button>
+      <button class="compbtn" data-type="pb_no" onclick="selectPlace('pb_no')">🟢 Push Button (NO)</button>
+      <button class="compbtn" data-type="pb_nc" onclick="selectPlace('pb_nc')">🔴 Push Button (NC)</button>
+      <button class="compbtn" data-type="estop" onclick="selectPlace('estop')">⛔ E-STOP</button>
+      <button class="compbtn" data-type="selector" onclick="selectPlace('selector')">🎚 Selector Switch</button>
+      <button class="compbtn" data-type="contactor" onclick="selectPlace('contactor')">⚡ Contactor</button>
+      <button class="compbtn" data-type="relay" onclick="selectPlace('relay')">🔁 Aux Relay</button>
+      <button class="compbtn" data-type="timer" onclick="selectPlace('timer')">⏱ Timer (On-Delay)</button>
+      <button class="compbtn" data-type="ol" onclick="selectPlace('ol')">📐 Overload Relay</button>
+      <button class="compbtn" data-type="lamp" onclick="selectPlace('lamp')">💡 Indicator Lamp</button>
+      <button class="compbtn" data-type="alarm" onclick="selectPlace('alarm')">🚨 Alarm (Horn)</button>
+    </details>
+    <details open class="pgroup"><summary>⚙️ المواتير · Motors</summary>
+      <button class="compbtn" data-type="motor" onclick="selectPlace('motor')">⚙️ Motor 3-Phase</button>
+      <button class="compbtn" data-type="motor_1ph" onclick="selectPlace('motor_1ph')">⚙️ Motor 1-Phase</button>
+      <button class="compbtn" data-type="motor_dc" onclick="selectPlace('motor_dc')">⚙️ DC Motor</button>
+      <button class="compbtn" data-type="motor_stepper" onclick="selectPlace('motor_stepper')">⚙️ Stepper Motor</button>
+      <button class="compbtn" data-type="motor_servo" onclick="selectPlace('motor_servo')">⚙️ Servo Motor</button>
+    </details>
+    <details open class="pgroup"><summary>🛡 الحماية والمصادر · Protection &amp; Sources</summary>
+      <button class="compbtn" data-type="mccb" onclick="selectPlace('mccb')">🔲 MCCB</button>
+      <button class="compbtn" data-type="rccb" onclick="selectPlace('rccb')">🛡 RCCB / RCBO</button>
+      <button class="compbtn" data-type="fuse" onclick="selectPlace('fuse')">🧯 Fuse</button>
+      <button class="compbtn" data-type="spd" onclick="selectPlace('spd')">⚡ SPD Surge</button>
+      <button class="compbtn" data-type="phase" onclick="selectPlace('phase')">🟢 Phase Monitor</button>
+      <button class="compbtn" data-type="generator" onclick="selectPlace('generator')">🔋 Generator</button>
+      <button class="compbtn" data-type="ats" onclick="selectPlace('ats')">🔀 ATS Changeover</button>
+    </details>
+    <details open class="pgroup"><summary>⏱ المؤقتات والمستشعرات · Timers &amp; Sensors</summary>
+      <button class="compbtn" data-type="timer_off" onclick="selectPlace('timer_off')">⏱ Off-Delay Timer</button>
+      <button class="compbtn" data-type="flasher" onclick="selectPlace('flasher')">🔔 Flasher Relay</button>
+      <button class="compbtn" data-type="float" onclick="selectPlace('float')">🌊 Level / Float</button>
+      <button class="compbtn" data-type="pressure" onclick="selectPlace('pressure')">🎛 Pressure Switch</button>
+      <button class="compbtn" data-type="thermostat" onclick="selectPlace('thermostat')">🌡 Thermostat</button>
+      <button class="compbtn" data-type="ctmeter" onclick="selectPlace('ctmeter')">📟 CT / Ammeter</button>
+    </details>
+    <details open class="pgroup"><summary>🔗 التوصيل · Wiring</summary>
+      <button class="compbtn" data-type="terminal" onclick="selectPlace('terminal')">🔗 Terminal Block</button>
+      <button class="compbtn" data-type="busbar" onclick="selectPlace('busbar')">🟫 Busbar</button>
+    </details>
+    <details open class="pgroup"><summary>🧠 PLC ومحركات السرعة · PLC &amp; Drives</summary>
+      <button class="compbtn" data-type="plc" onclick="selectPlace('plc')">🧠 PLC (Ladder)</button>
+      <button class="compbtn" data-type="vfd" onclick="selectPlace('vfd')">🎛 VFD Motor Drive</button>
+    </details>
+    <details open class="pgroup"><summary>ℹ️ How to use</summary>
+      <div class="hint">
+        1. اختر مكوّن ثم انقر على اللوحة لوضعه.<br>
+        2. اسحب المكوّن لتحريكه.<br>
+        3. انقر منفذين (نقاط) لتوصيل سلك.<br>
+        4. انقر جسم المكوّن: تشغيل/فصل، ضغط زر، فصل أوفرلود.<br>
+        5. زر <b>تشغيل</b> اضغط واستمر (momentary).<br>
+        6. كليك يمين على المكوّن = حذف.
+      </div>
+    </details>
   </aside>
 
   <section class="pane canvasWrap">
@@ -320,21 +333,33 @@ function isMotor(type){
          type === 'motor_stepper' || type === 'motor_servo';
 }
 function defaultData(type){
-  if(type === 'motor')  return { kw:2.2, fla:4.8, rpm:1440 };
-  if(type === 'motor_1ph') return { kw:0.75, fla:4.2, rpm:1440, cap:25, volts:230 };
-  if(type === 'motor_dc')  return { kw:1.5, fla:8, rpm:1500, volts:220 };
+  if(type === 'motor')  return { kw:2.2, fla:4.8, rpm:1440, poles:4, volts:'400 V Δ/Y' };
+  if(type === 'motor_1ph') return { kw:0.75, fla:4.2, rpm:1440, cap:25, volts:'230 V' };
+  if(type === 'motor_dc')  return { kw:1.5, fla:8, rpm:1500, volts:'220 V DC' };
   if(type === 'motor_stepper') return { kw:0.1, fla:2, rpm:300, steps:200 };
-  if(type === 'motor_servo')   return { kw:0.75, fla:3, rpm:3000, encoder:2500 };
-  if(type === 'ol')     return { setA:6 };
+  if(type === 'motor_servo')   return { kw:0.75, fla:3, rpm:3000, encoder:'2500 ppr' };
+  if(type === 'ol')     return { setA:6, cls:'Class 10' };
   if(type === 'flasher')return { period:1 };
-  if(type === 'generator') return { kva:50 };
-  if(type === 'ats')    return { auto:false };
-  if(type === 'float')  return { value:30, setpoint:70, unit:'%' };
-  if(type === 'pressure') return { value:3, setpoint:6, unit:'bar' };
-  if(type === 'thermostat') return { value:25, setpoint:80, unit:'°C' };
-  if(type === 'vfd')    return { kw:2.2, ratedA:4.8, target:50, accel:10, decel:10 };
+  if(type === 'generator') return { kva:50, volts:'400 V', fuel:'Diesel' };
+  if(type === 'ats')    return { auto:false, poles:'4P', rating:'100 A' };
+  if(type === 'float')  return { value:30, setpoint:70, unit:'%', contact:'NO' };
+  if(type === 'pressure') return { value:3, setpoint:6, unit:'bar', contact:'NO' };
+  if(type === 'thermostat') return { value:25, setpoint:80, unit:'°C', contact:'NO' };
+  if(type === 'vfd')    return { kw:2.2, ratedA:4.8, target:50, accel:10, decel:10, mode:'V/f', volts:'400 V' };
+  if(type === 'mcb')    return { curve:'C', rating:16, poles:'3P' };
+  if(type === 'mccb')   return { rating:63, poles:'3P', trip:'Thermal-Magnetic' };
+  if(type === 'rccb')   return { sens:'30 mA', poles:'4P', type:'AC' };
+  if(type === 'fuse')   return { rating:16, type:'gG', volts:'400 V' };
+  if(type === 'spd')    return { type:'Type 2', uc:'400 V' };
+  if(type === 'terminal') return { size:'4 mm²' };
+  if(type === 'busbar')   return { bar:'100 A' };
+  if(type === 'ctmeter')  return { ratio:'100/5', cls:'0.5' };
+  if(type === 'contactor') return { coil:'230 V AC', ac3:'9 A' };
+  if(type === 'relay')     return { coil:'230 V AC' };
+  if(type === 'timer' || type === 'timer_off') return { range:'0–10 s' };
+  if(type === 'phase')     return { };
   if(type === 'plc')    return {
-    timerDelay:3, counterPreset:3,
+    model:'LOGO! 8', timerDelay:3, counterPreset:3,
     rungs:[
       { contacts:[{addr:'I1',nc:false},{addr:'I2',nc:false}], out:'M1' },
       { contacts:[{addr:'M1',nc:false},{addr:'I2',nc:false}], out:'M1' },
@@ -563,6 +588,7 @@ function symMcb(c){
     + `<circle cx="68" cy="55" r="3" fill="${CL.metal}"/>`
     + `<line x1="70" y1="55" x2="83" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
     + txt(45,28,c.label,9,CL.text)
+    + txt(45,42,(c.data.curve||'C')+' · '+(c.data.rating||16)+'A · '+(c.data.poles||'3P'),7,CL.muted)
     + txt(45,88,on?'ON':'OFF',9,on?CL.green:CL.red)
   );
 }
@@ -792,7 +818,7 @@ function symMccb(c){
     + `<circle cx="79" cy="55" r="3" fill="${CL.metal}"/>`
     + `<rect x="30" y="66" width="44" height="16" rx="3" fill="${on?'#052e16':'#450a0a'}" stroke="${on?CL.green:CL.red}"/>`
     + txt(52,77,on?'I ON':'TRIPPED',8,'#ffffff')
-    + txt(52,100,'MCCB · 3P',7,CL.muted)
+    + txt(52,100,(c.data.rating||63)+'A · '+(c.data.poles||'3P')+' · '+(c.data.trip||'TM'),7,CL.muted)
   );
 }
 
@@ -808,7 +834,7 @@ function symRccb(c){
         : `<line x1="28" y1="58" x2="66" y2="48" stroke="${CL.red}" stroke-width="3"/>`)
     + `<line x1="8" y1="55" x2="24" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<line x1="80" y1="55" x2="96" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
-    + txt(52,72,'IΔn 30 mA',7,CL.amber)
+    + txt(52,72,'IΔn '+(c.data.sens||'30 mA')+' · '+(c.data.poles||'4P'),7,CL.amber)
     + txt(52,86,on?'ON':'TRIPPED',8,on?CL.green:CL.red)
   );
 }
@@ -824,6 +850,7 @@ function symFuse(c){
         : `<path d="M27 55 l7 -8 l7 16 l7 -16 l7 16 l7 -8" fill="none" stroke="${CL.red}" stroke-width="2"/>`)
     + `<line x1="64" y1="55" x2="77" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
     + txt(42,34,c.label,9,CL.text)
+    + txt(42,46,(c.data.rating||16)+'A · '+(c.data.type||'gG'),7,CL.muted)
     + txt(42,82,ok?'HEALTHY':'BLOWN',8,ok?CL.green:CL.red)
   );
 }
@@ -854,7 +881,8 @@ function symGenerator(c){
     + txt(84,28,'L',8,CL.red)
     + txt(84,86,'N',8,CL.blue)
     + txt(46,93,c.label,8,CL.text)
-    + txt(46,104,on?'RUNNING':'STOPPED',8,on?CL.green:CL.muted)
+    + txt(46,102,(c.data.kva||50)+' kVA · '+(c.data.volts||'400 V'),7,CL.muted)
+    + txt(46,112,on?'RUNNING':'STOPPED',8,on?CL.green:CL.muted)
   );
 }
 
@@ -882,6 +910,7 @@ function symAts(c){
     + `<line x1="80" y1="90" x2="140" y2="110" stroke="${aOn||bOn?CL.cyan:CL.dim}" stroke-width="2.5"/>`
     + `<line x1="140" y1="70" x2="152" y2="70" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<line x1="140" y1="110" x2="152" y2="110" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + txt(80,158,(c.data.poles||'4P')+' · '+(c.data.rating||'100 A'),7,CL.muted)
     + txt(80,166,pos==='OFF'?'OFF':pos==='A'?'SOURCE A':'SOURCE B',8,pos==='OFF'?CL.red:CL.green)
   );
 }
@@ -955,7 +984,7 @@ function symTerminal(c){
     + `<line x1="24" y1="20" x2="24" y2="50" stroke="${CL.dim}" stroke-width="1.5" stroke-dasharray="3 3"/>`
     + `<line x1="76" y1="20" x2="76" y2="50" stroke="${CL.dim}" stroke-width="1.5" stroke-dasharray="3 3"/>`
     + txt(50,35,c.label,8,CL.text)
-    + txt(50,67,'TERMINAL',7,CL.muted)
+    + txt(50,67,(c.data.size||'4 mm²')+' · TERMINAL',7,CL.muted)
   );
 }
 
@@ -969,7 +998,7 @@ function symBusbar(c){
     + `<line x1="14" y1="50" x2="8" y2="50" stroke="${CL.metal}" stroke-width="2"/>`
     + `<line x1="136" y1="50" x2="142" y2="50" stroke="${CL.metal}" stroke-width="2"/>`
     + txt(75,25,c.label,8,CL.text)
-    + txt(75,92,'BUSBAR',7,CL.muted)
+    + txt(75,92,(c.data.bar||'100 A')+' · BUSBAR',7,CL.muted)
   );
 }
 
@@ -986,7 +1015,7 @@ function symCtMeter(c){
     + `<circle cx="50" cy="55" r="3" fill="${on?CL.cyan:CL.metal}"/>`
     + txt(50,74,on?amps.toFixed(1)+' A':'0.0 A',9,on?CL.green:CL.muted)
     + txt(50,90,c.label,8,CL.text)
-    + txt(50,101,'CT / AMMETER',7,CL.muted)
+    + txt(50,101,(c.data.ratio||'100/5')+' · CT',7,CL.muted)
   );
 }
 
@@ -1083,7 +1112,7 @@ function symPlc(c){
     + txt(106,168,'T1 '+(s.timer? (s.timer.done?'DONE':s.timer.t.toFixed(1)+'s'):'0s'),7,s.timer&&s.timer.done?CL.green:CL.amber)
     + `<rect x="146" y="156" width="60" height="26" rx="4" fill="#07101f" stroke="#1e2a45"/>`
     + txt(176,168,'C1 '+(s.counter?s.counter.count:0)+'/'+(c.data.counterPreset||0),7,s.counter&&s.counter.done?CL.green:CL.amber)
-    + txt(141,205,'LOGO! STYLE · 24V DC',7,CL.dim)
+    + txt(141,205,(c.data.model||'LOGO! 8')+' · 24V DC',7,CL.dim)
     + txt(141,218,'SCAN '+(s.scans||0),7,CL.dim)
   );
 }
@@ -1115,7 +1144,7 @@ function symVfd(c){
     + txt(158,101,'V',7,CL.amber,'end')
     + [0,1,2,3,4,5].map(i => `<line x1="${20+i*22}" y1="128" x2="${20+i*22}" y2="142" stroke="${CL.dim}" stroke-width="3"/>`).join('')
     + txt(90,158,running?'MOTOR DRIVE ACTIVE':'READY',8,running?CL.green:CL.muted)
-    + txt(90,171,(c.data.kw||0)+' kW · '+(c.data.ratedA||0)+' A',7,CL.muted)
+    + txt(90,171,(c.data.kw||0)+' kW · '+(c.data.ratedA||0)+' A · '+(c.data.mode||'V/f'),7,CL.muted)
   );
 }
 
@@ -1717,6 +1746,23 @@ function renderProps(){
       h += `<div class="prop"><label>Encoder</label><select onchange="setMeta('${c.id}','encoder',this.value)">${['2500 ppr','17-bit abs'].map(v => `<option value="${v}"${String(c.data.encoder)===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     }
   }
+  // Family selectors (organize types)
+  const protectionKinds = [['mcb','MCB / Miniature'],['mccb','MCCB / Moulded Case'],['rccb','RCCB / RCBO'],['fuse','Fuse Cartridge']];
+  if(protectionKinds.some(([v]) => v === c.type)){
+    h += `<div class="prop"><label>Protection type</label><select onchange="changeType('${c.id}',this.value)">${protectionKinds.map(([v,n]) => `<option value="${v}"${c.type===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
+  }
+  const timerKinds = [['timer','On-Delay Timer'],['timer_off','Off-Delay Timer'],['flasher','Flasher Relay']];
+  if(timerKinds.some(([v]) => v === c.type)){
+    h += `<div class="prop"><label>Timer type</label><select onchange="changeType('${c.id}',this.value)">${timerKinds.map(([v,n]) => `<option value="${v}"${c.type===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
+  }
+  const sensorKinds = [['float','Float / Level'],['pressure','Pressure Switch'],['thermostat','Thermostat']];
+  if(sensorKinds.some(([v]) => v === c.type)){
+    h += `<div class="prop"><label>Sensor type</label><select onchange="changeType('${c.id}',this.value)">${sensorKinds.map(([v,n]) => `<option value="${v}"${c.type===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
+  }
+  const switchKinds = [['pb_no','Push Button NO'],['pb_nc','Push Button NC'],['estop','E-STOP'],['selector','Selector Switch']];
+  if(switchKinds.some(([v]) => v === c.type)){
+    h += `<div class="prop"><label>Switch type</label><select onchange="changeType('${c.id}',this.value)">${switchKinds.map(([v,n]) => `<option value="${v}"${c.type===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
+  }
   if(c.type === 'ol'){
     h += `<div class="prop"><label>Set current A</label><input type="number" step="0.1" min="0" value="${c.data.setA}" onchange="setData('${c.id}','setA',this.value)"></div>`;
     h += `<div class="prop"><label>Trip class</label><select onchange="setMeta('${c.id}','cls',this.value)">${['Class 10','Class 10A','Class 20','Class 30'].map(v => `<option${(c.data.cls||'Class 10')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
@@ -1724,14 +1770,17 @@ function renderProps(){
   if(c.type === 'mcb'){
     h += `<div class="prop"><label>Curve</label><select onchange="setMeta('${c.id}','curve',this.value)">${['B','C','D'].map(v => `<option${(c.data.curve||'C')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Rating</label><select onchange="setMeta('${c.id}','rating',this.value)">${[6,10,16,20,25,32,40,50,63].map(v => `<option value="${v}"${Number(c.data.rating||16)===v?' selected':''}>${v} A</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${['1P','2P','3P','4P'].map(v => `<option${(c.data.poles||'3P')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'mccb'){
     h += `<div class="prop"><label>Rating</label><select onchange="setMeta('${c.id}','rating',this.value)">${[16,25,40,63,100,160,250,400,630].map(v => `<option value="${v}"${Number(c.data.rating||63)===v?' selected':''}>${v} A</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${['3P','4P'].map(v => `<option${(c.data.poles||'3P')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Trip unit</label><select onchange="setMeta('${c.id}','trip',this.value)">${['Thermal-Magnetic','Electronic','Motor Protection'].map(v => `<option${(c.data.trip||'Thermal-Magnetic')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'rccb'){
     h += `<div class="prop"><label>Sensitivity</label><select onchange="setMeta('${c.id}','sens',this.value)">${['10 mA','30 mA','100 mA','300 mA'].map(v => `<option${(c.data.sens||'30 mA')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${['2P','4P'].map(v => `<option${(c.data.poles||'4P')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Type</label><select onchange="setMeta('${c.id}','type',this.value)">${['AC','A','B','F'].map(v => `<option${(c.data.type||'AC')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'contactor' || c.type === 'relay'){
     h += `<div class="prop"><label>Coil voltage</label><select onchange="setMeta('${c.id}','coil',this.value)">${['24 V DC','230 V AC','400 V AC'].map(v => `<option${(c.data.coil||'230 V AC')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
@@ -1748,6 +1797,7 @@ function renderProps(){
   }
   if(c.type === 'ats'){
     h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${['3P','4P'].map(v => `<option${(c.data.poles||'4P')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Rating</label><select onchange="setMeta('${c.id}','rating',this.value)">${['63 A','100 A','160 A','250 A','400 A'].map(v => `<option${(c.data.rating||'100 A')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'timer' || c.type === 'timer_off'){
     h += `<div class="prop"><label>Delay (s)</label><input type="number" step="0.1" min="0.1" value="${c.state.delay}" onchange="setDelay('${c.id}',this.value)"></div>`;
@@ -1760,6 +1810,8 @@ function renderProps(){
   }
   if(c.type === 'generator'){
     h += `<div class="prop"><label>Rating kVA</label><input type="number" step="1" min="1" value="${c.data.kva||50}" onchange="setData('${c.id}','kva',this.value)"></div>`;
+    h += `<div class="prop"><label>Voltage</label><select onchange="setMeta('${c.id}','volts',this.value)">${['230 V','400 V','690 V'].map(v => `<option${(c.data.volts||'400 V')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Fuel</label><select onchange="setMeta('${c.id}','fuel',this.value)">${['Diesel','Gas','Petrol'].map(v => `<option${(c.data.fuel||'Diesel')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Engine</label><button class="mini ${c.state.on?'go':'stop'}" onclick="toggleState('${c.id}','on')">${c.state.on?'RUNNING — STOP':'STOPPED — START'}</button></div>`;
   }
   if(c.type === 'ats'){
@@ -1770,6 +1822,7 @@ function renderProps(){
     const unit = c.data.unit || '';
     h += `<div class="prop"><label>Value ${unit}</label><input type="number" step="0.1" value="${c.data.value}" onchange="setData('${c.id}','value',this.value)"></div>`;
     h += `<div class="prop"><label>Setpoint ${unit}</label><input type="number" step="0.1" value="${c.data.setpoint}" onchange="setData('${c.id}','setpoint',this.value)"></div>`;
+    h += `<div class="prop"><label>Contact type</label><select onchange="setMeta('${c.id}','contact',this.value)">${['NO','NC'].map(v => `<option${(c.data.contact||'NO')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Auto sense</label><input type="checkbox" ${c.data.auto?'checked':''} onchange="setState('${c.id}','auto',this.checked)" style="width:auto"></div>`;
     h += `<div class="prop"><label>Contact</label><button class="mini ${c.state.triggered?'go':'stop'}" onclick="toggleState('${c.id}','triggered')">${c.state.triggered?'CLOSED':'OPEN'}</button></div>`;
   }
@@ -1777,13 +1830,24 @@ function renderProps(){
     h += `<div class="prop"><label>Leakage</label><button class="mini ${c.state.tripped?'stop':'go'}" onclick="toggleState('${c.id}','tripped')">${c.state.tripped?'TRIPPED — RESET':'TEST TRIP'}</button></div>`;
   }
   if(c.type === 'fuse'){
+    h += `<div class="prop"><label>Rating</label><select onchange="setMeta('${c.id}','rating',this.value)">${[6,10,16,20,25,32,40,50,63,80,100,125].map(v => `<option value="${v}"${Number(c.data.rating||16)===v?' selected':''}>${v} A</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Type</label><select onchange="setMeta('${c.id}','type',this.value)">${['gG','aM','NH','D','Diazed'].map(v => `<option${(c.data.type||'gG')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Voltage</label><select onchange="setMeta('${c.id}','volts',this.value)">${['400 V','500 V','690 V'].map(v => `<option${(c.data.volts||'400 V')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Element</label><button class="mini ${c.state.blown?'stop':'go'}" onclick="toggleState('${c.id}','blown')">${c.state.blown?'BLOWN — REPLACE':'BLOW FUSE'}</button></div>`;
+  }
+  if(c.type === 'spd'){
+    h += `<div class="prop"><label>Type</label><select onchange="setMeta('${c.id}','type',this.value)">${['Type 1','Type 2','Type 3'].map(v => `<option${(c.data.type||'Type 2')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Uc (V)</label><select onchange="setMeta('${c.id}','uc',this.value)">${['275 V','320 V','400 V','440 V'].map(v => `<option${(c.data.uc||'400 V')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'spd' || c.type === 'phase'){
     h += `<div class="prop"><label>Status</label><button class="mini ${c.state.fault?'stop':'go'}" onclick="toggleState('${c.id}','fault')">${c.state.fault?'FAULT — RESET':'INJECT FAULT'}</button></div>`;
   }
   if(c.type === 'mccb'){
     h += `<div class="prop"><label>Breaker</label><button class="mini ${c.state.closed?'go':'stop'}" onclick="toggleState('${c.id}','closed')">${c.state.closed?'ON — OPEN':'OFF — CLOSE'}</button></div>`;
+  }
+  if(c.type === 'ctmeter'){
+    h += `<div class="prop"><label>Ratio</label><select onchange="setMeta('${c.id}','ratio',this.value)">${['50/5','100/5','200/5','300/5','600/5'].map(v => `<option${(c.data.ratio||'100/5')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Class</label><select onchange="setMeta('${c.id}','cls',this.value)">${['0.2','0.5','1','3'].map(v => `<option${(c.data.cls||'0.5')===v?' selected':''}>Class ${v}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'vfd'){
     h += `<div class="prop"><label>Drive</label><button class="mini ${c.state.on?'go':'stop'}" onclick="toggleState('${c.id}','on')">${c.state.on?'RUNNING — STOP':'STOPPED — RUN'}</button></div>`;
@@ -1792,9 +1856,12 @@ function renderProps(){
     h += `<div class="prop"><label>Decel s</label><input type="number" step="0.5" min="0.1" value="${c.data.decel}" onchange="setData('${c.id}','decel',this.value)"></div>`;
     h += `<div class="prop"><label>Motor kW</label><input type="number" step="0.1" min="0" value="${c.data.kw}" onchange="setData('${c.id}','kw',this.value)"></div>`;
     h += `<div class="prop"><label>Motor A</label><input type="number" step="0.1" min="0" value="${c.data.ratedA}" onchange="setData('${c.id}','ratedA',this.value)"></div>`;
+    h += `<div class="prop"><label>Control mode</label><select onchange="setMeta('${c.id}','mode',this.value)">${['V/f','Sensorless Vector','Torque'].map(v => `<option${(c.data.mode||'V/f')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Supply</label><select onchange="setMeta('${c.id}','volts',this.value)">${['400 V','230 V'].map(v => `<option${(c.data.volts||'400 V')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Fault</label><button class="mini ${c.state.fault?'stop':'go'}" onclick="toggleState('${c.id}','fault')">${c.state.fault?'TRIP — RESET':'INJECT FAULT'}</button></div>`;
   }
   if(c.type === 'plc'){
+    h += `<div class="prop"><label>PLC model</label><select onchange="setMeta('${c.id}','model',this.value)">${['LOGO! 8','S7-1200','Generic'].map(v => `<option${(c.data.model||'LOGO! 8')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<button class="wide" onclick="openPlcEditor('${c.id}')">🧠 Open Ladder Editor</button>`;
     h += `<div class="prop"><label>Timer T1 (s)</label><input type="number" step="0.1" min="0.1" value="${c.data.timerDelay}" onchange="setData('${c.id}','timerDelay',this.value)"></div>`;
     h += `<div class="prop"><label>Counter C1</label><input type="number" step="1" min="1" value="${c.data.counterPreset}" onchange="setData('${c.id}','counterPreset',this.value)"></div>`;
