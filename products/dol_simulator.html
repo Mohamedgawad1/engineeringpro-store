@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DOL Motor Starter Simulator — Real Direct-On-Line (3-Phase)</title>
 <style>
-:root{--bg:#0b1220;--panel:#121a2e;--card:#1a2340;--accent:#00d4ff;--gold:#f5c518;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;--purple:#a78bfa;--text:#e8ecf4;--muted:#9aa3bf;--border:#2a3355}
+:root{--bg:#0f172a;--panel:#111c33;--card:#1e293b;--accent:#93c5fd;--gold:#f5c518;--green:#00E676;--red:#ef4444;--amber:#f59e0b;--purple:#a78bfa;--text:#f1f5f9;--muted:#94a3b8;--border:#334155}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.topbar{background:linear-gradient(90deg,#0f172a,#1e293b);border-bottom:2px solid var(--accent);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.topbar h1{font-size:17px;background:linear-gradient(90deg,var(--accent),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.topbar{background:#0f172a;border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.topbar h1{font-size:17px;color:var(--accent);font-weight:800}
 .topbar select,.topbar button,.topbar input,.topbar label{padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;cursor:pointer;font-size:12px}
-.topbar button.run{background:linear-gradient(135deg,var(--green),#16a34a);border:none;color:#fff}
+.topbar button.run{background:var(--green);border:none;color:#052e16;font-weight:900;box-shadow:0 4px 16px rgba(0,230,118,.35)}
 .topbar button.stop{background:linear-gradient(135deg,var(--red),#b91c1c);border:none;color:#fff}
 .topbar button.reset{background:linear-gradient(135deg,var(--amber),#d97706);border:none;color:#000}
 .topbar button.estop{background:linear-gradient(135deg,#7f1d1d,#450a0a);border:2px solid var(--red);color:#fff;font-weight:900}
@@ -75,7 +75,7 @@ canvas{width:100%;height:90px;display:block}
 <body>
 
 <div class="topbar">
-  <h1>⚡ DOL Motor Starter Simulator — Real Direct-On-Line</h1>
+  <h1>⚡ محاكي DOL — تشغيل مباشر ثلاثي الأطوار</h1>
   <div style="display:flex;gap:6px;align-items:center">
     <label>Power:</label>
     <select id="powersrc" onchange="setPower()">
@@ -94,11 +94,11 @@ canvas{width:100%;height:90px;display:block}
       <option value="7.5">7.5 kW</option>
     </select>
   </div>
-  <button class="run" onclick="runSim()">▶ RUN</button>
-  <button class="stop" onclick="stopSim()">■ STOP</button>
-  <button class="reset" onclick="resetSim()">↺ RESET</button>
-  <button class="estop" onclick="toggleEstop()">E-STOP</button>
-  <span style="margin-left:auto;font-size:11px;color:var(--muted)">Hold START button (or click) • Outputs update live</span>
+  <button class="run" onclick="runSim()">▶ تشغيل</button>
+  <button class="stop" onclick="stopSim()">■ إيقاف</button>
+  <button class="reset" onclick="resetSim()">↺ إعادة</button>
+  <button class="estop" onclick="toggleEstop()">⛔ E-STOP</button>
+  <span style="margin-left:auto;font-size:11px;color:var(--muted)">اضغط START (استمر) • التحديث لحظي</span>
 </div>
 
 <div class="main">
