@@ -553,14 +553,14 @@ function term(x,y){ return `<circle cx="${x}" cy="${y}" r="3" fill="${CL.metal}"
 function contactH(x1,x2,y,closed){
   return `<line x1="${x1}" y1="${y}" x2="${x1+7}" y2="${y}" stroke="${CL.metal}" stroke-width="2"/>`
     + `<circle cx="${x1+7}" cy="${y}" r="2.5" fill="${CL.metal}"/>`
-    + `<line x1="${x1+7}" y1="${y}" x2="${closed ? x2-7 : x2-13}" y2="${closed ? y : y-14}" stroke="${closed?CL.text:CL.red}" stroke-width="2"/>`
+    + `<line x1="${x1+7}" y1="${y}" x2="${closed ? x2-7 : x2-13}" y2="${closed ? y : y-14}" stroke="${closed?'#1e293b':CL.red}" stroke-width="2"/>`
     + `<circle cx="${x2-7}" cy="${y}" r="2.5" fill="${CL.metal}"/>`
     + `<line x1="${x2-7}" y1="${y}" x2="${x2}" y2="${y}" stroke="${CL.metal}" stroke-width="2"/>`;
 }
 function contactV(x,y1,y2,closed){
   return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y1+7}" stroke="${CL.metal}" stroke-width="2"/>`
     + `<circle cx="${x}" cy="${y1+7}" r="2.5" fill="${CL.metal}"/>`
-    + `<line x1="${x}" y1="${y1+7}" x2="${closed ? x : x+14}" y2="${closed ? y2-7 : y2-13}" stroke="${closed?CL.text:CL.red}" stroke-width="2"/>`
+    + `<line x1="${x}" y1="${y1+7}" x2="${closed ? x : x+14}" y2="${closed ? y2-7 : y2-13}" stroke="${closed?'#1e293b':CL.red}" stroke-width="2"/>`
     + `<circle cx="${x}" cy="${y2-7}" r="2.5" fill="${CL.metal}"/>`
     + `<line x1="${x}" y1="${y2-7}" x2="${x}" y2="${y2}" stroke="${CL.metal}" stroke-width="2"/>`;
 }
@@ -569,7 +569,7 @@ function txt(x,y,s,size,fill,anchor){
 }
 function wrap(c, inner){
   const t = TYPES[c.type];
-  return `<svg width="${t.w}" height="${t.h}" viewBox="0 0 ${t.w} ${t.h}"><defs><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-color="#000" flood-opacity="0.55"/></filter><linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#64748b"/><stop offset="1" stop-color="#334155"/></linearGradient></defs><g filter="url(#sh)">${inner}</g></svg>`;
+  return `<svg width="${t.w}" height="${t.h}" viewBox="0 0 ${t.w} ${t.h}"><defs><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-color="#000" flood-opacity="0.55"/></filter><linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#cbd5e1"/></linearGradient></defs><g filter="url(#sh)">${inner}</g></svg>`;
 }
 
 /* ---------- Realistic component symbols ---------- */
@@ -594,13 +594,13 @@ function symMcb(c){
     `<rect x="8" y="12" width="74" height="66" rx="7" fill="url(#gBody)" stroke="#475569" stroke-width="1.5"/>`
     + `<defs><linearGradient id="gBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>`
     + `<rect x="16" y="20" width="58" height="14" rx="3" fill="#1e293b" stroke="#334155"/>`
-    + txt(45,30,c.label,8,CL.text)
+    + txt(45,30,c.label,8,'#1e293b')
     + `<rect x="20" y="40" width="50" height="16" rx="3" fill="${on?'#052e16':'#450a0a'}" stroke="${on?CL.green:CL.red}"/>`
     + txt(45,52,on?'I':'O',9,on?CL.green:CL.red)
     + `<line x1="7" y1="55" x2="20" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<circle cx="22" cy="55" r="3.5" fill="${CL.metal}" stroke="#0f172a"/>`
     + (on
-        ? `<line x1="24" y1="55" x2="66" y2="55" stroke="${CL.text}" stroke-width="2.5"/>`
+        ? `<line x1="24" y1="55" x2="66" y2="55" stroke="${'#1e293b'}" stroke-width="2.5"/>`
         : `<line x1="24" y1="55" x2="62" y2="38" stroke="${CL.red}" stroke-width="2.5"/>`)
     + `<circle cx="68" cy="55" r="3.5" fill="${CL.metal}" stroke="#0f172a"/>`
     + `<line x1="70" y1="55" x2="83" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
@@ -658,7 +658,7 @@ function symContactor(c){
   const on = c.state.coil;
   return wrap(c,
     `<rect x="4" y="4" width="132" height="172" rx="10" fill="none" stroke="#334155"/>`
-    + txt(70,17,c.label,10,CL.text)
+    + txt(70,17,c.label,10,'#1e293b')
     + `<polyline points="10,30 20,30 20,52" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<polyline points="10,150 20,150 20,128" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + txt(25,44,'A1',7,CL.muted,'start')
@@ -687,7 +687,7 @@ function symRelay(c){
   const on = c.state.coil;
   return wrap(c,
     `<rect x="4" y="4" width="122" height="142" rx="10" fill="none" stroke="#334155"/>`
-    + txt(65,17,c.label,10,CL.text)
+    + txt(65,17,c.label,10,'#1e293b')
     + `<polyline points="10,30 20,30 20,45" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<polyline points="10,120 20,120 20,110" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<rect x="20" y="45" width="36" height="65" rx="5" fill="#0b1220" stroke="${on?CL.blue:CL.edge}" stroke-width="2"/>`
@@ -711,7 +711,7 @@ function symTimer(c){
   const remain = Math.max(0, c.state.delay - c.state.t);
   return wrap(c,
     `<rect x="4" y="4" width="132" height="142" rx="10" fill="none" stroke="#334155"/>`
-    + txt(65,17,c.label,10,CL.text)
+    + txt(65,17,c.label,10,'#1e293b')
     + `<polyline points="10,30 20,30 20,45" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<polyline points="10,120 20,120 20,110" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<rect x="20" y="45" width="36" height="65" rx="5" fill="#0b1220" stroke="${on?CL.blue:CL.edge}" stroke-width="2"/>`
@@ -731,7 +731,7 @@ function symOl(c){
   const trip = c.state.tripped;
   return wrap(c,
     `<rect x="4" y="4" width="112" height="112" rx="10" fill="none" stroke="#334155"/>`
-    + txt(60,17,c.label,10,CL.text)
+    + txt(60,17,c.label,10,'#1e293b')
     + `<line x1="8" y1="26" x2="20" y2="26" stroke="${CL.metal}" stroke-width="2"/>`
     + (trip
         ? `<line x1="20" y1="26" x2="38" y2="26" stroke="${CL.red}" stroke-width="2"/>` + txt(60,30,'TRIPPED',8,CL.red) + `<line x1="82" y1="26" x2="112" y2="26" stroke="${CL.metal}" stroke-width="2"/>`
@@ -758,7 +758,7 @@ function symLamp(c){
     + `<path d="M39 30 q6 -6 12 0" fill="none" stroke="${on?'#fff7cc':CL.dim}" stroke-width="1.5"/>`
     + `<line x1="41" y1="52" x2="49" y2="52" stroke="${on?CL.hot:CL.dim}" stroke-width="2"/>`
     + `<line x1="41" y1="56" x2="49" y2="56" stroke="${on?CL.hot:CL.dim}" stroke-width="2"/>`
-    + txt(45,74,c.label,8,CL.text)
+    + txt(45,74,c.label,8,'#1e293b')
     + txt(45,85,on?'ON':'OFF',8,on?CL.green:CL.dim)
   );
 }
@@ -792,7 +792,7 @@ function symMotor(c){
     + `<line x1="81" y1="55" x2="102" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
     + `<ellipse cx="55" cy="45" rx="30" ry="24" fill="url(#bodyGrad)" stroke="${on?accent:CL.edge}" stroke-width="2.5"/>`
     + `<rect x="40" y="8" width="30" height="12" rx="3" fill="url(#bodyGrad)" stroke="${CL.edge}" stroke-width="1.5"/>`
-    + txt(55,17,'TB',6,CL.text)
+    + txt(55,17,'TB',6,'#1e293b')
     + `<line x1="85" y1="45" x2="102" y2="45" stroke="${CL.metal}" stroke-width="4"/>`
     + `<circle cx="85" cy="45" r="4" fill="${CL.metal}"/>`
     + [0,1,2,3].map(i => `<line x1="${30+i*8}" y1="24" x2="${30+i*8}" y2="66" stroke="${CL.dim}" stroke-width="1"/>`).join('')
@@ -804,7 +804,7 @@ function symMotor(c){
     + extra
     + `<rect x="72" y="16" width="32" height="13" rx="3" fill="#0b1220" stroke="${on?accent:CL.edge}"/>`
     + txt(88,25,badge,7,on?accent:CL.muted)
-    + txt(55,90,c.label,8,CL.text)
+    + txt(55,90,c.label,8,'#1e293b')
     + txt(55,102,(d.kw||0)+' kW · '+(d.rpm||0)+' rpm',7,on?CL.green:CL.muted)
   );
 }
@@ -819,7 +819,7 @@ function symAlarm(c){
     + `<ellipse cx="30" cy="55" rx="7" ry="10" fill="${on?CL.red:'#334155'}" stroke="${on?CL.red:CL.edge}"/>`
     + (on ? `<path d="M58 42 q12 13 0 26" fill="none" stroke="${CL.red}" stroke-width="2"/>` + `<path d="M64 36 q18 19 0 38" fill="none" stroke="${CL.red}" stroke-width="2" opacity="0.6"/>` : '')
     + `</g>`
-    + txt(50,90,c.label,8,CL.text)
+    + txt(50,90,c.label,8,'#1e293b')
     + txt(50,101,on?'SOUNDING':'SILENT',8,on?CL.red:CL.dim)
   );
 }
@@ -830,7 +830,7 @@ function symMccb(c){
     `<rect x="16" y="14" width="72" height="80" rx="7" fill="url(#gMccb)" stroke="#475569" stroke-width="1.5"/>`
     + `<defs><linearGradient id="gMccb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>`
     + `<rect x="27" y="22" width="50" height="34" rx="4" fill="#111c33" stroke="${on?CL.green:CL.red}"/>`
-    + txt(52,40,c.label,9,CL.text)
+    + txt(52,40,c.label,9,'#1e293b')
     + (on
         ? `<line x1="34" y1="49" x2="70" y2="49" stroke="${CL.green}" stroke-width="3"/>`
         : `<line x1="34" y1="49" x2="64" y2="38" stroke="${CL.red}" stroke-width="3"/>`)
@@ -849,7 +849,7 @@ function symRccb(c){
   return wrap(c,
     `<rect x="16" y="12" width="72" height="86" rx="7" fill="url(#gRccb)" stroke="#475569" stroke-width="1.5"/>`
     + `<defs><linearGradient id="gRccb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>`
-    + txt(52,25,c.label,9,CL.text)
+    + txt(52,25,c.label,9,'#1e293b')
     + `<circle cx="52" cy="40" r="11" fill="${on?'#052e16':'#450a0a'}" stroke="${on?CL.green:CL.red}" stroke-width="2"/>`
     + `<line x1="52" y1="40" x2="${closingLineX(on)}" y2="${on?30:49}" stroke="${on?CL.green:CL.red}" stroke-width="2.5"/>`
     + (on
@@ -872,7 +872,7 @@ function symFuse(c){
         ? `<line x1="25" y1="55" x2="59" y2="55" stroke="${CL.amber}" stroke-width="2"/>`
         : `<path d="M27 55 l7 -8 l7 16 l7 -16 l7 16 l7 -8" fill="none" stroke="${CL.red}" stroke-width="2"/>`)
     + `<line x1="64" y1="55" x2="77" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
-    + txt(42,34,c.label,9,CL.text)
+    + txt(42,34,c.label,9,'#1e293b')
     + txt(42,46,(c.data.rating||16)+'A · '+(c.data.type||'gG'),7,CL.muted)
     + txt(42,82,ok?'HEALTHY':'BLOWN',8,ok?CL.green:CL.red)
   );
@@ -882,7 +882,7 @@ function symSpd(c){
   const fault = c.state.fault;
   return wrap(c,
     `<rect x="14" y="14" width="64" height="82" rx="7" fill="url(#bodyGrad)" stroke="${CL.edge}"/>`
-    + txt(46,27,c.label,9,CL.text)
+    + txt(46,27,c.label,9,'#1e293b')
     + `<line x1="8" y1="55" x2="24" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<line x1="68" y1="55" x2="84" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<path d="M34 40 L58 40 L46 54 L58 68 L34 68 L46 54 Z" fill="${fault?'#450a0a':'#0b1220'}" stroke="${fault?CL.red:CL.blue}" stroke-width="2"/>`
@@ -903,7 +903,7 @@ function symGenerator(c){
     + `<line x1="77" y1="70" x2="102" y2="70" stroke="${CL.blue}" stroke-width="2.5"/>`
     + txt(84,28,'L',8,CL.red)
     + txt(84,86,'N',8,CL.blue)
-    + txt(46,93,c.label,8,CL.text)
+    + txt(46,93,c.label,8,'#1e293b')
     + txt(46,102,(c.data.kva||50)+' kVA · '+(c.data.volts||'400 V'),7,CL.muted)
     + txt(46,112,on?'RUNNING':'STOPPED',8,on?CL.green:CL.muted)
   );
@@ -914,7 +914,7 @@ function symAts(c){
   const aOn = pos === 'A', bOn = pos === 'B';
   return wrap(c,
     `<rect x="4" y="4" width="152" height="172" rx="10" fill="none" stroke="#334155"/>`
-    + txt(80,18,c.label,10,CL.text)
+    + txt(80,18,c.label,10,'#1e293b')
     + `<rect x="18" y="30" width="36" height="50" rx="5" fill="${aOn?'#052e16':'#0f172a'}" stroke="${aOn?CL.green:CL.edge}"/>`
     + txt(36,46,'A',11,aOn?CL.green:CL.muted)
     + txt(36,62,'MAIN',7,aOn?CL.green:CL.dim)
@@ -943,7 +943,7 @@ function symTimerOff(c){
   const remain = Math.max(0, (c.state.delay || 0) - (c.state.t || 0));
   return wrap(c,
     `<rect x="4" y="4" width="132" height="142" rx="10" fill="none" stroke="#334155"/>`
-    + txt(65,17,c.label,10,CL.text)
+    + txt(65,17,c.label,10,'#1e293b')
     + `<polyline points="10,30 20,30 20,45" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<polyline points="10,120 20,120 20,110" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<rect x="20" y="45" width="36" height="65" rx="5" fill="#0b1220" stroke="${on?CL.blue:CL.edge}" stroke-width="2"/>`
@@ -962,7 +962,7 @@ function symFlasher(c){
   const on = c.state.coil, blink = c.state.blinkOn;
   return wrap(c,
     `<rect x="4" y="4" width="132" height="142" rx="10" fill="none" stroke="#334155"/>`
-    + txt(65,17,c.label,10,CL.text)
+    + txt(65,17,c.label,10,'#1e293b')
     + `<polyline points="10,30 20,30 20,45" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<polyline points="10,120 20,120 20,110" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<rect x="20" y="45" width="36" height="65" rx="5" fill="#0b1220" stroke="${on?CL.blue:CL.edge}" stroke-width="2"/>`
@@ -981,7 +981,7 @@ function symPhase(c){
   const fault = c.state.fault;
   return wrap(c,
     `<rect x="4" y="4" width="122" height="132" rx="10" fill="none" stroke="#334155"/>`
-    + txt(66,18,c.label,9,CL.text)
+    + txt(66,18,c.label,9,'#1e293b')
     + ['L1','L2','L3'].map((p,i) => `<circle cx="${34+i*22}" cy="40" r="5" fill="${fault?CL.dim:CL.green}"/>` + txt(34+i*22,58,p,8,fault?CL.dim:CL.green)).join('')
     + txt(66,78,fault?'PHASE LOSS':'3-PHASE OK',9,fault?CL.red:CL.green)
     + `<line x1="110" y1="45" x2="120" y2="45" stroke="${CL.metal}" stroke-width="2"/>`
@@ -1006,7 +1006,7 @@ function symTerminal(c){
     + `<circle cx="76" cy="50" r="5" fill="url(#bodyGrad)" stroke="${CL.metal}" stroke-width="2"/>`
     + `<line x1="24" y1="20" x2="24" y2="50" stroke="${CL.dim}" stroke-width="1.5" stroke-dasharray="3 3"/>`
     + `<line x1="76" y1="20" x2="76" y2="50" stroke="${CL.dim}" stroke-width="1.5" stroke-dasharray="3 3"/>`
-    + txt(50,35,c.label,8,CL.text)
+    + txt(50,35,c.label,8,'#1e293b')
     + txt(50,67,(c.data.size||'4 mm²')+' · TERMINAL',7,CL.muted)
   );
 }
@@ -1020,7 +1020,7 @@ function symBusbar(c){
     + `<line x1="75" y1="58" x2="75" y2="70" stroke="${CL.metal}" stroke-width="2"/>`
     + `<line x1="14" y1="50" x2="8" y2="50" stroke="${CL.metal}" stroke-width="2"/>`
     + `<line x1="136" y1="50" x2="142" y2="50" stroke="${CL.metal}" stroke-width="2"/>`
-    + txt(75,25,c.label,8,CL.text)
+    + txt(75,25,c.label,8,'#1e293b')
     + txt(75,92,(c.data.bar||'100 A')+' · BUSBAR',7,CL.muted)
   );
 }
@@ -1037,7 +1037,7 @@ function symCtMeter(c){
     + `<line x1="50" y1="55" x2="${50+22*Math.cos(angle*Math.PI/180)}" y2="${55+22*Math.sin(angle*Math.PI/180)}" stroke="${on?CL.cyan:CL.metal}" stroke-width="2"/>`
     + `<circle cx="50" cy="55" r="3" fill="${on?CL.cyan:CL.metal}"/>`
     + txt(50,74,on?amps.toFixed(1)+' A':'0.0 A',9,on?CL.green:CL.muted)
-    + txt(50,90,c.label,8,CL.text)
+    + txt(50,90,c.label,8,'#1e293b')
     + txt(50,101,(c.data.ratio||'100/5')+' · CT',7,CL.muted)
   );
 }
@@ -1051,7 +1051,7 @@ function symFloat(c){
     + `<circle cx="50" cy="${trig?54:66}" r="8" fill="${trig?CL.green:CL.amber}" stroke="#0f172a" stroke-width="2"/>`
     + `<line x1="8" y1="60" x2="22" y2="60" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<line x1="78" y1="60" x2="92" y2="60" stroke="${CL.metal}" stroke-width="2.5"/>`
-    + txt(50,105,c.label,8,CL.text)
+    + txt(50,105,c.label,8,'#1e293b')
     + txt(50,116,trig?'HIGH · CLOSED':'LOW · OPEN',8,trig?CL.green:CL.dim)
   );
 }
@@ -1068,7 +1068,7 @@ function symPressure(c){
     + txt(55,38,(Number(c.data.setpoint)||0)+' bar',8,CL.amber)
     + `<line x1="8" y1="70" x2="28" y2="70" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<line x1="82" y1="70" x2="102" y2="70" stroke="${CL.metal}" stroke-width="2.5"/>`
-    + txt(55,92,c.label,8,CL.text)
+    + txt(55,92,c.label,8,'#1e293b')
     + txt(55,104,trig?'PRESSURE OK':'LOW',8,trig?CL.green:CL.dim)
   );
 }
@@ -1084,7 +1084,7 @@ function symThermostat(c){
     + txt(50,36,(Number(c.data.value)||0)+'°C',8,trig?CL.red:CL.blue)
     + `<line x1="8" y1="60" x2="24" y2="60" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<line x1="76" y1="60" x2="92" y2="60" stroke="${CL.metal}" stroke-width="2.5"/>`
-    + txt(50,90,c.label,8,CL.text)
+    + txt(50,90,c.label,8,'#1e293b')
     + txt(50,102,trig?'HEAT CALL':'SATISFIED',8,trig?CL.red:CL.green)
   );
 }
@@ -1112,7 +1112,7 @@ function symPlc(c){
   return wrap(c,
     `<rect x="4" y="4" width="232" height="222" rx="12" fill="url(#bodyGrad)" stroke="${CL.edge}" stroke-width="2"/>`
     + `<rect x="12" y="10" width="216" height="22" rx="5" fill="#111c33" stroke="${CL.edge}"/>`
-    + txt(120,25,c.label+'  ·  PLC',9,CL.text)
+    + txt(120,25,c.label+'  ·  PLC',9,'#1e293b')
     + `<circle cx="34" cy="21" r="4" fill="${s.run?CL.green:CL.red}"/>`
     + txt(44,25,'RUN',7,s.run?CL.green:CL.red,'start')
     + ['I1','I2','I3','I4'].map((a,i) => {
@@ -1148,7 +1148,7 @@ function symVfd(c){
   return wrap(c,
     `<rect x="4" y="4" width="172" height="172" rx="10" fill="url(#bodyGrad)" stroke="${s.fault?CL.red:CL.edge}" stroke-width="2"/>`
     + `<rect x="12" y="10" width="156" height="20" rx="4" fill="#111c33" stroke="${CL.edge}"/>`
-    + txt(90,24,c.label+'  ·  VFD',9,CL.text)
+    + txt(90,24,c.label+'  ·  VFD',9,'#1e293b')
     + `<circle cx="26" cy="20" r="4" fill="${s.fault?CL.red:running?CL.green:CL.dim}"/>`
     + `<rect x="16" y="38" width="118" height="58" rx="5" fill="#03170f" stroke="#134e2a"/>`
     + `<text x="34" y="78" fill="${running?'#86efac':'#334155'}" font-size="26" font-weight="800" font-family="Consolas,monospace">${freq.toFixed(1)}</text>`
