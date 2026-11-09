@@ -26,6 +26,8 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
 .compbtn{display:flex;align-items:center;gap:6px;width:100%;padding:7px 8px;margin-bottom:5px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;font-size:11.5px;cursor:pointer;text-align:left;transition:.15s}
 .compbtn:hover{border-color:var(--green);color:var(--green);transform:translateX(2px)}
 .compbtn.active{background:var(--green);color:#052e16;border-color:var(--green);font-weight:800}
+.ar-only{display:inline}.en-only{display:none}
+body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
 .pgroup{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;padding:4px 6px;background:rgba(15,23,42,.5)}
 .pgroup>summary{cursor:pointer;color:var(--accent);font-weight:800;font-size:11px;padding:4px 2px;list-style:none}
 .pgroup>summary::-webkit-details-marker{display:none}
@@ -130,12 +132,13 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
   <button onclick="exportProject()">⬇ JSON</button>
   <button onclick="document.getElementById('fileInput').click()">⬆ JSON</button>
   <button onclick="window.print()">🖨 PRINT</button>
+  <button id="langBtn" onclick="toggleLang()" title="Language">🌐 AR</button>
   <button id="muteBtn" onclick="toggleMute()" title="Mute horn">🔊</button>
 </div>
 
 <div class="main">
   <aside class="pane palette">
-    <details open class="pgroup"><summary>⚡ التحكم · Control</summary>
+    <details open class="pgroup"><summary><span class="ar-only">⚡ التحكم</span><span class="en-only">⚡ Control</span></summary>
       <button class="compbtn" data-type="power" onclick="selectPlace('power')">🔌 Power Supply</button>
       <button class="compbtn" data-type="mcb" onclick="selectPlace('mcb')">🛑 MCB / Breaker</button>
       <button class="compbtn" data-type="pb_no" onclick="selectPlace('pb_no')">🟢 Push Button (NO)</button>
@@ -149,14 +152,14 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
       <button class="compbtn" data-type="lamp" onclick="selectPlace('lamp')">💡 Indicator Lamp</button>
       <button class="compbtn" data-type="alarm" onclick="selectPlace('alarm')">🚨 Alarm (Horn)</button>
     </details>
-    <details open class="pgroup"><summary>⚙️ المواتير · Motors</summary>
+    <details open class="pgroup"><summary><span class="ar-only">⚙️ المواتير</span><span class="en-only">⚙️ Motors</span></summary>
       <button class="compbtn" data-type="motor" onclick="selectPlace('motor')">⚙️ Motor 3-Phase</button>
       <button class="compbtn" data-type="motor_1ph" onclick="selectPlace('motor_1ph')">⚙️ Motor 1-Phase</button>
       <button class="compbtn" data-type="motor_dc" onclick="selectPlace('motor_dc')">⚙️ DC Motor</button>
       <button class="compbtn" data-type="motor_stepper" onclick="selectPlace('motor_stepper')">⚙️ Stepper Motor</button>
       <button class="compbtn" data-type="motor_servo" onclick="selectPlace('motor_servo')">⚙️ Servo Motor</button>
     </details>
-    <details open class="pgroup"><summary>🛡 الحماية والمصادر · Protection &amp; Sources</summary>
+    <details open class="pgroup"><summary><span class="ar-only">🛡 الحماية والمصادر</span><span class="en-only">🛡 Protection &amp; Sources</span></summary>
       <button class="compbtn" data-type="mccb" onclick="selectPlace('mccb')">🔲 MCCB</button>
       <button class="compbtn" data-type="rccb" onclick="selectPlace('rccb')">🛡 RCCB / RCBO</button>
       <button class="compbtn" data-type="fuse" onclick="selectPlace('fuse')">🧯 Fuse</button>
@@ -165,7 +168,7 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
       <button class="compbtn" data-type="generator" onclick="selectPlace('generator')">🔋 Generator</button>
       <button class="compbtn" data-type="ats" onclick="selectPlace('ats')">🔀 ATS Changeover</button>
     </details>
-    <details open class="pgroup"><summary>⏱ المؤقتات والمستشعرات · Timers &amp; Sensors</summary>
+    <details open class="pgroup"><summary><span class="ar-only">⏱ المؤقتات والمستشعرات</span><span class="en-only">⏱ Timers &amp; Sensors</span></summary>
       <button class="compbtn" data-type="timer_off" onclick="selectPlace('timer_off')">⏱ Off-Delay Timer</button>
       <button class="compbtn" data-type="flasher" onclick="selectPlace('flasher')">🔔 Flasher Relay</button>
       <button class="compbtn" data-type="float" onclick="selectPlace('float')">🌊 Level / Float</button>
@@ -173,22 +176,30 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
       <button class="compbtn" data-type="thermostat" onclick="selectPlace('thermostat')">🌡 Thermostat</button>
       <button class="compbtn" data-type="ctmeter" onclick="selectPlace('ctmeter')">📟 CT / Ammeter</button>
     </details>
-    <details open class="pgroup"><summary>🔗 التوصيل · Wiring</summary>
+    <details open class="pgroup"><summary><span class="ar-only">🔗 التوصيل</span><span class="en-only">🔗 Wiring</span></summary>
       <button class="compbtn" data-type="terminal" onclick="selectPlace('terminal')">🔗 Terminal Block</button>
       <button class="compbtn" data-type="busbar" onclick="selectPlace('busbar')">🟫 Busbar</button>
     </details>
-    <details open class="pgroup"><summary>🧠 PLC ومحركات السرعة · PLC &amp; Drives</summary>
+    <details open class="pgroup"><summary><span class="ar-only">🧠 PLC ومحركات السرعة</span><span class="en-only">🧠 PLC &amp; Drives</span></summary>
       <button class="compbtn" data-type="plc" onclick="selectPlace('plc')">🧠 PLC (Ladder)</button>
       <button class="compbtn" data-type="vfd" onclick="selectPlace('vfd')">🎛 VFD Motor Drive</button>
     </details>
-    <details open class="pgroup"><summary>ℹ️ How to use</summary>
-      <div class="hint">
+    <details open class="pgroup"><summary><span class="ar-only">ℹ️ طريقة الاستخدام</span><span class="en-only">ℹ️ How to use</span></summary>
+      <div class="hint ar-only">
         1. اختر مكوّن ثم انقر على اللوحة لوضعه.<br>
         2. اسحب المكوّن لتحريكه.<br>
         3. انقر منفذين (نقاط) لتوصيل سلك.<br>
         4. انقر جسم المكوّن: تشغيل/فصل، ضغط زر، فصل أوفرلود.<br>
         5. زر <b>تشغيل</b> اضغط واستمر (momentary).<br>
         6. كليك يمين على المكوّن = حذف.
+      </div>
+      <div class="hint en-only">
+        1. Choose a component, then click on canvas to place it.<br>
+        2. Drag a component to move it.<br>
+        3. Click two ports (dots) to wire them.<br>
+        4. Click a component body: toggle, push, or reset overload.<br>
+        5. RUN button is momentary (press and hold).<br>
+        6. Right-click a component to delete it.
       </div>
     </details>
   </aside>
@@ -579,16 +590,20 @@ function symPower(c){
 function symMcb(c){
   const on = c.state.closed;
   return wrap(c,
-    `<rect x="12" y="16" width="66" height="58" rx="6" fill="#0f172a" stroke="${CL.edge}"/>`
-    + `<line x1="7" y1="55" x2="20" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<circle cx="22" cy="55" r="3" fill="${CL.metal}"/>`
+    `<rect x="8" y="12" width="74" height="66" rx="7" fill="url(#gBody)" stroke="#475569" stroke-width="1.5"/>`
+    + `<defs><linearGradient id="gBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>`
+    + `<rect x="16" y="20" width="58" height="14" rx="3" fill="#1e293b" stroke="#334155"/>`
+    + txt(45,30,c.label,8,CL.text)
+    + `<rect x="20" y="40" width="50" height="16" rx="3" fill="${on?'#052e16':'#450a0a'}" stroke="${on?CL.green:CL.red}"/>`
+    + txt(45,52,on?'I':'O',9,on?CL.green:CL.red)
+    + `<line x1="7" y1="55" x2="20" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<circle cx="22" cy="55" r="3.5" fill="${CL.metal}" stroke="#0f172a"/>`
     + (on
-        ? `<line x1="22" y1="55" x2="66" y2="55" stroke="${CL.text}" stroke-width="2.5"/>`
-        : `<line x1="22" y1="55" x2="60" y2="38" stroke="${CL.red}" stroke-width="2.5"/>`)
-    + `<circle cx="68" cy="55" r="3" fill="${CL.metal}"/>`
-    + `<line x1="70" y1="55" x2="83" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
-    + txt(45,28,c.label,9,CL.text)
-    + txt(45,42,(c.data.curve||'C')+' · '+(c.data.rating||16)+'A · '+(c.data.poles||'3P'),7,CL.muted)
+        ? `<line x1="24" y1="55" x2="66" y2="55" stroke="${CL.text}" stroke-width="2.5"/>`
+        : `<line x1="24" y1="55" x2="62" y2="38" stroke="${CL.red}" stroke-width="2.5"/>`)
+    + `<circle cx="68" cy="55" r="3.5" fill="${CL.metal}" stroke="#0f172a"/>`
+    + `<line x1="70" y1="55" x2="83" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + txt(45,72,(c.data.curve||'C')+' · '+(c.data.rating||16)+'A · '+(c.data.poles||'3P'),7,CL.muted)
     + txt(45,88,on?'ON':'OFF',9,on?CL.green:CL.red)
   );
 }
@@ -806,7 +821,8 @@ function symAlarm(c){
 function symMccb(c){
   const on = c.state.closed;
   return wrap(c,
-    `<rect x="16" y="14" width="72" height="80" rx="7" fill="#0f172a" stroke="${CL.edge}" stroke-width="1.5"/>`
+    `<rect x="16" y="14" width="72" height="80" rx="7" fill="url(#gMccb)" stroke="#475569" stroke-width="1.5"/>`
+    + `<defs><linearGradient id="gMccb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>`
     + `<rect x="27" y="22" width="50" height="34" rx="4" fill="#111c33" stroke="${on?CL.green:CL.red}"/>`
     + txt(52,40,c.label,9,CL.text)
     + (on
@@ -825,7 +841,8 @@ function symMccb(c){
 function symRccb(c){
   const on = c.state.closed && !c.state.tripped;
   return wrap(c,
-    `<rect x="16" y="12" width="72" height="86" rx="7" fill="#0f172a" stroke="${CL.edge}" stroke-width="1.5"/>`
+    `<rect x="16" y="12" width="72" height="86" rx="7" fill="url(#gRccb)" stroke="#475569" stroke-width="1.5"/>`
+    + `<defs><linearGradient id="gRccb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>`
     + txt(52,25,c.label,9,CL.text)
     + `<circle cx="52" cy="40" r="11" fill="${on?'#052e16':'#450a0a'}" stroke="${on?CL.green:CL.red}" stroke-width="2"/>`
     + `<line x1="52" y1="40" x2="${closingLineX(on)}" y2="${on?30:49}" stroke="${on?CL.green:CL.red}" stroke-width="2.5"/>`
@@ -1705,6 +1722,22 @@ function toggleMute(){
   if(muted) stopBeep(); else if(alarmActive()) startBeep();
   toast(muted ? 'Horn muted' : 'Horn on');
 }
+let LANG = (localStorage.getItem('cc_lang') || 'en');
+function applyLang(){
+  document.body.classList.toggle('lang-en', LANG === 'en');
+  document.body.classList.toggle('lang-ar', LANG === 'ar');
+  const btn = $('langBtn');
+  if(btn) btn.textContent = LANG === 'en' ? '🌐 AR' : '🌐 EN';
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+}
+function toggleLang(){
+  LANG = LANG === 'en' ? 'ar' : 'en';
+  localStorage.setItem('cc_lang', LANG);
+  applyLang();
+  toast(LANG === 'en' ? 'English' : 'العربية');
+}
+applyLang();
 
 let toastTimer = null;
 function toast(msg){
