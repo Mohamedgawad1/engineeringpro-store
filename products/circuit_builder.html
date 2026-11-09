@@ -103,10 +103,10 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
 <div class="topbar">
   <h1>⚡ Classic Control — منشئ الدوائر</h1>
   <span class="sub">محاكي التحكم الكلاسيكي · PLC · VFD</span>
-  <button class="run" onclick="setSupply(true)">▶ تشغيل</button>
-  <button onclick="setSupply(false)">■ إيقاف</button>
-  <button onclick="resetSim()">↺ إعادة</button>
-  <button class="danger" onclick="clearAll()">🗑 مسح</button>
+  <button class="run" onclick="setSupply(true)"><span class="ar-only">▶ تشغيل</span><span class="en-only">▶ RUN</span></button>
+  <button onclick="setSupply(false)"><span class="ar-only">■ إيقاف</span><span class="en-only">■ STOP</span></button>
+  <button onclick="resetSim()"><span class="ar-only">↺ إعادة</span><span class="en-only">↺ RESET</span></button>
+  <button class="danger" onclick="clearAll()"><span class="ar-only">🗑 مسح</span><span class="en-only">🗑 CLEAR</span></button>
   <span class="spacer"></span>
   <input id="projName" value="My Circuit" title="Project name">
   <select id="presetSel" onchange="loadPreset(this.value)">
@@ -129,13 +129,12 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
     <option value="vfd">VFD Motor Drive</option>
     <option value="plc">PLC Motor Control (Ladder)</option>
   </select>
-  <button onclick="saveProject()">💾 SAVE</button>
-  <button onclick="loadProject()">📂 LOAD</button>
-  <button onclick="exportProject()">⬇ JSON</button>
-  <button onclick="document.getElementById('fileInput').click()">⬆ JSON</button>
-  <button onclick="window.print()">🖨 PRINT</button>
+  <button onclick="saveProject()"><span class="ar-only">💾 حفظ</span><span class="en-only">💾 SAVE</span></button>
+  <button onclick="loadProject()"><span class="ar-only">📂 فتح</span><span class="en-only">📂 LOAD</span></button>
+  <button onclick="exportProject()"><span class="ar-only">⬇ JSON</span><span class="en-only">⬇ JSON</span></button>
+  <button onclick="document.getElementById('fileInput').click()"><span class="ar-only">⬆ JSON</span><span class="en-only">⬆ JSON</span></button>
+  <button onclick="window.print()"><span class="ar-only">🖨 طباعة</span><span class="en-only">🖨 PRINT</span></button>
   <button id="langBtn" onclick="toggleLang()" title="Language">🌐 AR</button>
-  <button onclick="resetSim()" title="Reset simulation">🔄 RESET</button>
   <button id="muteBtn" onclick="toggleMute()" title="Mute horn">🔊</button>
 </div>
 
