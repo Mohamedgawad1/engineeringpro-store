@@ -133,6 +133,7 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
   <button onclick="document.getElementById('fileInput').click()">⬆ JSON</button>
   <button onclick="window.print()">🖨 PRINT</button>
   <button id="langBtn" onclick="toggleLang()" title="Language">🌐 AR</button>
+  <button onclick="resetSim()" title="Reset simulation">🔄 RESET</button>
   <button id="muteBtn" onclick="toggleMute()" title="Mute horn">🔊</button>
 </div>
 
@@ -789,9 +790,12 @@ function symMotor(c){
   return wrap(c,
     `<line x1="8" y1="55" x2="29" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
     + `<line x1="81" y1="55" x2="102" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<circle cx="55" cy="45" r="28" fill="url(#bodyGrad)" stroke="${on?accent:CL.edge}" stroke-width="2.5"/>`
+    + `<ellipse cx="55" cy="45" rx="30" ry="24" fill="url(#bodyGrad)" stroke="${on?accent:CL.edge}" stroke-width="2.5"/>`
     + `<rect x="40" y="8" width="30" height="12" rx="3" fill="url(#bodyGrad)" stroke="${CL.edge}" stroke-width="1.5"/>`
     + txt(55,17,'TB',6,CL.text)
+    + `<line x1="85" y1="45" x2="102" y2="45" stroke="${CL.metal}" stroke-width="4"/>`
+    + `<circle cx="85" cy="45" r="4" fill="${CL.metal}"/>`
+    + [0,1,2,3].map(i => `<line x1="${30+i*8}" y1="24" x2="${30+i*8}" y2="66" stroke="${CL.dim}" stroke-width="1"/>`).join('')
     + `<g class="${on?'spin':''}">`
     + `<line x1="37" y1="45" x2="73" y2="45" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
     + `<line x1="55" y1="27" x2="55" y2="63" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
