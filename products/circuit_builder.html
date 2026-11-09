@@ -395,9 +395,8 @@ function changeType(id, newType){
   const c = byId(id); if(!c || c.type === newType || !TYPES[newType]) return;
   const oldPrefix = PREFIX[c.type] || 'X';
   const newPrefix = PREFIX[newType] || 'X';
-  if(new RegExp('^' + oldPrefix + '\\d+$').test(c.label)){
-    c.label = newPrefix + (counters[newPrefix] || 0);
-  }
+  const m = c.label.match(new RegExp('^' + oldPrefix + '(\\d+)$'));
+  if(m) c.label = newPrefix + m[1];
   c.type = newType;
   c.data = defaultData(newType);
   c.state = defaultState(newType);
@@ -2143,10 +2142,10 @@ function presetAlarm(){
   link(ol,'96',st,'1');
   link(st,'2',ka,'A1');
   link(ka,'A2',p,'N');
-  link(f,'2',ka,'21');
-  link(ka,'22',h,'1');
+  link(f,'2',ka,'13');
+  link(ka,'14',h,'1');
   link(h,'2',p,'N');
-  link(ka,'22',ha,'1');
+  link(ka,'14',ha,'1');
   link(ha,'2',p,'N');
 }
 
