@@ -40,6 +40,7 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
 .lamp.on{fill:var(--gold);filter:drop-shadow(0 0 10px var(--gold))}
 .motor{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle,#334155,#0f172a);border:3px solid #475569;display:flex;align-items:center;justify-content:center;font-size:30px;margin:6px auto;transition:transform .2s,box-shadow .2s,border-color .2s}
 .motor.spin{animation:spin .6s linear infinite;border-color:var(--green);box-shadow:0 0 18px var(--green)}
+.spin{animation:spin .8s linear infinite;transform-box:fill-box;transform-origin:center}
 @keyframes spin{to{transform:rotate(360deg)}}
 .statusrow{display:flex;justify-content:space-between;padding:3px 6px;border-bottom:1px solid var(--border);font-size:11px}
 .statusrow .v{font-weight:800}
