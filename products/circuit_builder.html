@@ -69,6 +69,8 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{animation:spin 1.05s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes vib{0%,100%{transform:translate(0,0)}25%{transform:translate(1px,-1px)}50%{transform:translate(-1px,1px)}75%{transform:translate(1px,1px)}}
+.vib{animation:vib .12s linear infinite;transform-box:fill-box;transform-origin:center}
 .pulse{animation:blink .45s infinite}
 .toast{position:fixed;right:16px;bottom:16px;background:#0f766e;color:#fff;padding:9px 16px;border-radius:9px;font-size:12px;font-weight:700;z-index:99;opacity:0;transition:opacity .25s;pointer-events:none}
 .toast.show{opacity:1}
@@ -1576,6 +1578,8 @@ function render(){
 function paint(){
   components.forEach(c => {
     if(!c.el) return;
+    const running = (isMotor(c.type) && c.state.energized) || (c.type === 'generator' && c.state.on);
+    c.el.classList.toggle('vib', running);
     const sig = signature(c);
     if(c._sig !== sig){
       c._sig = sig;
