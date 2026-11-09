@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOL Motor Starter Simulator — Real Direct-On-Line (3-Phase)</title>
+<style>
+:root{--bg:#0b1220;--panel:#121a2e;--card:#1a2340;--accent:#00d4ff;--gold:#f5c518;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;--purple:#a78bfa;--text:#e8ecf4;--muted:#9aa3bf;--border:#2a3355}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.topbar{background:linear-gradient(90deg,#0f172a,#1e293b);border-bottom:2px solid var(--accent);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.topbar h1{font-size:17px;background:linear-gradient(90deg,var(--accent),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.topbar select,.topbar button,.topbar input,.topbar label{padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;cursor:pointer;font-size:12px}
+.topbar button.run{background:linear-gradient(135deg,var(--green),#16a34a);border:none;color:#fff}
+.topbar button.stop{background:linear-gradient(135deg,var(--red),#b91c1c);border:none;color:#fff}
+.topbar button.reset{background:linear-gradient(135deg,var(--amber),#d97706);border:none;color:#000}
+.topbar button.estop{background:linear-gradient(135deg,#7f1d1d,#450a0a);border:2px solid var(--red);color:#fff;font-weight:900}
+.main{display:grid;grid-template-columns:230px 1fr 340px;gap:10px;padding:10px;height:calc(100vh - 62px)}
+.pane{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px;overflow:auto}
+.pane h3{color:var(--accent);font-size:12px;margin:8px 0 6px;border-bottom:1px solid var(--border);padding-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.comp{background:linear-gradient(180deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:10px;padding:8px;margin-bottom:8px;display:flex;align-items:center;gap:10px;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.comp .ico{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#1e3a8a,#0f172a);border-radius:8px;font-size:18px}
+.canvas{background:linear-gradient(180deg,#0a1020,#0f172a);border:2px solid var(--border);border-radius:10px;position:relative;min-height:500px;overflow:hidden;box-shadow:inset 0 0 40px rgba(0,0,0,.5)}
+.svgwrap{width:100%;height:100%}
+.node{cursor:pointer}
+.node:hover{filter:brightness(1.25)}
+.wire{stroke:#475569;stroke-width:2.5;fill:none;transition:stroke .15s,filter .15s}
+.wire.live{stroke:var(--gold);stroke-width:3;filter:drop-shadow(0 0 5px var(--gold))}
+.wire.neutral{stroke:#64748b;stroke-dasharray:4 3}
+.wire.power{stroke:#ef4444;stroke-width:2.5}
+.wire.control{stroke:#a78bfa;stroke-width:2}
+.compbox{fill:#1e293b;stroke:#475569;stroke-width:2}
+.compbox.on{fill:#0f2a1a;stroke:var(--green)}
+.compbox.tripped{fill:#2a0f0f;stroke:var(--red)}
+.coil{fill:#1e293b;stroke:#94a3b8;stroke-width:2}
+.coil.energized{fill:#1e3a8a;stroke:var(--accent);filter:drop-shadow(0 0 8px var(--accent))}
+.contact{stroke:#94a3b8;stroke-width:2.5;fill:none}
+.contact.closed{stroke:var(--green)}
+.lamp{fill:#334155}
+.lamp.on{fill:var(--gold);filter:drop-shadow(0 0 10px var(--gold))}
+.motor{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle,#334155,#0f172a);border:3px solid #475569;display:flex;align-items:center;justify-content:center;font-size:30px;margin:6px auto;transition:transform .2s,box-shadow .2s,border-color .2s}
+.motor.spin{animation:spin .6s linear infinite;border-color:var(--green);box-shadow:0 0 18px var(--green)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.statusrow{display:flex;justify-content:space-between;padding:3px 6px;border-bottom:1px solid var(--border);font-size:11px}
+.statusrow .v{font-weight:800}
+.statusrow .on{color:var(--green)}.statusrow .off{color:var(--red)}.statusrow .warn{color:var(--amber)}
+.io{font-family:monospace;font-size:11px;background:#0a1020;border:1px solid var(--border);border-radius:6px;padding:6px;margin-top:6px;max-height:200px;overflow:auto}
+.io div{padding:2px 0}.io .hi{color:var(--green);font-weight:700}.io .lo{color:var(--muted)}
+.ladder{font-family:monospace;font-size:11px;background:#0a1020;border:1px solid var(--border);border-radius:6px;padding:8px;margin-top:6px;line-height:1.6;white-space:pre;max-height:240px;overflow:auto}
+.meter{background:#0a1020;border:1px solid var(--border);border-radius:8px;padding:8px;margin-top:6px}
+.meter .row{display:flex;justify-content:space-between;font-size:11px;padding:2px 0}
+.meter .row .val{font-weight:800;color:var(--accent);font-family:monospace}
+.gauge{height:8px;background:#1e293b;border-radius:4px;overflow:hidden;margin:4px 0}
+.gauge .fill{height:100%;transition:width .2s,background .2s}
+.chart{background:#0a1020;border:1px solid var(--border);border-radius:8px;margin-top:6px;padding:4px}
+canvas{width:100%;height:90px;display:block}
+.legend{font-size:10px;color:var(--muted);margin-top:4px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.dot.live{background:var(--gold)}.dot.off{background:#475569}.dot.trip{background:var(--red)}
+.realimg{font-size:10px;color:var(--muted);margin-top:6px;text-align:center;padding:4px;border:1px dashed var(--border);border-radius:6px}
+.knob{display:flex;align-items:center;gap:6px;margin:6px 0;font-size:11px}
+.knob input[type=range]{flex:1}
+.btnrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.btnrow button{flex:1;min-width:60px;padding:6px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:700;font-size:11px;cursor:pointer}
+.btnrow button:active{transform:scale(.97)}
+.btnrow button.start{background:linear-gradient(135deg,var(--green),#16a34a);border:none;color:#fff}
+.btnrow button.stopb{background:linear-gradient(135deg,var(--red),#b91c1c);border:none;color:#fff}
+.tabrow{display:flex;gap:4px;margin-bottom:6px}
+.tabrow button{flex:1;padding:5px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:11px;cursor:pointer;font-weight:600}
+.tabrow button.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.tabpane{display:none}.tabpane.active{display:block}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>⚡ DOL Motor Starter Simulator — Real Direct-On-Line</h1>
+  <div style="display:flex;gap:6px;align-items:center">
+    <label>Power:</label>
+    <select id="powersrc" onchange="setPower()">
+      <option value="400">400V AC 3Φ</option>
+      <option value="220">220V AC 1Φ</option>
+      <option value="24">24V DC</option>
+    </select>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center">
+    <label>Motor:</label>
+    <select id="motorrating" onchange="setMotor()">
+      <option value="0.75">0.75 kW</option>
+      <option value="1.5" selected>1.5 kW</option>
+      <option value="3">3.0 kW</option>
+      <option value="5.5">5.5 kW</option>
+      <option value="7.5">7.5 kW</option>
+    </select>
+  </div>
+  <button class="run" onclick="runSim()">▶ RUN</button>
+  <button class="stop" onclick="stopSim()">■ STOP</button>
+  <button class="reset" onclick="resetSim()">↺ RESET</button>
+  <button class="estop" onclick="toggleEstop()">E-STOP</button>
+  <span style="margin-left:auto;font-size:11px;color:var(--muted)">Hold START button (or click) • Outputs update live</span>
+</div>
+
+<div class="main">
+  <!-- LEFT -->
+  <div class="pane">
+    <h3>Component Palette</h3>
+    <div class="comp"><div class="ico">🔴</div>Push Button (NC/Stop)</div>
+    <div class="comp"><div class="ico">🟢</div>Push Button (NO/Start)</div>
+    <div class="comp"><div class="ico">⚡</div>Contactor K1 (Coil+AUX)</div>
+    <div class="comp"><div class="ico">📐</div>Overload Relay (NC)</div>
+    <div class="comp"><div class="ico">💡</div>Indicator Lamp (RUN)</div>
+    <div class="comp"><div class="ico">⚙️</div>Motor (3Φ Induction)</div>
+    <div class="comp"><div class="ico">🔌</div>Power Source</div>
+
+    <h3>Motor Load</h3>
+    <div class="knob">
+      <span>Load %</span>
+      <input type="range" id="loadSlider" min="0" max="120" value="75" oninput="setLoad(this.value)">
+      <span id="loadVal">75%</span>
+    </div>
+    <div class="knob">
+      <span>OL Setting %FLA</span>
+      <input type="range" id="olSlider" min="90" max="120" value="110" oninput="setOL(this.value)">
+      <span id="olVal">110%</span>
+    </div>
+
+    <h3>Power Source</h3>
+    <div class="psrcbox" id="psrcbox">
+      <div class="statusrow"><span>Source</span><span class="v" id="psrcval">400V AC 3Φ</span></div>
+      <div class="statusrow"><span>Voltage</span><span class="v" id="psrcv">400 V</span></div>
+      <div class="statusrow"><span>Frequency</span><span class="v" id="psrcf">50 Hz</span></div>
+      <div class="statusrow"><span>Status</span><span class="v on" id="psrcs">ON</span></div>
+    </div>
+
+    <h3>Controls</h3>
+    <div class="btnrow">
+      <button class="start" onmousedown="pressStart()" onmouseup="releaseStart()" onmouseleave="releaseStart()" ontouchstart="pressStart()" ontouchend="releaseStart()">START (hold)</button>
+      <button class="stopb" onmousedown="pressStop()" onmouseup="releaseStop()" onmouseleave="releaseStop()" ontouchstart="pressStop()" ontouchend="releaseStop()">STOP (hold)</button>
+    </div>
+    <div class="btnrow">
+      <button onclick="tripOL()">Trip OL</button>
+      <button onclick="resetOL()">Reset OL</button>
+    </div>
+
+    <div class="realimg">Real component photos: drop PNG/JPG to replace icons (future).</div>
+    <div class="legend" style="margin-top:6px">
+      <span><span class="dot live"></span>Energized</span>
+      <span><span class="dot off"></span>De-energized</span>
+      <span><span class="dot trip"></span>Tripped</span>
+    </div>
+  </div>
+
+  <!-- CENTER -->
+  <div class="pane">
+    <h3 id="ctitle">DOL Single-Line & Control Diagram</h3>
+    <div class="canvas">
+      <svg id="svg" class="svgwrap" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap">
+      <div class="motor" id="motor">⚙️</div>
+      <div style="font-size:12px">Motor: <span id="motorstatus" class="off" style="font-weight:800">STOPPED</span></div>
+      <div style="font-size:12px;margin-left:auto">Speed: <span id="speedval" style="font-weight:800;color:var(--accent)">0 rpm</span></div>
+      <div style="font-size:12px">Temp: <span id="tempval" style="font-weight:800;color:var(--amber)">25 °C</span></div>
+    </div>
+    <div class="tabrow" style="margin-top:8px">
+      <button class="active" onclick="showTab('ladder')">Ladder Logic</button>
+      <button onclick="showTab('single')">Single-Line</button>
+      <button onclick="showTab('wiring')">Wiring Notes</button>
+    </div>
+    <div id="tab-ladder" class="tabpane active"><div class="ladder" id="ladder"></div></div>
+    <div id="tab-single" class="tabpane"><div class="ladder" id="singleline"></div></div>
+    <div id="tab-wiring" class="tabpane"><div class="ladder" id="wiring"></div></div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="pane">
+    <h3>Live Status</h3>
+    <div id="statuslist"></div>
+    <h3>Electrical Measurements</h3>
+    <div class="meter" id="meas"></div>
+    <h3>Overload Thermal</h3>
+    <div class="gauge"><div class="fill" id="heatfill" style="width:0%;background:var(--green)"></div></div>
+    <div style="font-size:10px;color:var(--muted);text-align:right" id="heatlabel">0%</div>
+    <h3>Current Trend</h3>
+    <div class="chart"><canvas id="chart" width="320" height="90"></canvas></div>
+    <h3>I/O Monitor</h3>
+    <div class="io" id="iomonitor"></div>
+  </div>
+</div>
+
+<script>
+// ---------- State ----------
+let running=false, power='400', motorKW=1.5, load=75, olSetting=110;
+let state={};
+let history=[]; // current samples
+let lastT=performance.now();
+let heat=0; // 0..1
+let olTripped=false;
+let estop=false;
+let wasRunning=false, startT=0;
+let speed=0; // rpm
+let energyKWh=0;
+let tripCount=0;
+
+const RATED_RPM=1450;
+
+function fla(kw,voltage,ph){
+  if(ph===1) return (kw*1000)/(voltage*0.85);
+  if(voltage===24) return (kw*1000)/(voltage*0.9);
+  return (kw*1000)/(Math.sqrt(3)*voltage*0.85);
+}
+function getFLA(){ const ph = (power==='220')?1:((power==='24')?1:3); return fla(motorKW, parseFloat(power), ph); }
+function getInrush(){ return 6.5*getFLA(); }
+function runningCurrent(){ const flaVal=getFLA(); return flaVal*(0.35+0.65*load/100); }
+function phaseCount(){ return (power==='400')?3:1; }
+
+function resetState(){
+  state={
+    pb_start:false, pb_stop:true, estop:false,
+    coil:false, seal:false, contactor:false, motor_run:false, lamp:false,
+    ol_closed:true, ol_tripped:false,
+    current:0, voltage:0, power:0, pf:0, speed:0, temp:25,
+    freq: (power==='24')?'DC':'50 Hz',
+  };
+  heat=0; olTripped=false; estop=false; wasRunning=false; startT=0; speed=0; energyKWh=0; tripCount=0; history=[];
+}
+resetState();
+
+// ---------- Power/Motor setters ----------
+function setPower(){
+  power=document.getElementById('powersrc').value;
+  const freq = power==='24'?'DC':'50 Hz';
+  document.getElementById('psrcval').textContent = power==='24'?'24V DC':(power==='400'?'400V AC 3Φ':'220V AC 1Φ');
+  document.getElementById('psrcv').textContent = power + ' V';
+  document.getElementById('psrcf').textContent = freq;
+  resetState(); state.freq=freq;
+  // reset motor rating default for 24V
+  if(power==='24' && motorKW>1){ motorKW=0.2; document.getElementById('motorrating').value='0.75'; }
+  render();
+}
+function setMotor(){
+  motorKW=parseFloat(document.getElementById('motorrating').value);
+  if(power==='24' && motorKW>1){ motorKW=0.75; document.getElementById('motorrating').value='0.75'; }
+  render();
+}
+function setLoad(v){ load=parseInt(v); document.getElementById('loadVal').textContent=v+'%'; }
+function setOL(v){ olSetting=parseInt(v); document.getElementById('olVal').textContent=v+'%'; }
+function toggleEstop(){ estop=!estop; state.estop=estop; if(estop){ state.pb_stop=false; } else { state.pb_stop=true; } runLogic(); render(); }
+function tripOL(){ olTripped=true; state.ol_tripped=true; state.ol_closed=false; runLogic(); render(); }
+function resetOL(){ if(heat<0.2){ olTripped=false; state.ol_tripped=false; state.ol_closed=true; tripCount++; } runLogic(); render(); }
+
+// ---------- PB momentary ----------
+function pressStart(){ state.pb_start=true; runLogic(); render(); }
+function releaseStart(){ state.pb_start=false; runLogic(); render(); }
+function pressStop(){ state.pb_stop=false; runLogic(); render(); }
+function releaseStop(){ state.pb_stop=true; runLogic(); render(); }
+
+// ---------- Logic ----------
+function runLogic(){
+  const V=parseFloat(power);
+  const flaVal=getFLA();
+  const olTripA = flaVal*(olSetting/100);
+  const stopClosed = state.pb_stop && !estop && !olTripped && state.ol_closed;
+  const startOrSeal = state.pb_start || state.seal;
+  const coilShould = stopClosed && startOrSeal;
+  state.coil = coilShould && true;
+  state.seal = state.coil;
+  state.contactor = state.coil;
+  state.motor_run = state.contactor;
+  state.lamp = state.contactor;
+
+  // speed dynamics (dt ~0.2s)
+  const dt=0.2;
+  const target = state.motor_run ? RATED_RPM : 0;
+  const tau = state.motor_run ? 0.8 : 1.8;
+  speed += (target-speed)* (1-Math.exp(-dt/tau));
+  if(speed<0.5) speed=0;
+
+  // current
+  if(state.motor_run){
+    if(!wasRunning){ wasRunning=true; startT=performance.now(); }
+    const elapsed=(performance.now()-startT)/1000;
+    const runI=runningCurrent();
+    let I;
+    if(elapsed<1.5){
+      I = getInrush()*Math.exp(-elapsed/0.4) + runI;
+      if(I<runI) I=runI;
+    } else I=runI;
+    state.current=I;
+  } else {
+    wasRunning=false;
+    state.current=0;
+  }
+
+  // heat / thermal
+  if(state.motor_run){
+    const ratio = state.current/Math.max(0.1,flaVal);
+    heat += (ratio*ratio)*dt/30.0;
+    if(heat>1.2) heat=1.2;
+  } else {
+    heat -= dt/25.0;
+    if(heat<0) heat=0;
+  }
+  if(heat>=1.0 && state.motor_run){ olTripped=true; state.ol_tripped=true; state.ol_closed=false; tripCount++; }
+  state.ol_closed = !olTripped && heat<1.0;
+
+  // if tripped, force stop
+  if(olTripped){ state.coil=false; state.seal=false; state.contactor=false; state.motor_run=false; state.lamp=false; wasRunning=false; state.current=0; }
+
+  // voltage / power / pf
+  state.voltage = parseFloat(power);
+  const ph=phaseCount();
+  let pf;
+  if(state.motor_run){
+    if(speed < RATED_RPM*0.9) pf=0.35;
+    else pf=0.7+0.15*(load/100);
+  } else pf=0;
+  state.pf=pf;
+  if(ph===3){
+    state.power = Math.sqrt(3)*state.voltage*state.current*pf/1000; // kW
+  } else {
+    state.power = state.voltage*state.current*pf/1000;
+  }
+  if(state.motor_run){ energyKWh += state.power*(dt/3600); }
+
+  // motor temp
+  state.temp = 25 + heat*70 + (state.current/Math.max(0.1,flaVal))*4;
+  state.speed = speed;
+
+  // history
+  history.push(state.current);
+  if(history.length>120) history.shift();
+
+  // ol closed state
+  state.ol_closed = !olTripped && heat<1.0;
+  state.ol_tripped = olTripped;
+
+  // sync estop
+  state.estop=estop;
+}
+
+// ---------- Render ----------
+function render(){
+  const c = {title:"DOL Single-Line & Control Diagram"};
+  document.getElementById('svg').innerHTML = svgDOL();
+  document.getElementById('ladder').textContent = ladderText();
+  document.getElementById('singleline').textContent = singleLineText();
+  document.getElementById('wiring').textContent = wiringText();
+
+  // motor anim
+  const motorEl=document.getElementById('motor');
+  if(state.motor_run) motorEl.classList.add('spin'); else motorEl.classList.remove('spin');
+  document.getElementById('motorstatus').textContent = state.motor_run?'RUNNING':'STOPPED';
+  document.getElementById('motorstatus').className = state.motor_run?'on':'off';
+  document.getElementById('motorstatus').style.color = state.motor_run?'var(--green)':'var(--red)';
+  document.getElementById('speedval').textContent = Math.round(speed)+' rpm';
+  document.getElementById('tempval').textContent = state.temp.toFixed(1)+' °C';
+
+  // status list
+  const sl=document.getElementById('statuslist');
+  const rows=[
+    ['PB START', state.pb_start],
+    ['PB STOP (NC)', state.pb_stop],
+    ['E-STOP', estop],
+    ['Contactor K1', state.contactor],
+    ['Seal (aux NO)', state.seal],
+    ['OL Closed (NC)', state.ol_closed],
+    ['OL Tripped', olTripped],
+    ['Motor', state.motor_run],
+    ['Run Lamp', state.lamp],
+    ['Speed', Math.round(speed)+' rpm'],
+    ['Trip Count', tripCount],
+  ];
+  sl.innerHTML=rows.map(([k,v])=>{
+    let cls='',txt=v;
+    if(typeof v==='boolean'){ cls=v?'on':'off'; txt=v?'ON/CLOSED':'OFF/OPEN'; if(k==='OL Tripped'||k==='E-STOP') cls=v?'off':'on'; }
+    return `<div class="statusrow"><span>${k}</span><span class="v ${cls}">${txt}</span></div>`;
+  }).join('');
+
+  // measurements
+  const meas=document.getElementById('meas');
+  const ph=phaseCount();
+  const flaVal=getFLA();
+  meas.innerHTML=`
+    <div class="row"><span>Line Voltage</span><span class="val">${state.voltage} V</span></div>
+    <div class="row"><span>Phase Current</span><span class="val">${state.current.toFixed(2)} A</span></div>
+    <div class="row"><span>FLA (rated)</span><span class="val">${flaVal.toFixed(2)} A</span></div>
+    <div class="row"><span>Inrush (DOL)</span><span class="val">${getInrush().toFixed(1)} A</span></div>
+    <div class="row"><span>Active Power</span><span class="val">${state.power.toFixed(2)} kW</span></div>
+    <div class="row"><span>Power Factor</span><span class="val">${state.pf.toFixed(2)}</span></div>
+    <div class="row"><span>Phases</span><span class="val">${ph}Φ</span></div>
+    <div class="row"><span>Energy</span><span class="val">${energyKWh.toFixed(3)} kWh</span></div>
+    <div class="row"><span>Motor Temp</span><span class="val">${state.temp.toFixed(1)} °C</span></div>
+  `;
+
+  // heat gauge
+  const pct=Math.min(100,heat*100);
+  const hf=document.getElementById('heatfill');
+  hf.style.width=pct+'%';
+  hf.style.background = pct<60?'var(--green)':(pct<85?'var(--amber)':'var(--red)');
+  document.getElementById('heatlabel').textContent = pct.toFixed(0)+'% of trip threshold';
+
+  // I/O
+  const io=document.getElementById('iomonitor');
+  let lines=[];
+  const addIO=(n,v)=>{const hi=(v===true||(typeof v==='number'&&v>0));lines.push(`<div class="${hi?'hi':'lo'}">${n}: ${typeof v==='boolean'?(v?'1':'0'):v}</div>`);};
+  addIO('I0.0 PB_START (NO)', state.pb_start);
+  addIO('I0.1 PB_STOP (NC)', state.pb_stop);
+  addIO('I0.2 E_STOP (NC)', !estop);
+  addIO('I0.3 OL_AUX (NC)', state.ol_closed);
+  addIO('Q0.0 K1_COIL', state.coil);
+  addIO('Q0.1 SEAL_AUX (NO)', state.seal);
+  addIO('Q0.2 RUN_LAMP', state.lamp);
+  addIO('Q0.3 MOTOR_CONT', state.contactor);
+  addIO('IW0 LINE_CURRENT', state.current.toFixed(2)+' A');
+  addIO('IW2 SPEED', Math.round(speed)+' rpm');
+  addIO('IW4 TEMP', state.temp.toFixed(1)+' °C');
+  io.innerHTML=lines.join('');
+
+  drawChart();
+}
+
+function svgDOL(){
+  const V=parseFloat(power);
+  const L1live = state.motor_run?'live':'';
+  const coilLive = state.coil?'live':'';
+  const stopClosed = state.pb_stop && !estop;
+  const ctrlLive = state.coil?'live':'';
+  return `
+  <!-- Power bus -->
+  <text x="20" y="24" fill="#94a3bf" font-size="11">DOL STARTER — ${power}V ${phaseCount()===3?'3Φ':'1Φ'} ${state.freq}</text>
+  <line class="wire power" x1="50" y1="40" x2="50" y2="520"/>
+  <text x="38" y="34" fill="#ef4444" font-size="10" font-weight="700">L</text>
+  ${phaseCount()===3?`
+  <line class="wire power" x1="70" y1="40" x2="70" y2="520"/>
+  <line class="wire power" x1="90" y1="40" x2="90" y2="520"/>
+  <text x="62" y="34" fill="#ef4444" font-size="10" font-weight="700">L2</text>
+  <text x="82" y="34" fill="#ef4444" font-size="10" font-weight="700">L3</text>
+  `:''}
+  <line class="wire neutral" x1="50" y1="520" x2="960" y2="520"/>
+  <text x="965" y="524" fill="#64748b" font-size="10">N/PE</text>
+
+  <!-- OL (3 poles) -->
+  <g transform="translate(140,60)">
+    <rect class="compbox ${state.ol_closed?'on':'tripped'}" x="0" y="0" width="70" height="90" rx="6"/>
+    <text x="35" y="16" text-anchor="middle" fill="#e8ecf4" font-size="11" font-weight="700">OL</text>
+    <text x="35" y="30" text-anchor="middle" fill="#94a3bf" font-size="9">Overload</text>
+    <text x="35" y="44" text-anchor="middle" fill="#94a3bf" font-size="9">${olSetting}% FLA</text>
+    <text x="35" y="62" text-anchor="middle" fill="${state.ol_closed?'#22c55e':'#ef4444'}" font-size="9" font-weight="700">${state.ol_closed?'CLOSED':'TRIPPED'}</text>
+    <text x="35" y="78" text-anchor="middle" fill="#94a3bf" font-size="8">NC contact</text>
+  </g>
+  <!-- wires L to OL -->
+  <line class="wire power" x1="50" y1="80" x2="140" y2="80"/>
+  ${phaseCount()===3?`<line class="wire power" x1="70" y1="100" x2="140" y2="100"/>
+  <line class="wire power" x1="90" y1="120" x2="140" y2="120"/>`:''}
+
+  <!-- Contactor K1 -->
+  <g transform="translate(260,60)">
+    <rect class="compbox ${state.contactor?'on':''}" x="0" y="0" width="80" height="90" rx="6"/>
+    <text x="40" y="16" text-anchor="middle" fill="#e8ecf4" font-size="11" font-weight="700">K1</text>
+    <text x="40" y="30" text-anchor="middle" fill="#94a3bf" font-size="9">Contactor</text>
+    <text x="40" y="46" text-anchor="middle" fill="${state.contactor?'#22c55e':'#94a3bf'}" font-size="9" font-weight="700">${state.contactor?'CLOSED':'OPEN'}</text>
+    <text x="40" y="62" text-anchor="middle" fill="#94a3bf" font-size="8">Main 3P</text>
+    <text x="40" y="78" text-anchor="middle" fill="#94a3bf" font-size="8">+ aux NO</text>
+  </g>
+  <line class="wire ${state.contactor?'live':'power'}" x1="210" y1="80" x2="260" y2="80"/>
+  ${phaseCount()===3?`<line class="wire ${state.contactor?'live':'power'}" x1="210" y1="100" x2="260" y2="100"/>
+  <line class="wire ${state.contactor?'live':'power'}" x1="210" y1="120" x2="260" y2="120"/>`:''}
+
+  <!-- Motor -->
+  <g transform="translate(400,55)">
+    <circle cx="45" cy="45" r="42" class="compbox ${state.motor_run?'on':''}" />
+    <text x="45" y="40" text-anchor="middle" fill="#e8ecf4" font-size="12" font-weight="700">M</text>
+    <text x="45" y="56" text-anchor="middle" fill="#94a3bf" font-size="9">${motorKW} kW</text>
+    <text x="45" y="100" text-anchor="middle" fill="#94a3bf" font-size="9">3Φ Induction</text>
+  </g>
+  <line class="wire ${state.motor_run?'live':'power'}" x1="340" y1="80" x2="400" y2="80"/>
+  ${phaseCount()===3?`<line class="wire ${state.motor_run?'live':'power'}" x1="340" y1="100" x2="400" y2="100"/>
+  <line class="wire ${state.motor_run?'live':'power'}" x1="340" y1="120" x2="400" y2="120"/>`:''}
+
+  <!-- RUN lamp -->
+  <g transform="translate(400,180)">
+    <circle class="lamp ${state.lamp?'on':''}" cx="25" cy="20" r="18"/>
+    <text x="25" y="52" text-anchor="middle" fill="#94a3bf" font-size="9">RUN LAMP</text>
+  </g>
+  <line class="wire ${state.lamp?'live':''}" x1="340" y1="80" x2="360" y2="80"/>
+  <line class="wire ${state.lamp?'live':''}" x1="360" y1="80" x2="360" y2="200"/>
+  <line class="wire ${state.lamp?'live':''}" x1="360" y1="200" x2="400" y2="200"/>
+
+  <!-- Control circuit (lower half) -->
+  <text x="20" y="260" fill="#a78bfa" font-size="11" font-weight="700">CONTROL CIRCUIT (${power==='24'?'24V DC':'220V AC'})</text>
+  <line class="wire control" x1="50" y1="280" x2="50" y2="500"/>
+  <line class="wire control" x1="50" y1="280" x2="900" y2="280"/>
+  <line class="wire neutral" x1="50" y1="500" x2="900" y2="500"/>
+
+  <!-- PB STOP (NC) -->
+  <g class="node" onmousedown="pressStop()" onmouseup="releaseStop()" onmouseleave="releaseStop()" transform="translate(120,262)">
+    <rect class="compbox ${stopClosed?'on':'tripped'}" x="0" y="0" width="80" height="40" rx="6"/>
+    <text x="40" y="16" text-anchor="middle" fill="#e8ecf4" font-size="10" font-weight="700">PB STOP</text>
+    <text x="40" y="30" text-anchor="middle" fill="#94a3bf" font-size="8">(NC) ${state.pb_stop?'closed':'OPEN'}</text>
+  </g>
+  <line class="wire ${stopClosed?'live':'control'}" x1="90" y1="280" x2="120" y2="280"/>
+
+  <!-- PB START (NO) -->
+  <g class="node" onmousedown="pressStart()" onmouseup="releaseStart()" onmouseleave="releaseStart()" transform="translate(220,262)">
+    <rect class="compbox ${state.pb_start?'on':''}" x="0" y="0" width="80" height="40" rx="6"/>
+    <text x="40" y="16" text-anchor="middle" fill="#e8ecf4" font-size="10" font-weight="700">PB START</text>
+    <text x="40" y="30" text-anchor="middle" fill="#94a3bf" font-size="8">(NO) ${state.pb_start?'pressed':'released'}</text>
+  </g>
+  <line class="wire ${state.pb_start?'live':'control'}" x1="200" y1="280" x2="220" y2="280"/>
+  <line class="wire ${state.pb_start?'live':'control'}" x1="300" y1="280" x2="330" y2="280"/>
+
+  <!-- Seal contact (NO aux) -->
+  <g transform="translate(330,262)">
+    <rect class="compbox ${state.seal?'on':''}" x="0" y="0" width="70" height="40" rx="6"/>
+    <text x="35" y="16" text-anchor="middle" fill="#e8ecf4" font-size="9" font-weight="700">K1 seal</text>
+    <text x="35" y="30" text-anchor="middle" fill="#94a3bf" font-size="8">(NO aux) ${state.seal?'closed':'open'}</text>
+  </g>
+  <!-- parallel branch: PB START path down to seal -->
+  <line class="wire control" x1="260" y1="302" x2="260" y2="330"/>
+  <line class="wire ${state.seal?'live':'control'}" x1="260" y1="330" x2="330" y2="330"/>
+  <line class="wire ${state.seal?'live':'control'}" x1="400" y1="330" x2="400" y2="280"/>
+  <line class="wire ${state.seal?'live':'control'}" x1="330" y1="302" x2="330" y2="330"/>
+  <line class="wire ${state.seal?'live':'control'}" x1="400" y1="330" x2="430" y2="330"/>
+
+  <!-- OL aux (NC) -->
+  <g transform="translate(430,262)">
+    <rect class="compbox ${state.ol_closed?'on':'tripped'}" x="0" y="0" width="60" height="40" rx="6"/>
+    <text x="30" y="16" text-anchor="middle" fill="#e8ecf4" font-size="9" font-weight="700">OL</text>
+    <text x="30" y="30" text-anchor="middle" fill="#94a3bf" font-size="8">(NC aux)</text>
+  </g>
+  <line class="wire ${state.ol_closed?'live':'control'}" x1="400" y1="280" x2="430" y2="280"/>
+  <line class="wire ${state.ol_closed?'live':'control'}" x1="490" y1="280" x2="520" y2="280"/>
+
+  <!-- K1 coil -->
+  <g transform="translate(520,258)">
+    <rect class="coil ${state.coil?'energized':''}" x="0" y="0" width="75" height="48" rx="8"/>
+    <text x="37" y="20" text-anchor="middle" fill="#e8ecf4" font-size="11" font-weight="700">K1</text>
+    <text x="37" y="36" text-anchor="middle" fill="#94a3bf" font-size="9">coil</text>
+  </g>
+  <line class="wire ${state.coil?'live':'control'}" x1="595" y1="282" x2="640" y2="282"/>
+  <line class="wire ${state.coil?'live':'control'}" x1="640" y1="282" x2="640" y2="500"/>
+
+  <!-- E-STOP (NC) in series before coil (shown) -->
+  <g transform="translate(660,262)">
+    <rect class="compbox ${!estop?'on':'tripped'}" x="0" y="0" width="70" height="40" rx="6"/>
+    <text x="35" y="16" text-anchor="middle" fill="#e8ecf4" font-size="9" font-weight="700">E-STOP</text>
+    <text x="35" y="30" text-anchor="middle" fill="#94a3bf" font-size="8">(NC) ${estop?'OPEN':'closed'}</text>
+  </g>
+
+  <!-- measurements annotation -->
+  <g transform="translate(760,60)">
+    <rect x="0" y="0" width="210" height="150" rx="8" fill="#1e293b" stroke="#475569"/>
+    <text x="105" y="18" text-anchor="middle" fill="#e8ecf4" font-size="11" font-weight="700">LIVE READINGS</text>
+    <text x="10" y="38" fill="#94a3bf" font-size="10">I_line:</text>
+    <text x="120" y="38" fill="#f5c518" font-size="11" font-weight="800">${state.current.toFixed(2)} A</text>
+    <text x="10" y="56" fill="#94a3bf" font-size="10">V_line:</text>
+    <text x="120" y="56" fill="#f5c518" font-size="11" font-weight="800">${state.voltage} V</text>
+    <text x="10" y="74" fill="#94a3bf" font-size="10">Power:</text>
+    <text x="120" y="74" fill="#f5c518" font-size="11" font-weight="800">${state.power.toFixed(2)} kW</text>
+    <text x="10" y="92" fill="#94a3bf" font-size="10">Speed:</text>
+    <text x="120" y="92" fill="#f5c518" font-size="11" font-weight="800">${Math.round(speed)} rpm</text>
+    <text x="10" y="110" fill="#94a3bf" font-size="10">Temp:</text>
+    <text x="120" y="110" fill="#f5c518" font-size="11" font-weight="800">${state.temp.toFixed(1)} °C</text>
+    <text x="10" y="128" fill="#94a3bf" font-size="10">Heat:</text>
+    <text x="120" y="128" fill="#f5c518" font-size="11" font-weight="800">${(heat*100).toFixed(0)}%</text>
+  </g>
+  `;
+}
+
+function ladderText(){
+  const coil = state.coil?'●':'○';
+  return `DOL LADDER LOGIC
+Rung 1 (Control):
+  [PB_STOP (NC)] -- [PB_START (NO)] --+-- [K1 seal (NO)] -- [OL (NC)] -- [E-STOP (NC)] -- ( K1 coil )
+                                      |
+                                      +-- seal contact closes when K1 energized
+
+Rung 2 (Motor power path):
+  [K1 main contacts (NO)] -- [OL (NC)] -- ( Motor 3Φ )
+
+Rung 3 (Indication):
+  [K1 aux (NO)] -- ( RUN lamp )
+
+Legend: ● energized  ○ de-energized
+State: K1 coil ${coil}   Motor ${state.motor_run?'RUNNING':'STOPPED'}   OL ${state.ol_closed?'OK':'TRIPPED'}
+Hold START to energize; release — seal holds. Press STOP/E-STOP/OL trip to stop.`;
+}
+
+function singleLineText(){
+  return `SINGLE-LINE DIAGRAM (DOL)
+Utility (${power}V) ──► [OL 3P] ──► [K1 3P contactor] ──► [Motor ${motorKW}kW]
+                              │
+                              └──► [RUN lamp]
+
+Control: L ── PB_STOP(NC) ── PB_START(NO) ──┬── K1 seal(NO) ── OL(NC) ── E-STOP(NC) ── K1 coil ── N
+                                            │
+                                            └── (parallel seal)
+
+DOL = Direct-On-Line: full supply voltage applied to motor at start.
+Starting current ≈ ${getInrush().toFixed(1)} A (${(6.5).toFixed(1)}× FLA ${getFLA().toFixed(2)} A).
+`;
+}
+
+function wiringText(){
+  return `WIRING NOTES (DOL)
+1. Main power: 3-phase L1/L2/L3 to OL (top), OL (bottom) to K1 (top), K1 (bottom) to motor U/V/W. PE to motor frame & enclosure.
+2. Control circuit (220V or 24V): L to PB_STOP (NC) terminal 1; PB_STOP terminal 2 to PB_START (NO) terminal 1 and to K1 aux (NO) terminal 13; PB_START terminal 2 + K1 aux 14 to OL aux (NC); OL aux to K1 coil A1; K1 coil A2 to N.
+3. RUN lamp: connected across K1 aux (NO) or coil circuit.
+4. Overload: set to ${olSetting}% of motor FLA (${getFLA().toFixed(2)} A) → trip at ${(getFLA()*olSetting/100).toFixed(2)} A.
+5. Contactor rating: ≥ motor FLA × 1.1, AC-3 duty.
+6. E-STOP: NC contact in series with coil circuit (safety).
+7. After OL trip: press RESET on overload (and simulator Reset OL) before restart.`;
+}
+
+function showTab(name){
+  document.querySelectorAll('.tabpane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tabrow button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function drawChart(){
+  const cvs=document.getElementById('chart');
+  const ctx=cvs.getContext('2d');
+  const w=cvs.width,h=cvs.height;
+  ctx.fillStyle='#0a1020'; ctx.fillRect(0,0,w,h);
+  // grid
+  ctx.strokeStyle='#1e293b'; ctx.lineWidth=1;
+  for(let y=0;y<h;y+=15){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+  // scale
+  const maxI=Math.max(getInrush()*1.1, getFLA()*2, 1);
+  ctx.strokeStyle='#00d4ff'; ctx.lineWidth=2; ctx.beginPath();
+  history.forEach((v,i)=>{
+    const x=i/(120)*w; const y=h - (v/maxI)*h*0.9;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // labels
+  ctx.fillStyle='#9aa3bf'; ctx.font='9px monospace';
+  ctx.fillText('0',2,h-2); ctx.fillText(maxI.toFixed(1)+'A',2,10);
+}
+
+// ---------- Sim loop ----------
+let simInterval=null;
+function runSim(){ if(simInterval) return; running=true; simInterval=setInterval(()=>{runLogic();render();},200); }
+function stopSim(){ running=false; if(simInterval){clearInterval(simInterval);simInterval=null;} }
+function resetSim(){ stopSim(); resetState(); render(); }
+
+// keyboard
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'){pressStart();e.preventDefault();}
+  if(e.code==='Escape'){pressStop();}
+});
+document.addEventListener('keyup',e=>{
+  if(e.code==='Space'){releaseStart();}
+  if(e.code==='Escape'){releaseStop();}
+});
+
+// init
+setPower();
+document.getElementById('loadSlider').addEventListener('input',e=>{setLoad(e.target.value);});
+document.getElementById('olSlider').addEventListener('input',e=>{setOL(e.target.value);});
+render();
+</script>
+</body>
+</html>
