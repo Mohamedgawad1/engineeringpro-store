@@ -1,16 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Classic Control Simulator Pro — Real Components, Power Sources, All Circuits</title>
 <style>
-:root{--bg:#0b1220;--panel:#121a2e;--card:#1a2340;--accent:#00d4ff;--gold:#f5c518;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;--text:#e8ecf4;--muted:#9aa3bf;--border:#2a3355}
+:root{--bg:#0f172a;--panel:#111c33;--card:#1e293b;--accent:#93c5fd;--gold:#f5c518;--green:#00E676;--red:#ef4444;--amber:#f59e0b;--text:#f1f5f9;--muted:#94a3b8;--border:#334155}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.topbar{background:linear-gradient(90deg,#0f172a,#1e293b);border-bottom:2px solid var(--accent);padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.topbar h1{font-size:18px;background:linear-gradient(90deg,var(--accent),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.topbar{background:#0f172a;border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.topbar h1{font-size:18px;color:var(--accent);font-weight:800}
 .topbar select,.topbar button,.topbar input{padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;cursor:pointer;font-size:13px}
-.topbar button.run{background:linear-gradient(135deg,var(--green),#16a34a);border:none}
+.topbar button.run{background:var(--green);border:none;color:#052e16;font-weight:900;box-shadow:0 4px 16px rgba(0,230,118,.35)}
 .topbar button.stop{background:linear-gradient(135deg,var(--red),#b91c1c);border:none}
 .topbar button.reset{background:linear-gradient(135deg,var(--amber),#d97706);border:none}
 .psrc{display:flex;gap:6px;align-items:center}
@@ -64,7 +64,7 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
 <body>
 
 <div class="topbar">
-  <h1>\u2699\ufe0f Classic Control Simulator Pro</h1>
+  <h1>⚙️ محاكي التحكم الكلاسيكي Pro</h1>
   <select id="circuit" onchange="loadCircuit()">
     <option value="motor">1. Motor Start/Stop (Seal-in)</option>
     <option value="tank">2. Tank Level Control (Pump + Floats)</option>
@@ -78,36 +78,36 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
   <div class="psrc">
     <label>Power:</label>
     <select id="powersrc" onchange="setPower()">
-      <option value="220">220V AC 1\u03a6</option>
-      <option value="400">400V AC 3\u03a6</option>
+      <option value="220">220V AC 1Φ</option>
+      <option value="400">400V AC 3Φ</option>
       <option value="24">24V DC</option>
     </select>
   </div>
-  <button class="run" onclick="runSim()">\u25b6 RUN</button>
-  <button class="stop" onclick="stopSim()">\u25a0 STOP</button>
-  <button class="reset" onclick="resetSim()">\u21bb RESET</button>
-  <span style="margin-left:auto;font-size:11px;color:var(--muted)">Click inputs to toggle \u2022 Outputs update live</span>
+  <button class="run" onclick="runSim()">▶ تشغيل</button>
+  <button class="stop" onclick="stopSim()">■ STOP</button>
+  <button class="reset" onclick="resetSim()">↻ RESET</button>
+  <span style="margin-left:auto;font-size:11px;color:var(--muted)">Click inputs to toggle • Outputs update live</span>
 </div>
 
 <div class="main">
   <div class="pane">
     <h3>Component Palette</h3>
-    <div class="comp"><div class="ico">\ud83d\udd18</div>Push Button (NO)</div>
-    <div class="comp"><div class="ico">\ud83d\udd34</div>Push Button (NC/Stop)</div>
-    <div class="comp"><div class="ico">\ud83d\udd00</div>Selector Switch</div>
-    <div class="comp"><div class="ico">\u26a1</div>Contactor (Coil + Aux)</div>
-    <div class="comp"><div class="ico">\ud83d\udd0c</div>Relay (Coil)</div>
-    <div class="comp"><div class="ico">\u23f1\ufe0f</div>Timer (TON/TOFF)</div>
-    <div class="comp"><div class="ico">\ud83d\udd22</div>Counter</div>
-    <div class="comp"><div class="ico">\ud83d\udca1</div>Indicator Lamp</div>
-    <div class="comp"><div class="ico">\ud83d\udca7</div>Solenoid Valve</div>
-    <div class="comp"><div class="ico">\u2699\ufe0f</div>Motor (3\u03a6)</div>
-    <div class="comp"><div class="ico">\ud83d\udcd0</div>Overload Relay</div>
-    <div class="comp"><div class="ico">\ud83d\udce1</div>Proximity Sensor</div>
-    <div class="comp"><div class="ico">\ud83c\udfaf</div>Limit Switch</div>
-    <div class="comp"><div class="ico">\ud83c\udf0a</div>Float Switch (Level)</div>
-    <div class="comp"><div class="ico">\ud83e\udea3</div>Tank</div>
-    <div class="comp"><div class="ico">\ud83d\udd0b</div>Power Source</div>
+    <div class="comp"><div class="ico">🔘</div>Push Button (NO)</div>
+    <div class="comp"><div class="ico">🔴</div>Push Button (NC/Stop)</div>
+    <div class="comp"><div class="ico">🔀</div>Selector Switch</div>
+    <div class="comp"><div class="ico">⚡</div>Contactor (Coil + Aux)</div>
+    <div class="comp"><div class="ico">🔌</div>Relay (Coil)</div>
+    <div class="comp"><div class="ico">⏱️</div>Timer (TON/TOFF)</div>
+    <div class="comp"><div class="ico">🔢</div>Counter</div>
+    <div class="comp"><div class="ico">💡</div>Indicator Lamp</div>
+    <div class="comp"><div class="ico">💧</div>Solenoid Valve</div>
+    <div class="comp"><div class="ico">⚙️</div>Motor (3Φ)</div>
+    <div class="comp"><div class="ico">📐</div>Overload Relay</div>
+    <div class="comp"><div class="ico">📡</div>Proximity Sensor</div>
+    <div class="comp"><div class="ico">🎯</div>Limit Switch</div>
+    <div class="comp"><div class="ico">🌊</div>Float Switch (Level)</div>
+    <div class="comp"><div class="ico">🪣</div>Tank</div>
+    <div class="comp"><div class="ico">🔋</div>Power Source</div>
     <div class="psrcbox">
       <div class="psrcrow"><span>Power Source</span><span id="psrcval" class="hi">220V AC</span></div>
       <div class="psrcrow"><span>Voltage</span><span id="psrcv">220 V</span></div>
@@ -132,7 +132,7 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:v
       <div class="levelsensor" id="ls_high" style="top:10%">HIGH LEVEL</div>
     </div>
     <div style="display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap">
-      <div class="motor" id="motor">\u2699\ufe0f</div>
+      <div class="motor" id="motor">⚙️</div>
       <div style="font-size:12px;color:var(--muted)">Motor: <span id="motorstatus" class="off">STOPPED</span></div>
       <div style="font-size:12px;color:var(--muted);margin-left:auto" id="lampstatus">Lamp: OFF</div>
       <div style="font-size:12px;color:var(--muted)" id="extrastatus"></div>
@@ -217,7 +217,7 @@ Rung 3: [Float HIGH (NO)] ------------------------------ ( High-level alarm )`,s
 Rung 2: [Timer T1 done] -- [K_star (NC interlock)] -- ( K_delta ) -- drop K_star
 Rung 3: [K_main (NO, aux)] -- ( RUN lamp )
 Note: Star for 5s then switch to Delta`,svg:()=>`
- <text x="20" y="28" fill="#94a3bf" font-size="11">L1 (${power}V 3\u03a6)</text>
+ <text x="20" y="28" fill="#94a3bf" font-size="11">L1 (${power}V 3Φ)</text>
  <line class="wire" x1="40" y1="38" x2="40" y2="490"/>
  <line class="wire neutral" x1="40" y1="490" x2="860" y2="490"/>
  <g class="node" onclick="toggle('sd_stop')" transform="translate(90,70)"><rect class="compbox ${state.sd_stop?'on':''}" x="0" y="0" width="80" height="46" rx="6"/><text x="40" y="18" text-anchor="middle" fill="#e8ecf4" font-size="10" font-weight="700">PB STOP</text><text x="40" y="33" text-anchor="middle" fill="#94a3bf" font-size="9">(NC)</text></g>
@@ -320,7 +320,7 @@ Note: Step 1 SOL1 3s -> Step 2 SOL2 3s -> Step 3 Heater`,svg:()=>`
 function setPower(){
   power = document.getElementById('powersrc').value;
   const freq = power==='24'?'DC':'50 Hz';
-  document.getElementById('psrcval').textContent = power==='24'?'24V DC':(power==='400'?'400V AC 3\u03a6':'220V AC 1\u03a6');
+  document.getElementById('psrcval').textContent = power==='24'?'24V DC':(power==='400'?'400V AC 3Φ':'220V AC 1Φ');
   document.getElementById('psrcv').textContent = power + ' V';
   document.getElementById('psrcf').textContent = freq;
   render();
@@ -408,7 +408,7 @@ function render(){
   else if(circuit==='conveyor') rows=[['PB START',state.conv_start],['PB STOP (NC)',state.conv_stop],['Conveyor motor',state.conv_motor],['Proximity',state.prox],['Counter',state.counter],['Jam/Full',state.jam]];
   else if(circuit==='dol') rows=[['PB START',state.dol_start],['PB STOP (NC)',state.dol_stop],['OL OK',state.dol_ol],['Contactor K_DOL',state.dol_K],['Motor',state.dol_motor]];
   else if(circuit==='reversing') rows=[['PB FWD',state.fwd_start],['PB REV',state.rev_start],['PB STOP (NC)',state.dir_stop],['OL OK',state.interlock_ok],['K_FWD',state.fwd_K],['K_REV',state.rev_K],['Direction',state.motor_dir]];
-  else if(circuit==='factory') rows=[['Pump 1',state.pump1],['Pump 2',state.pump2],['Valve 1',state.valve1],['Valve 2',state.valve2],['Pressure (bar)',state.pressure.toFixed(1)],['Temp (\u00b0C)',state.temp.toFixed(1)],['Flow (L/min)',state.flow.toFixed(1)],['Alarm',state.alarm],['Cooling Fan',state.fan]];
+  else if(circuit==='factory') rows=[['Pump 1',state.pump1],['Pump 2',state.pump2],['Valve 1',state.valve1],['Valve 2',state.valve2],['Pressure (bar)',state.pressure.toFixed(1)],['Temp (°C)',state.temp.toFixed(1)],['Flow (L/min)',state.flow.toFixed(1)],['Alarm',state.alarm],['Cooling Fan',state.fan]];
   else rows=[['PB START',state.seq_start],['PB STOP (NC)',state.seq_stop],['Step',state.seq_step],['SOL1',state.sol1],['SOL2',state.sol2],['HEATER',state.heater],['Timer (s)',state.seq_timer.toFixed(1)],['Done',state.seq_done]];
   sl.innerHTML=rows.map(([k,v])=>{const isBool=typeof v==='boolean';const cls=isBool?(v?'on':'off'):'';const txt=isBool?(v?'ON':'OFF'):v;return `<div class="statusrow"><span>${k}</span><span class="v ${cls}">${txt}</span></div>`;}).join('');
   // I/O
