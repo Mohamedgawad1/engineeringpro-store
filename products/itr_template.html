@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>نموذج ITR - Inspection Test Record</title>
+<title>ITR Template - Inspection Test Record</title>
 <style>
 body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;margin:20px;color:#111;background:#fff}
 h1{text-align:center;font-size:20px;margin-bottom:4px}
@@ -22,52 +22,52 @@ input{border:none;border-bottom:1px dotted #333;width:100%;font-size:12px;paddin
 </head>
 <body>
 <div class="no-print" style="text-align:center;margin-bottom:16px">
-  <button class="btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+  <button class="btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
 </div>
 <h1>INSPECTION TEST RECORD (ITR)</h1>
-<div class="sub">نموذج تفتيش واختبار — EngineeringPro Template</div>
+<div class="sub">Inspection Test Record Template — EngineeringPro</div>
 
 <table>
-<tr class="header-row"><td colspan="4">معلومات المشروع</td></tr>
-<tr><td><label>اسم المشروع:</label></td><td><input></td><td><label>رقم المشروع:</label></td><td><input></td></tr>
-<tr><td><label>النظام/النطاق:</label></td><td><input></td><td><label>ITR No:</label></td><td><input></td></tr>
-<tr><td><label>الموقع:</label></td><td><input></td><td><label>التاريخ:</label></td><td><input type="date"></td></tr>
-<tr><td><label>المقاول:</label></td><td><input></td><td><label>المفتش:</label></td><td><input></td></tr>
+<tr class="header-row"><td colspan="4">Project Information</td></tr>
+<tr><td><label>Project Name:</label></td><td><input></td><td><label>Project No:</label></td><td><input></td></tr>
+<tr><td><label>System/Scope:</label></td><td><input></td><td><label>ITR No:</label></td><td><input></td></tr>
+<tr><td><label>Location:</label></td><td><input></td><td><label>Date:</label></td><td><input type="date"></td></tr>
+<tr><td><label>Contractor:</label></td><td><input></td><td><label>Inspector:</label></td><td><input></td></tr>
 </table>
 
-<div class="section">A. فحص بصري (Visual Inspection)</div>
+<div class="section">A. Visual Inspection</div>
 <table>
-<tr><th>#</th><th>البند</th><th>مقبول</th><th>مرفوض</th><th>ملاحظات</th></tr>
-<tr><td>1</td><td>التركيب حسب الرسومات</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
-<tr><td>2</td><td>الاسم/العلامات صحيحة</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
-<tr><td>3</td><td>التأريض والربط</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
-<tr><td>4</td><td>الكابلات/الأنابيب سليمة</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
-<tr><td>5</td><td>النظافة/الترتيب</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><th>#</th><th>Item</th><th>Accept</th><th>Reject</th><th>Remarks</th></tr>
+<tr><td>1</td><td>Installation per drawings</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>2</td><td>Nameplates/labels correct</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>3</td><td>Earthing & bonding</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>4</td><td>Cables/conduits intact</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>5</td><td>Housekeeping/cleanliness</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
 </table>
 
-<div class="section">B. اختبارات كهربائية (Electrical Tests)</div>
+<div class="section">B. Electrical Tests</div>
 <table>
-<tr><th>#</th><th>الاختبار</th><th>القيمة المطلوبة</th><th>القيمة المقاسة</th><th>النتيجة</th></tr>
-<tr><td>1</td><td>مقاومة العزل (IR) MΩ</td><td>≥ 100 MΩ</td><td><input></td><td><input></td></tr>
-<tr><td>2</td><td>استمرارية (Continuity) Ω</td><td>≤ 1 Ω</td><td><input></td><td><input></td></tr>
-<tr><td>3</td><td>اختبار الجهد (Hi-Pot) V</td><td><input></td><td><input></td><td><input></td></tr>
-<tr><td>4</td><td>اختبار الوظيفة (Functional)</td><td>Pass</td><td><input></td><td><input></td></tr>
+<tr><th>#</th><th>Test</th><th>Required</th><th>Measured</th><th>Result</th></tr>
+<tr><td>1</td><td>Insulation Resistance (IR) MΩ</td><td>≥ 100 MΩ</td><td><input></td><td><input></td></tr>
+<tr><td>2</td><td>Continuity (Ω)</td><td>≤ 1 Ω</td><td><input></td><td><input></td></tr>
+<tr><td>3</td><td>Hi-Pot Test (V)</td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>4</td><td>Functional Test</td><td>Pass</td><td><input></td><td><input></td></tr>
 </table>
 
-<div class="section">C. النتيجة والتوقيعات</div>
+<div class="section">C. Result & Signatures</div>
 <table>
-<tr><td><label>النتيجة الإجمالية:</label></td><td><input placeholder="PASS / FAIL / CONDITIONAL"></td></tr>
-<tr><td><label>ملاحظات:</label></td><td><input></td></tr>
+<tr><td><label>Overall Result:</label></td><td><input placeholder="PASS / FAIL / CONDITIONAL"></td></tr>
+<tr><td><label>Remarks:</label></td><td><input></td></tr>
 </table>
 <table>
-<tr><th>الدور</th><th>الاسم</th><th>التوقيع</th><th>التاريخ</th></tr>
-<tr><td>المفتش</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
-<tr><td>المقاول</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
-<tr><td>العميل/Owner</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+<tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr>
+<tr><td>Inspector</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+<tr><td>Contractor</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+<tr><td>Owner/Client</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
 </table>
 
 <div class="no-print" style="margin-top:20px;font-size:12px;color:#555">
-<p><strong>كيفية الاستخدام:</strong> افتح في المتصفح → عدّل → طباعة/حفظ PDF → بِع على Etsy/Gumroad كـ "ITR Template Pack".</p>
+<p><strong>How to use:</strong> Open in browser → edit → Print/Save as PDF → sell on Etsy/Gumroad as "ITR Template Pack".</p>
 </div>
 </body>
 </html>

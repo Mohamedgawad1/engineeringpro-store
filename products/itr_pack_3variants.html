@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ITR Pack — 3 Variants (Electrical / Instrument / Mechanical)</title>
+<style>
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;margin:16px;color:#111;background:#fff}
+h1{text-align:center;font-size:18px;margin-bottom:2px}
+.sub{text-align:center;font-size:11px;color:#555;margin-bottom:10px}
+.variant{page-break-after:always;border:2px solid #2563eb;border-radius:8px;padding:12px;margin-bottom:20px}
+.variant h2{background:#2563eb;color:#fff;padding:6px 10px;margin:-12px -12px 10px;border-radius:6px 6px 0 0;font-size:15px}
+table{width:100%;border-collapse:collapse;margin-bottom:8px}
+td,th{border:1px solid #333;padding:4px 6px;font-size:11px}
+th{background:#eee;font-weight:700}
+.header-row td{background:#f5f5f5;font-weight:700}
+label{font-weight:700}
+input{border:none;border-bottom:1px dotted #333;width:100%;font-size:11px;padding:1px}
+.check{width:14px;height:14px}
+.section{background:#ddd;font-weight:700;padding:6px;margin:8px 0 3px;border:1px solid #333;font-size:12px}
+.sig{height:45px}
+.no-print{margin:10px 0;text-align:center}
+.btn{padding:8px 16px;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;margin:4px;font-size:13px}
+@media print{.no-print{display:none} body{margin:6px} .variant{border:none;padding:0;margin:0}}
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button class="btn" onclick="window.print()">🖨️ Print / Save as PDF (all 3 variants)</button>
+  <p style="font-size:12px;color:#555">Tip: In print dialog → "Save as PDF". Each variant = 1 page. Sell as "ITR Pack (3 templates)".</p>
+</div>
+
+<h1>INSPECTION TEST RECORD (ITR) — PACK (3 VARIANTS)</h1>
+<div class="sub">EngineeringPro Template — Electrical / Instrument / Mechanical</div>
+
+<!-- ============ VARIANT 1: ELECTRICAL ============ -->
+<div class="variant">
+<h2>VARIANT 1 — ELECTRICAL ITR</h2>
+<table>
+<tr class="header-row"><td colspan="4">Project Information</td></tr>
+<tr><td><label>Project Name:</label></td><td><input></td><td><label>Project No:</label></td><td><input></td></tr>
+<tr><td><label>System/Scope:</label></td><td><input placeholder="LV/MV Electrical"></td><td><label>ITR No:</label></td><td><input></td></tr>
+<tr><td><label>Location:</label></td><td><input></td><td><label>Date:</label></td><td><input type="date"></td></tr>
+<tr><td><label>Contractor:</label></td><td><input></td><td><label>Inspector:</label></td><td><input></td></tr>
+</table>
+
+<div class="section">A. Visual Inspection</div>
+<table>
+<tr><th>#</th><th>Item</th><th>Accept</th><th>Reject</th><th>Remarks</th></tr>
+<tr><td>1</td><td>Installation per drawings</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>2</td><td>Nameplates/labels correct</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>3</td><td>Earthing & bonding</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>4</td><td>Cables/conduits intact</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>5</td><td>Housekeeping/cleanliness</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+</table>
+
+<div class="section">B. Electrical Tests</div>
+<table>
+<tr><th>#</th><th>Test</th><th>Required</th><th>Measured</th><th>Result</th></tr>
+<tr><td>1</td><td>Insulation Resistance (IR) MΩ</td><td>≥ 100 MΩ</td><td><input></td><td><input></td></tr>
+<tr><td>2</td><td>Continuity (Ω)</td><td>≤ 1 Ω</td><td><input></td><td><input></td></tr>
+<tr><td>3</td><td>Hi-Pot Test (V)</td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>4</td><td>Functional Test</td><td>Pass</td><td><input></td><td><input></td></tr>
+<tr><td>5</td><td>Phase rotation</td><td>R-Y-B</td><td><input></td><td><input></td></tr>
+</table>
+
+<div class="section">C. Result & Signatures</div>
+<table>
+<tr><td><label>Overall Result:</label></td><td><input placeholder="PASS / FAIL / CONDITIONAL"></td></tr>
+<tr><td><label>Remarks:</label></td><td><input></td></tr>
+</table>
+<table>
+<tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr>
+<tr><td>Inspector</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+<tr><td>Contractor</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+<tr><td>Owner/Client</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+</table>
+</div>
+
+<!-- ============ VARIANT 2: INSTRUMENT ============ -->
+<div class="variant">
+<h2>VARIANT 2 — INSTRUMENT ITR</h2>
+<table>
+<tr class="header-row"><td colspan="4">Project Information</td></tr>
+<tr><td><label>Project Name:</label></td><td><input></td><td><label>Project No:</label></td><td><input></td></tr>
+<tr><td><label>System/Scope:</label></td><td><input placeholder="Instrumentation"></td><td><label>ITR No:</label></td><td><input></td></tr>
+<tr><td><label>Location:</label></td><td><input></td><td><label>Date:</label></td><td><input type="date"></td></tr>
+<tr><td><label>Contractor:</label></td><td><input></td><td><label>Inspector:</label></td><td><input></td></tr>
+</table>
+
+<div class="section">A. Visual Inspection</div>
+<table>
+<tr><th>#</th><th>Item</th><th>Accept</th><th>Reject</th><th>Remarks</th></tr>
+<tr><td>1</td><td>Tag number correct & visible</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>2</td><td>Mounting & orientation</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>3</td><td>Tubing/impulse lines leak-free</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>4</td><td>Earthing & shielding</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>5</td><td>Junction box sealed</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+</table>
+
+<div class="section">B. Calibration & Loop Test</div>
+<table>
+<tr><th>#</th><th>Parameter</th><th>Range (LRV-URV)</th><th>As-Found</th><th>As-Left</th><th>Result</th></tr>
+<tr><td>1</td><td>0% (4 mA)</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>2</td><td>25%</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>3</td><td>50%</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>4</td><td>75%</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>5</td><td>100% (20 mA)</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</table>
+
+<div class="section">C. Loop Check (4-20 mA / HART)</div>
+<table>
+<tr><td><label>Signal Type:</label></td><td><input placeholder="4-20mA / HART / FF"></td><td><label>Loop Resistance (Ω):</label></td><td><input></td></tr>
+<tr><td><label>Power Supply (V):</label></td><td><input></td><td><label>Loop Test Result:</label></td><td><input placeholder="PASS/FAIL"></td></tr>
+</table>
+
+<div class="section">D. Result & Signatures</div>
+<table>
+<tr><td><label>Overall Result:</label></td><td><input placeholder="PASS / FAIL / CONDITIONAL"></td></tr>
+<tr><td><label>Remarks:</label></td><td><input></td></tr>
+</table>
+<table>
+<tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr>
+<tr><td>Inspector</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+<tr><td>Contractor</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+<tr><td>Owner/Client</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+</table>
+</div>
+
+<!-- ============ VARIANT 3: MECHANICAL ============ -->
+<div class="variant">
+<h2>VARIANT 3 — MECHANICAL ITR</h2>
+<table>
+<tr class="header-row"><td colspan="4">Project Information</td></tr>
+<tr><td><label>Project Name:</label></td><td><input></td><td><label>Project No:</label></td><td><input></td></tr>
+<tr><td><label>System/Scope:</label></td><td><input placeholder="Mechanical/Piping"></td><td><label>ITR No:</label></td><td><input></td></tr>
+<tr><td><label>Location:</label></td><td><input></td><td><label>Date:</label></td><td><input type="date"></td></tr>
+<tr><td><label>Contractor:</label></td><td><input></td><td><label>Inspector:</label></td><td><input></td></tr>
+</table>
+
+<div class="section">A. Visual Inspection</div>
+<table>
+<tr><th>#</th><th>Item</th><th>Accept</th><th>Reject</th><th>Remarks</th></tr>
+<tr><td>1</td><td>Installation per isometric/P&ID</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>2</td><td>Supports & anchors secure</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>3</td><td>Valves tagged & operable</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>4</td><td>No leaks (visual)</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+<tr><td>5</td><td>Insulation/painting complete</td><td><input type="checkbox" class="check"></td><td><input type="checkbox" class="check"></td><td><input></td></tr>
+</table>
+
+<div class="section">B. Pressure Test (Hydro/Pneumatic)</div>
+<table>
+<tr><th>#</th><th>Parameter</th><th>Required</th><th>Actual</th><th>Result</th></tr>
+<tr><td>1</td><td>Test Medium</td><td>Water/Air</td><td><input></td><td><input></td></tr>
+<tr><td>2</td><td>Test Pressure (bar)</td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>3</td><td>Hold Time (min)</td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>4</td><td>Pressure Drop (bar)</td><td>≤ 0.5</td><td><input></td><td><input></td></tr>
+<tr><td>5</td><td>Leak Check</td><td>No leak</td><td><input></td><td><input></td></tr>
+</table>
+
+<div class="section">C. Flushing & Cleaning</div>
+<table>
+<tr><td><label>Flushing Medium:</label></td><td><input></td><td><label>Flushing Duration (min):</label></td><td><input></td></tr>
+<tr><td><label>Cleanliness Result:</label></td><td><input placeholder="Clean / Not Clean"></td><td><label>Drying Method:</label></td><td><input></td></tr>
+</table>
+
+<div class="section">D. Result & Signatures</div>
+<table>
+<tr><td><label>Overall Result:</label></td><td><input placeholder="PASS / FAIL / CONDITIONAL"></td></tr>
+<tr><td><label>Remarks:</label></td><td><input></td></tr>
+</table>
+<table>
+<tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr>
+<tr><td>Inspector</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+<tr><td>Contractor</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+<tr><td>Owner/Client</td><td><input></td><td class="sig"></td><td><input type="date"></td></tr>
+</table>
+</div>
+
+<div class="no-print" style="margin-top:12px;font-size:12px;color:#555;text-align:center">
+<p><strong>How to use:</strong> Open in browser → Edit fields → Print → Save as PDF → Sell as "ITR Template Pack (3 variants)" on Fiverr/Gumroad/Etsy.</p>
+<p>EngineeringPro Template — © 2026</p>
+</div>
+
+</body>
+</html>
