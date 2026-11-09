@@ -398,7 +398,7 @@ function defaultState(type){
     case 'motor_dc':
     case 'motor_stepper':
     case 'motor_servo':
-    case 'alarm':    return { energized:false };
+    case 'alarm':    return { energized:false, amps:0, runTime:0 };
     case 'mccb':     return { closed:true };
     case 'rccb':     return { closed:true, tripped:false };
     case 'fuse':     return { blown:false };
@@ -806,6 +806,7 @@ function symMotor(c){
     + txt(88,25,badge,7,on?accent:CL.muted)
     + txt(55,90,c.label,8,'#1e293b')
     + txt(55,102,(d.kw||0)+' kW · '+(d.rpm||0)+' rpm',7,on?CL.green:CL.muted)
+    + (on ? txt(55,112,(c.state.amps||0).toFixed(1)+' A',7,CL.amber) : '')
   );
 }
 
@@ -1496,8 +1497,20 @@ function simulate(dt){
   let totalAmps = 0;
   components.forEach(c => {
     if(c.type === 'lamp' || isMotor(c.type) || c.type === 'alarm'){
+      const was = c.state.energized;
       c.state.energized = acrossRoots(c, '1', '2', roots);
-      if(isMotor(c.type) && c.state.energized) totalAmps += Number(c.data.fla) || 0;
+      if(isMotor(c.type)){
+        if(c.state.energized){
+          c.state.runTime = (was ? (c.state.runTime || 0) : 0) + (dt || 0);
+          const fla = Number(c.data.fla) || 0;
+          const inrush = fla * (1 + 5 * Math.exp(-(c.state.runTime || 0) / 0.6));
+          c.state.amps = inrush;
+          totalAmps += inrush;
+        } else {
+          c.state.runTime = 0;
+          c.state.amps = 0;
+        }
+      }
     }
     if(c.type === 'ctmeter'){
       c.state.energized = acrossRoots(c, '1', '2', roots);
