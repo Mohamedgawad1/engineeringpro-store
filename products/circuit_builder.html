@@ -594,8 +594,7 @@ function symPower(c){
 function symMcb(c){
   const on = c.state.closed;
   return wrap(c,
-    `<rect x="8" y="12" width="74" height="66" rx="7" fill="url(#gBody)" stroke="#475569" stroke-width="1.5"/>`
-    + `<defs><linearGradient id="gBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>`
+    `<rect x="8" y="12" width="74" height="66" rx="7" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>`
     + `<rect x="16" y="20" width="58" height="14" rx="3" fill="#1e293b" stroke="#334155"/>`
     + txt(45,30,c.label,8,'#1e293b')
     + `<rect x="20" y="40" width="50" height="16" rx="3" fill="${on?'#052e16':'#450a0a'}" stroke="${on?CL.green:CL.red}"/>`
@@ -839,8 +838,7 @@ function symAlarm(c){
 function symMccb(c){
   const on = c.state.closed;
   return wrap(c,
-    `<rect x="16" y="14" width="72" height="80" rx="7" fill="url(#gMccb)" stroke="#475569" stroke-width="1.5"/>`
-    + `<defs><linearGradient id="gMccb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>`
+    `<rect x="16" y="14" width="72" height="80" rx="7" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>`
     + `<rect x="27" y="22" width="50" height="34" rx="4" fill="#111c33" stroke="${on?CL.green:CL.red}"/>`
     + txt(52,40,c.label,9,'#1e293b')
     + (on
