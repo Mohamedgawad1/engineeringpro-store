@@ -660,7 +660,7 @@ function symSelector(c){
 function symContactor(c){
   const on = c.state.coil;
   return wrap(c,
-    `<rect x="4" y="4" width="132" height="172" rx="10" fill="url(#bodyGrad)" stroke="#475569"/>`
+    `<rect x="4" y="4" width="132" height="172" rx="10" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>`
     + txt(70,17,c.label,10,'#1e293b')
     + txt(10,30,'L1',6,'#1e293b','start')
     + txt(10,55,'L2',6,'#1e293b','start')
@@ -669,7 +669,7 @@ function symContactor(c){
     + `<polyline points="10,150 20,150 20,128" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + txt(25,44,'A1',7,CL.muted,'start')
     + txt(25,142,'A2',7,CL.muted,'start')
-    + `<rect x="20" y="52" width="38" height="76" rx="5" fill="#0b1220" stroke="${on?CL.blue:CL.edge}" stroke-width="2"/>`
+    + `<rect x="20" y="52" width="38" height="76" rx="5" fill="#334155" stroke="${on?CL.blue:CL.edge}" stroke-width="2"/>`
     + `<path d="M39 62 q-7 6 0 12 q7 6 0 12 q-7 6 0 12 q7 6 0 12" fill="none" stroke="${on?CL.blue:CL.dim}" stroke-width="2"/>`
     + (on ? `<circle cx="39" cy="90" r="22" fill="${CL.blue}" opacity="0.13"/>` : '')
     + txt(39,138,'COIL',7,on?CL.blue:CL.dim)
