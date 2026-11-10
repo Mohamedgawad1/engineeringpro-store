@@ -254,6 +254,7 @@ const NS = 'http://www.w3.org/2000/svg';
 /* ---------- Component types (size + port geometry) ---------- */
 const TYPES = {
   power:    { label:'Power Supply 3Φ',  w:100, h:120, color:'#ef4444', ports:[{id:'L1',x:95,y:20},{id:'L2',x:95,y:40},{id:'L3',x:95,y:60},{id:'N',x:95,y:90}] },
+  power_1ph:{ label:'Power Supply 1Φ',  w:100, h:100, color:'#ef4444', ports:[{id:'L',x:95,y:30},{id:'N',x:95,y:70}] },
   mcb:      { label:'MCB',           w:90,  h:90,  color:'#f59e0b', ports:[{id:'1',x:7,y:55},{id:'2',x:83,y:55}] },
   pb_no:    { label:'Push Button NO',w:90,  h:95,  color:'#22c55e', ports:[{id:'1',x:7,y:68},{id:'2',x:83,y:68}] },
   pb_nc:    { label:'Push Button NC',w:90,  h:95,  color:'#ef4444', ports:[{id:'1',x:7,y:68},{id:'2',x:83,y:68}] },
@@ -314,7 +315,7 @@ const TYPES = {
 };
 
 const PREFIX = {
-  power:'PS',mcb:'F',pb_no:'S',pb_nc:'S',estop:'E',selector:'SA',contactor:'K',
+  power:'PS',power_1ph:'PS',mcb:'F',pb_no:'S',pb_nc:'S',estop:'E',selector:'SA',contactor:'K',
   relay:'KA',timer:'KT',ol:'F',lamp:'H',motor:'M',motor_1ph:'M',motor_dc:'M',motor_stepper:'SM',motor_servo:'SV',alarm:'HA',
   mccb:'Q',rccb:'Q',fuse:'FU',spd:'SPD',timer_off:'KT',flasher:'KF',phase:'KP',
   terminal:'XT',busbar:'BB',generator:'G',ats:'ATS',ctmeter:'PA',float:'LS',
@@ -347,6 +348,7 @@ function isMotor(type){
   return type === 'motor' || type === 'motor_1ph' || type === 'motor_dc' ||
          type === 'motor_stepper' || type === 'motor_servo';
 }
+function isPower(type){ return type === 'power' || type === 'power_1ph'; }
 function defaultData(type){
   if(type === 'motor')  return { kw:2.2, fla:4.8, rpm:1440, poles:4, volts:'400 V Δ/Y' };
   if(type === 'motor_1ph') return { kw:0.75, fla:4.2, rpm:1440, cap:25, volts:'230 V' };
@@ -578,21 +580,36 @@ function wrap(c, inner){
 /* ---------- Realistic component symbols ---------- */
 function symPower(c){
   const on = supplyOn;
+  const three = c.type === 'power';
+  if(three){
+    return wrap(c,
+      `<rect x="10" y="10" width="64" height="100" rx="8" fill="url(#bodyGrad)" stroke="${CL.edge}"/>`
+      + `<path d="M42 30 L31 52 h9 l-6 20 17-26 h-9 l6-16 z" fill="${on?CL.hot:CL.dim}"/>`
+      + `<text x="42" y="96" text-anchor="middle" fill="${CL.muted}" font-size="9" font-family="Segoe UI,Arial">${supplyV} V</text>`
+      + `<line x1="74" y1="20" x2="95" y2="20" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
+      + `<line x1="74" y1="40" x2="95" y2="40" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
+      + `<line x1="74" y1="60" x2="95" y2="60" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
+      + `<line x1="74" y1="90" x2="95" y2="90" stroke="${CL.blue}" stroke-width="2.5"/>`
+      + `<text x="77" y="18" fill="${CL.red}" font-size="8" font-family="Segoe UI,Arial">L1</text>`
+      + `<text x="77" y="38" fill="${CL.amber}" font-size="8" font-family="Segoe UI,Arial">L2</text>`
+      + `<text x="77" y="58" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">L3</text>`
+      + `<text x="77" y="96" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">N</text>`
+      + `<circle cx="42" cy="11" r="4" fill="${on?CL.green:CL.red}"/>`
+      + txt(42,108,on?'MAIN ON':'OFF',8,on?CL.green:CL.red)
+    );
+  }
   return wrap(c,
-    `<rect x="10" y="10" width="64" height="100" rx="8" fill="url(#bodyGrad)" stroke="${CL.edge}"/>`
-    + `<path d="M42 30 L31 52 h9 l-6 20 17-26 h-9 l6-16 z" fill="${on?CL.hot:CL.dim}"/>`
-    + `<text x="42" y="96" text-anchor="middle" fill="${CL.muted}" font-size="9" font-family="Segoe UI,Arial">${supplyV} V</text>`
-    + `<line x1="74" y1="20" x2="95" y2="20" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
-    + `<line x1="74" y1="40" x2="95" y2="40" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
-    + `<line x1="74" y1="60" x2="95" y2="60" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
-    + `<line x1="74" y1="90" x2="95" y2="90" stroke="${CL.blue}" stroke-width="2.5"/>`
-    + `<text x="77" y="18" fill="${CL.red}" font-size="8" font-family="Segoe UI,Arial">L1</text>`
-    + `<text x="77" y="38" fill="${CL.amber}" font-size="8" font-family="Segoe UI,Arial">L2</text>`
-    + `<text x="77" y="58" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">L3</text>`
-    + `<text x="77" y="96" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">N</text>`
+    `<rect x="10" y="18" width="64" height="64" rx="8" fill="url(#bodyGrad)" stroke="${CL.edge}"/>`
+    + `<path d="M44 30 L33 52 h9 l-6 20 17-26 h-9 l6-16 z" fill="${on?CL.hot:CL.dim}"/>`
+    + `<text x="42" y="76" text-anchor="middle" fill="${CL.muted}" font-size="9" font-family="Segoe UI,Arial">${supplyV} V</text>`
+    + `<line x1="74" y1="30" x2="95" y2="30" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
+    + `<line x1="74" y1="70" x2="95" y2="70" stroke="${CL.blue}" stroke-width="2.5"/>`
+    + `<text x="77" y="23" fill="${CL.red}" font-size="8" font-family="Segoe UI,Arial">L</text>`
+    + `<text x="77" y="86" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">N</text>`
     + `<circle cx="42" cy="11" r="4" fill="${on?CL.green:CL.red}"/>`
-    + txt(42,108,on?'MAIN ON':'OFF',8,on?CL.green:CL.red)
+    + txt(42,96,on?'MAIN ON':'OFF',8,on?CL.green:CL.red)
   );
+}
 }
 
 function symMcb(c){
@@ -1197,7 +1214,8 @@ function symVfd(c){
 
 function svgFor(c){
   switch(c.type){
-    case 'power':    return symPower(c);
+    case 'power':
+  case 'power_1ph': return symPower(c);
     case 'mcb':      return symMcb(c);
     case 'pb_no':
     case 'pb_nc':    return symPb(c);
@@ -1348,6 +1366,10 @@ function sourceList(){
     out.push({ comp: pc, port: 'L1' });
     out.push({ comp: pc, port: 'L2' });
     out.push({ comp: pc, port: 'L3' });
+  }
+  const pc1 = components.find(c => c.type === 'power_1ph');
+  if(pc1 && supplyOn){
+    out.push({ comp: pc1, port: 'L' });
   }
   components.filter(c => c.type === 'generator' && c.state.on).forEach(g => {
     out.push({ comp: g, port: 'L' });
@@ -1853,6 +1875,10 @@ function renderProps(){
     }
   }
   // Family selectors (organize types)
+  const powerKinds = [['power','Power 3Φ'],['power_1ph','Power 1Φ']];
+  if(powerKinds.some(([v]) => v === c.type)){
+    h += `<div class="prop"><label>Power type</label><select onchange="changeType('${c.id}',this.value)">${powerKinds.map(([v,n]) => `<option value="${v}"${c.type===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
+  }
   const protectionKinds = [['mcb','MCB / Miniature'],['mccb','MCCB / Moulded Case'],['rccb','RCCB / RCBO'],['fuse','Fuse Cartridge']];
   if(protectionKinds.some(([v]) => v === c.type)){
     h += `<div class="prop"><label>Protection type</label><select onchange="changeType('${c.id}',this.value)">${protectionKinds.map(([v,n]) => `<option value="${v}"${c.type===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
