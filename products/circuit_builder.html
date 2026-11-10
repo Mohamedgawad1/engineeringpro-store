@@ -658,7 +658,7 @@ function symSelector(c){
 function symContactor(c){
   const on = c.state.coil;
   return wrap(c,
-    `<rect x="4" y="4" width="132" height="172" rx="10" fill="none" stroke="#334155"/>`
+    `<rect x="4" y="4" width="132" height="172" rx="10" fill="url(#bodyGrad)" stroke="#475569"/>`
     + txt(70,17,c.label,10,'#1e293b')
     + `<polyline points="10,30 20,30 20,52" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
     + `<polyline points="10,150 20,150 20,128" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
