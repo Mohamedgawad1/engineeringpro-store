@@ -793,19 +793,11 @@ function symMotor(c){
       + txt(83,48,'E',7,on?accent:CL.muted);
   }
   return wrap(c,
-    `<line x1="8" y1="40" x2="29" y2="40" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<line x1="8" y1="55" x2="29" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<line x1="8" y1="70" x2="29" y2="70" stroke="${CL.metal}" stroke-width="2"/>`
-    + txt(4,40,'U',6,'#1e293b','start')
-    + txt(4,55,'V',6,'#1e293b','start')
-    + txt(4,70,'W',6,'#1e293b','start')
+    `<line x1="8" y1="55" x2="29" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
     + `<line x1="81" y1="55" x2="102" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
     + `<ellipse cx="55" cy="45" rx="30" ry="24" fill="url(#bodyGrad)" stroke="${on?accent:CL.edge}" stroke-width="2.5"/>`
     + `<rect x="40" y="8" width="30" height="12" rx="3" fill="url(#bodyGrad)" stroke="${CL.edge}" stroke-width="1.5"/>`
     + txt(55,17,'TB',6,'#1e293b')
-    + `<line x1="85" y1="45" x2="102" y2="45" stroke="${CL.metal}" stroke-width="4"/>`
-    + `<circle cx="85" cy="45" r="4" fill="${CL.metal}"/>`
-    + [0,1,2,3].map(i => `<line x1="${30+i*8}" y1="24" x2="${30+i*8}" y2="66" stroke="${CL.dim}" stroke-width="1"/>`).join('')
     + `<g class="${on?'spin':''}">`
     + `<line x1="37" y1="45" x2="73" y2="45" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
     + `<line x1="55" y1="27" x2="55" y2="63" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
