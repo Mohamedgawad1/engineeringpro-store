@@ -141,8 +141,10 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
 <div class="main">
   <aside class="pane palette">
     <details open class="pgroup"><summary><span class="ar-only">⚡ التحكم</span><span class="en-only">⚡ Control</span></summary>
-      <button class="compbtn" data-type="power" onclick="selectPlace('power')">🔌 Power Supply</button>
-      <button class="compbtn" data-type="mcb" onclick="selectPlace('mcb')">🛑 MCB / Breaker</button>
+      <button class="compbtn" data-type="power" onclick="selectPlace('power')">🔌 Power 3Φ (L1 L2 L3 N PE)</button>
+      <button class="compbtn" data-type="power_1ph" onclick="selectPlace('power_1ph')">🔌 Power 1Φ (L N PE)</button>
+      <button class="compbtn" data-type="mcb" onclick="selectPlace('mcb')">🛑 MCB 1P</button>
+      <button class="compbtn" data-type="mcb_3p" onclick="selectPlace('mcb_3p')">🛑 MCB 3P</button>
       <button class="compbtn" data-type="pb_no" onclick="selectPlace('pb_no')">🟢 Push Button (NO)</button>
       <button class="compbtn" data-type="pb_nc" onclick="selectPlace('pb_nc')">🔴 Push Button (NC)</button>
       <button class="compbtn" data-type="estop" onclick="selectPlace('estop')">⛔ E-STOP</button>
@@ -150,6 +152,7 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
       <button class="compbtn" data-type="contactor" onclick="selectPlace('contactor')">⚡ Contactor</button>
       <button class="compbtn" data-type="relay" onclick="selectPlace('relay')">🔁 Aux Relay</button>
       <button class="compbtn" data-type="timer" onclick="selectPlace('timer')">⏱ Timer (On-Delay)</button>
+      <button class="compbtn" data-type="timer_sd" onclick="selectPlace('timer_sd')">⏱ Star-Delta Timer</button>
       <button class="compbtn" data-type="ol" onclick="selectPlace('ol')">📐 Overload Relay</button>
       <button class="compbtn" data-type="lamp" onclick="selectPlace('lamp')">💡 Indicator Lamp</button>
       <button class="compbtn" data-type="alarm" onclick="selectPlace('alarm')">🚨 Alarm (Horn)</button>
@@ -162,7 +165,8 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
       <button class="compbtn" data-type="motor_servo" onclick="selectPlace('motor_servo')">⚙️ Servo Motor</button>
     </details>
     <details open class="pgroup"><summary><span class="ar-only">🛡 الحماية والمصادر</span><span class="en-only">🛡 Protection &amp; Sources</span></summary>
-      <button class="compbtn" data-type="mccb" onclick="selectPlace('mccb')">🔲 MCCB</button>
+      <button class="compbtn" data-type="mccb" onclick="selectPlace('mccb')">🔲 MCCB 1P</button>
+      <button class="compbtn" data-type="mccb_3p" onclick="selectPlace('mccb_3p')">🔲 MCCB 3P</button>
       <button class="compbtn" data-type="rccb" onclick="selectPlace('rccb')">🛡 RCCB / RCBO</button>
       <button class="compbtn" data-type="fuse" onclick="selectPlace('fuse')">🧯 Fuse</button>
       <button class="compbtn" data-type="spd" onclick="selectPlace('spd')">⚡ SPD Surge</button>
@@ -177,6 +181,7 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
       <button class="compbtn" data-type="pressure" onclick="selectPlace('pressure')">🎛 Pressure Switch</button>
       <button class="compbtn" data-type="thermostat" onclick="selectPlace('thermostat')">🌡 Thermostat</button>
       <button class="compbtn" data-type="ctmeter" onclick="selectPlace('ctmeter')">📟 CT / Ammeter</button>
+      <button class="compbtn" data-type="voltmeter" onclick="selectPlace('voltmeter')">🔵 Voltmeter</button>
     </details>
     <details open class="pgroup"><summary><span class="ar-only">🔗 التوصيل</span><span class="en-only">🔗 Wiring</span></summary>
       <button class="compbtn" data-type="terminal" onclick="selectPlace('terminal')">🔗 Terminal Block</button>
@@ -185,6 +190,28 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
     <details open class="pgroup"><summary><span class="ar-only">🧠 PLC ومحركات السرعة</span><span class="en-only">🧠 PLC &amp; Drives</span></summary>
       <button class="compbtn" data-type="plc" onclick="selectPlace('plc')">🧠 PLC (Ladder)</button>
       <button class="compbtn" data-type="vfd" onclick="selectPlace('vfd')">🎛 VFD Motor Drive</button>
+    </details>
+    <details class="pgroup"><summary><span class="ar-only">⭐ دليل توصيل Star-Delta</span><span class="en-only">⭐ Star-Delta Guide</span></summary>
+      <div class="hint ar-only">
+        <b>الموتور 3 فاز = 6 أطراف:</b> U1,V1,W1 دخل / U2,V2,W2 خرج.<br><br>
+        <b>1) الخط الرئيسي:</b> L1,L2,L3 ← قاطع 3P ← كونتاكتور رئيسي K1 ← أوفرلود 3P ← U1,V1,W1.<br><br>
+        <b>2) Star (تشغيل):</b> وصّل U2+V2+W2 مع بعض (عبر كونتاكتور Star K3).<br>
+        <b>3) Delta (تشغيل دائم):</b> وصّل U2→V1 و V2→W1 و W2→U1 (عبر كونتاكتور Delta K2).<br><br>
+        <b>4) التحكم:</b> زر Stop NC ← E-Stop ← Overload 95/96 ← زر Start NO ← كويل K1، مع Hold من K1 13/14.<br>
+        <b>5) التايمر:</b> كويل Star-Delta Timer مع K1. الطرف 15-16 يغذي K3 (Star)، والطرف 15-18 يغذي K2 (Delta).<br>
+        <b>6) التعشيق:</b> ضع NC بتاع K2 قبل كويل K3، وNC بتاع K3 قبل كويل K2.<br><br>
+        <b>النتيجة:</b> يبدأ الموتور Star ثم يتحول Delta تلقائياً، والمؤشر على الموتور يوضح STAR / DELTA / OPEN.
+      </div>
+      <div class="hint en-only">
+        <b>3-phase motor = 6 terminals:</b> U1,V1,W1 = IN / U2,V2,W2 = OUT.<br><br>
+        <b>1) Main line:</b> L1,L2,L3 → 3P breaker → main contactor K1 → 3P overload → U1,V1,W1.<br><br>
+        <b>2) Star:</b> link U2+V2+W2 together (through star contactor K3).<br>
+        <b>3) Delta:</b> link U2→V1, V2→W1, W2→U1 (through delta contactor K2).<br><br>
+        <b>4) Control:</b> Stop NC → E-Stop → Overload 95/96 → Start NO → K1 coil, with K1 13/14 hold.<br>
+        <b>5) Timer:</b> Star-Delta timer coil with K1. 15-16 feeds K3 (star), 15-18 feeds K2 (delta).<br>
+        <b>6) Interlock:</b> K2 NC in series with K3 coil, K3 NC in series with K2 coil.<br><br>
+        <b>Result:</b> motor starts in star, changes to delta automatically, and the motor badge shows STAR / DELTA / OPEN.
+      </div>
     </details>
     <details open class="pgroup"><summary><span class="ar-only">ℹ️ طريقة الاستخدام</span><span class="en-only">ℹ️ How to use</span></summary>
       <div class="hint ar-only">
@@ -253,19 +280,25 @@ const NS = 'http://www.w3.org/2000/svg';
 
 /* ---------- Component types (size + port geometry) ---------- */
 const TYPES = {
-  power:    { label:'Power Supply 3Φ',  w:100, h:120, color:'#ef4444', ports:[{id:'L1',x:95,y:20},{id:'L2',x:95,y:40},{id:'L3',x:95,y:60},{id:'N',x:95,y:90}] },
-  power_1ph:{ label:'Power Supply 1Φ',  w:100, h:100, color:'#ef4444', ports:[{id:'L',x:95,y:30},{id:'N',x:95,y:70}] },
-  mcb:      { label:'MCB',           w:90,  h:90,  color:'#f59e0b', ports:[{id:'1',x:7,y:55},{id:'2',x:83,y:55}] },
+  power:    { label:'Power Supply 3Φ',  w:120, h:160, color:'#ef4444', ports:[
+    {id:'L1',x:115,y:25},{id:'L2',x:115,y:50},{id:'L3',x:115,y:75},
+    {id:'N',x:115,y:115},{id:'PE',x:115,y:145}] },
+  power_1ph:{ label:'Power Supply 1Φ',  w:120, h:125, color:'#ef4444', ports:[
+    {id:'L',x:115,y:30},{id:'N',x:115,y:70},{id:'PE',x:115,y:110}] },
+  mcb:      { label:'MCB 1P',         w:90,  h:90,  color:'#f59e0b', ports:[{id:'1',x:7,y:55},{id:'2',x:83,y:55}] },
+  mcb_3p:   { label:'MCB 3P',         w:110, h:170, color:'#f59e0b', ports:[
+    {id:'1',x:22,y:8},{id:'3',x:55,y:8},{id:'5',x:88,y:8},
+    {id:'2',x:22,y:162},{id:'4',x:55,y:162},{id:'6',x:88,y:162}] },
   pb_no:    { label:'Push Button NO',w:90,  h:95,  color:'#22c55e', ports:[{id:'1',x:7,y:68},{id:'2',x:83,y:68}] },
   pb_nc:    { label:'Push Button NC',w:90,  h:95,  color:'#ef4444', ports:[{id:'1',x:7,y:68},{id:'2',x:83,y:68}] },
   estop:    { label:'E-STOP',        w:90,  h:100, color:'#ef4444', ports:[{id:'1',x:7,y:72},{id:'2',x:83,y:72}] },
   selector: { label:'Selector',      w:90,  h:95,  color:'#38bdf8', ports:[{id:'1',x:7,y:68},{id:'2',x:83,y:68}] },
-  contactor:{ label:'Contactor 3P',     w:160, h:200, color:'#00d4ff', ports:[
-    {id:'A1',x:10,y:30},{id:'A2',x:10,y:180},
-    {id:'1',x:150,y:20},{id:'2',x:150,y:45},
-    {id:'3',x:150,y:70},{id:'4',x:150,y:95},
-    {id:'5',x:150,y:120},{id:'6',x:150,y:145},
-    {id:'13',x:150,y:165},{id:'14',x:150,y:185}] },
+  contactor:{ label:'Contactor 3P',     w:180, h:240, color:'#00d4ff', ports:[
+    {id:'A1',x:12,y:40},{id:'A2',x:12,y:210},
+    {id:'1',x:60,y:8},{id:'3',x:105,y:8},{id:'5',x:150,y:8},
+    {id:'2',x:60,y:232},{id:'4',x:105,y:232},{id:'6',x:150,y:232},
+    {id:'13',x:168,y:130},{id:'14',x:168,y:155},
+    {id:'21',x:168,y:180},{id:'22',x:168,y:205}] },
   relay:    { label:'Aux Relay',      w:130, h:150, color:'#a78bfa', ports:[
     {id:'A1',x:10,y:30},{id:'A2',x:10,y:120},
     {id:'13',x:120,y:40},{id:'14',x:120,y:70},
@@ -273,24 +306,32 @@ const TYPES = {
   timer:    { label:'Timer',         w:140, h:150, color:'#f472b6', ports:[
     {id:'A1',x:10,y:30},{id:'A2',x:10,y:120},
     {id:'15',x:130,y:45},{id:'18',x:130,y:105}] },
-  ol:       { label:'Overload',      w:120, h:120, color:'#f59e0b', ports:[
-    {id:'1',x:8,y:26},{id:'2',x:112,y:26},
-    {id:'95',x:8,y:96},{id:'96',x:112,y:96}] },
+  ol:       { label:'Overload 3P',    w:140, h:170, color:'#f59e0b', ports:[
+    {id:'1',x:30,y:8},{id:'3',x:70,y:8},{id:'5',x:110,y:8},
+    {id:'2',x:30,y:122},{id:'4',x:70,y:122},{id:'6',x:110,y:122},
+    {id:'95',x:30,y:145},{id:'96',x:70,y:145},
+    {id:'97',x:30,y:162},{id:'98',x:70,y:162}] },
   lamp:     { label:'Lamp',          w:90,  h:90,  color:'#f5c518', ports:[{id:'1',x:8,y:55},{id:'2',x:82,y:55}] },
-  motor:    { label:'Motor 3-Phase', w:110, h:140, color:'#a78bfa', ports:[
-    {id:'U1',x:8,y:20},{id:'V1',x:8,y:45},{id:'W1',x:8,y:70},
-    {id:'U2',x:8,y:95},{id:'V2',x:8,y:115},{id:'W2',x:8,y:135}] },
+  motor:    { label:'Motor 3-Phase', w:180, h:180, color:'#a78bfa', ports:[
+    {id:'U1',x:8,y:55},{id:'V1',x:8,y:90},{id:'W1',x:8,y:125},
+    {id:'U2',x:172,y:55},{id:'V2',x:172,y:90},{id:'W2',x:172,y:125}] },
   motor_1ph:{ label:'Motor 1-Phase', w:110, h:110, color:'#c084fc', ports:[{id:'1',x:8,y:55},{id:'2',x:102,y:55}] },
   motor_dc: { label:'DC Motor',      w:110, h:110, color:'#60a5fa', ports:[{id:'1',x:8,y:55},{id:'2',x:102,y:55}] },
   motor_stepper:{label:'Stepper Motor',w:110,h:110,color:'#34d399', ports:[{id:'1',x:8,y:55},{id:'2',x:102,y:55}] },
   motor_servo:{label:'Servo Motor',  w:110, h:110, color:'#fb923c', ports:[{id:'1',x:8,y:55},{id:'2',x:102,y:55}] },
   alarm:    { label:'Alarm Horn',    w:100, h:100, color:'#ef4444', ports:[{id:'1',x:8,y:60},{id:'2',x:92,y:60}] },
   mccb:     { label:'MCCB',          w:104, h:110, color:'#f59e0b', ports:[{id:'1',x:8,y:55},{id:'2',x:96,y:55}] },
+  mccb_3p:  { label:'MCCB 3P',       w:140, h:160, color:'#f59e0b', ports:[
+    {id:'1',x:35,y:8},{id:'3',x:70,y:8},{id:'5',x:105,y:8},
+    {id:'2',x:35,y:152},{id:'4',x:70,y:152},{id:'6',x:105,y:152}] },
   rccb:     { label:'RCCB / RCBO',   w:104, h:110, color:'#f59e0b', ports:[{id:'1',x:8,y:55},{id:'2',x:96,y:55}] },
   fuse:     { label:'Fuse',          w:84,  h:90,  color:'#f59e0b', ports:[{id:'1',x:7,y:55},{id:'2',x:77,y:55}] },
   spd:      { label:'SPD Surge',     w:92,  h:110, color:'#38bdf8', ports:[{id:'1',x:8,y:55},{id:'2',x:84,y:55}] },
   timer_off:{ label:'Timer Off-Delay',w:140,h:150, color:'#f472b6', ports:[
     {id:'A1',x:10,y:30},{id:'A2',x:10,y:120},{id:'15',x:130,y:45},{id:'18',x:130,y:105}] },
+  timer_sd: { label:'Star-Delta Timer',w:150,h:170, color:'#f472b6', ports:[
+    {id:'A1',x:10,y:40},{id:'A2',x:10,y:150},
+    {id:'15',x:140,y:45},{id:'16',x:140,y:80},{id:'18',x:140,y:125}] },
   flasher:  { label:'Flasher Relay', w:140, h:150, color:'#f472b6', ports:[
     {id:'A1',x:10,y:30},{id:'A2',x:10,y:120},{id:'15',x:130,y:45},{id:'18',x:130,y:105}] },
   phase:    { label:'Phase Monitor', w:130, h:140, color:'#22c55e', ports:[
@@ -303,6 +344,7 @@ const TYPES = {
   ats:      { label:'ATS Changeover',w:160, h:180, color:'#00d4ff', ports:[
     {id:'AL',x:8,y:35},{id:'AN',x:8,y:70},{id:'BL',x:8,y:110},{id:'BN',x:8,y:145},{id:'OL',x:152,y:70},{id:'ON',x:152,y:110}] },
   ctmeter:  { label:'CT / Ammeter',  w:100, h:100, color:'#38bdf8', ports:[{id:'1',x:8,y:55},{id:'2',x:92,y:55}] },
+  voltmeter:{ label:'Voltmeter',     w:120, h:110, color:'#38bdf8', ports:[{id:'1',x:8,y:60},{id:'2',x:112,y:60}] },
   float:    { label:'Float / Level', w:100, h:120, color:'#38bdf8', ports:[{id:'1',x:8,y:60},{id:'2',x:92,y:60}] },
   pressure: { label:'Pressure Switch',w:110,h:110, color:'#38bdf8', ports:[{id:'1',x:8,y:70},{id:'2',x:102,y:70}] },
   thermostat:{label:'Thermostat',    w:100, h:120, color:'#38bdf8', ports:[{id:'1',x:8,y:60},{id:'2',x:92,y:60}] },
@@ -316,10 +358,10 @@ const TYPES = {
 };
 
 const PREFIX = {
-  power:'PS',power_1ph:'PS',mcb:'F',pb_no:'S',pb_nc:'S',estop:'E',selector:'SA',contactor:'K',
-  relay:'KA',timer:'KT',ol:'F',lamp:'H',motor:'M',motor_1ph:'M',motor_dc:'M',motor_stepper:'SM',motor_servo:'SV',alarm:'HA',
-  mccb:'Q',rccb:'Q',fuse:'FU',spd:'SPD',timer_off:'KT',flasher:'KF',phase:'KP',
-  terminal:'XT',busbar:'BB',generator:'G',ats:'ATS',ctmeter:'PA',float:'LS',
+  power:'PS',power_1ph:'PS',mcb:'F',mcb_3p:'QF',pb_no:'S',pb_nc:'S',estop:'E',selector:'SA',contactor:'K',
+  relay:'KA',timer:'KT',timer_sd:'KT',ol:'F',lamp:'H',motor:'M',motor_1ph:'M',motor_dc:'M',motor_stepper:'SM',motor_servo:'SV',alarm:'HA',
+  mccb:'Q',mccb_3p:'QM',rccb:'Q',fuse:'FU',spd:'SPD',timer_off:'KT',flasher:'KF',phase:'KP',
+  terminal:'XT',busbar:'BB',generator:'G',ats:'ATS',ctmeter:'PA',voltmeter:'PV',float:'LS',
   pressure:'PS',thermostat:'TS',plc:'PLC',vfd:'VFD'
 };
 
@@ -351,7 +393,7 @@ function isMotor(type){
 }
 function isPower(type){ return type === 'power' || type === 'power_1ph'; }
 function defaultData(type){
-  if(type === 'motor')  return { kw:2.2, fla:4.8, rpm:1440, poles:4, volts:'400 V Δ/Y' };
+  if(type === 'motor')  return { kw:2.2, fla:4.8, rpm:1440, poles:4, volts:'400 V Δ/Y', connection:'DELTA' };
   if(type === 'motor_1ph') return { kw:0.75, fla:4.2, rpm:1440, cap:25, volts:'230 V' };
   if(type === 'motor_dc')  return { kw:1.5, fla:8, rpm:1500, volts:'220 V DC' };
   if(type === 'motor_stepper') return { kw:0.1, fla:2, rpm:300, steps:200 };
@@ -364,17 +406,20 @@ function defaultData(type){
   if(type === 'pressure') return { value:3, setpoint:6, unit:'bar', contact:'NO' };
   if(type === 'thermostat') return { value:25, setpoint:80, unit:'°C', contact:'NO' };
   if(type === 'vfd')    return { kw:2.2, ratedA:4.8, target:50, accel:10, decel:10, mode:'V/f', volts:'400 V' };
-  if(type === 'mcb')    return { curve:'C', rating:16, poles:'3P' };
+  if(type === 'mcb')    return { curve:'C', rating:16, poles:'1P' };
+  if(type === 'mcb_3p') return { curve:'C', rating:25, poles:'3P' };
   if(type === 'mccb')   return { rating:63, poles:'3P', trip:'Thermal-Magnetic' };
+  if(type === 'mccb_3p')return { rating:63, poles:'3P', trip:'Thermal-Magnetic' };
   if(type === 'rccb')   return { sens:'30 mA', poles:'4P', type:'AC' };
   if(type === 'fuse')   return { rating:16, type:'gG', volts:'400 V' };
   if(type === 'spd')    return { type:'Type 2', uc:'400 V' };
   if(type === 'terminal') return { size:'4 mm²' };
   if(type === 'busbar')   return { bar:'100 A' };
   if(type === 'ctmeter')  return { ratio:'100/5', cls:'0.5' };
+  if(type === 'voltmeter')return { cls:'1.5', range:'0–500 V AC', mode:'Digital' };
   if(type === 'contactor') return { coil:'230 V AC', ac3:'9 A' };
   if(type === 'relay')     return { coil:'230 V AC' };
-  if(type === 'timer' || type === 'timer_off') return { range:'0–10 s' };
+  if(type === 'timer' || type === 'timer_off' || type === 'timer_sd') return { range:'0–30 s' };
   if(type === 'phase')     return { };
   if(type === 'plc')    return {
     model:'LOGO! 8', timerDelay:3, counterPreset:3,
@@ -390,6 +435,7 @@ function defaultData(type){
 function defaultState(type){
   switch(type){
     case 'mcb':      return { closed:true };
+    case 'mcb_3p':   return { closed:true };
     case 'pb_no':    return { pressed:false };
     case 'pb_nc':    return { pressed:false };
     case 'estop':    return { tripped:false };
@@ -397,6 +443,7 @@ function defaultState(type){
     case 'contactor':
     case 'relay':    return { coil:false };
     case 'timer':    return { coil:false, t:0, delay:3, elapsed:false };
+    case 'timer_sd': return { coil:false, t:0, delay:8, elapsed:false };
     case 'ol':       return { tripped:false };
     case 'lamp':
     case 'motor':
@@ -406,6 +453,7 @@ function defaultState(type){
     case 'motor_servo':
     case 'alarm':    return { energized:false, amps:0, runTime:0 };
     case 'mccb':     return { closed:true };
+    case 'mccb_3p':  return { closed:true };
     case 'rccb':     return { closed:true, tripped:false };
     case 'fuse':     return { blown:false };
     case 'spd':      return { fault:false };
@@ -415,6 +463,7 @@ function defaultState(type){
     case 'generator':return { on:false };
     case 'ats':      return { pos:'A' };
     case 'ctmeter':  return { energized:false, amps:0 };
+    case 'voltmeter':return { energized:false, volts:null };
     case 'float':
     case 'pressure':
     case 'thermostat': return { triggered:false };
@@ -584,31 +633,39 @@ function symPower(c){
   const three = c.type === 'power';
   if(three){
     return wrap(c,
-      `<rect x="10" y="10" width="64" height="100" rx="8" fill="url(#bodyGrad)" stroke="${CL.edge}"/>`
-      + `<path d="M42 30 L31 52 h9 l-6 20 17-26 h-9 l6-16 z" fill="${on?CL.hot:CL.dim}"/>`
-      + `<text x="42" y="96" text-anchor="middle" fill="${CL.muted}" font-size="9" font-family="Segoe UI,Arial">${supplyV} V</text>`
-      + `<line x1="74" y1="20" x2="95" y2="20" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
-      + `<line x1="74" y1="40" x2="95" y2="40" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
-      + `<line x1="74" y1="60" x2="95" y2="60" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
-      + `<line x1="74" y1="90" x2="95" y2="90" stroke="${CL.blue}" stroke-width="2.5"/>`
-      + `<text x="77" y="18" fill="${CL.red}" font-size="8" font-family="Segoe UI,Arial">L1</text>`
-      + `<text x="77" y="38" fill="${CL.amber}" font-size="8" font-family="Segoe UI,Arial">L2</text>`
-      + `<text x="77" y="58" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">L3</text>`
-      + `<text x="77" y="96" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">N</text>`
-      + `<circle cx="42" cy="11" r="4" fill="${on?CL.green:CL.red}"/>`
-      + txt(42,108,on?'MAIN ON':'OFF',8,on?CL.green:CL.red)
+      `<rect x="8" y="8" width="80" height="144" rx="8" fill="url(#bodyGrad)" stroke="${CL.edge}" stroke-width="2"/>`
+      + `<rect x="16" y="16" width="64" height="18" rx="3" fill="#1e293b"/>`
+      + txt(48,29,'3~ SUPPLY',7,'#e2e8f0')
+      + `<path d="M48 40 L37 62 h9 l-6 20 17-26 h-9 l6-16 z" fill="${on?CL.hot:CL.dim}"/>`
+      + `<text x="48" y="96" text-anchor="middle" fill="${CL.muted}" font-size="9" font-family="Segoe UI,Arial">${supplyV} V</text>`
+      + `<text x="48" y="108" text-anchor="middle" fill="${CL.muted}" font-size="7" font-family="Segoe UI,Arial">50 Hz</text>`
+      + `<line x1="88" y1="25" x2="115" y2="25" stroke="${on?'#ef4444':CL.dim}" stroke-width="3"/>`
+      + `<line x1="88" y1="50" x2="115" y2="50" stroke="${on?'#f59e0b':CL.dim}" stroke-width="3"/>`
+      + `<line x1="88" y1="75" x2="115" y2="75" stroke="${on?'#3b82f6':CL.dim}" stroke-width="3"/>`
+      + `<line x1="88" y1="115" x2="115" y2="115" stroke="${on?'#93c5fd':CL.dim}" stroke-width="3"/>`
+      + `<line x1="88" y1="145" x2="115" y2="145" stroke="${on?'#22c55e':CL.dim}" stroke-width="3"/>`
+      + `<text x="92" y="22" fill="#ef4444" font-size="7" font-weight="bold" font-family="Segoe UI,Arial">L1</text>`
+      + `<text x="92" y="47" fill="#f59e0b" font-size="7" font-weight="bold" font-family="Segoe UI,Arial">L2</text>`
+      + `<text x="92" y="72" fill="#3b82f6" font-size="7" font-weight="bold" font-family="Segoe UI,Arial">L3</text>`
+      + `<text x="92" y="112" fill="#93c5fd" font-size="7" font-weight="bold" font-family="Segoe UI,Arial">N</text>`
+      + `<text x="92" y="142" fill="#22c55e" font-size="7" font-weight="bold" font-family="Segoe UI,Arial">PE</text>`
+      + `<circle cx="60" cy="132" r="4" fill="${on?CL.green:CL.red}"/>`
+      + txt(48,140,on?'ON':'OFF',7,on?CL.green:CL.red)
     );
   }
   return wrap(c,
-    `<rect x="10" y="18" width="64" height="64" rx="8" fill="url(#bodyGrad)" stroke="${CL.edge}"/>`
-    + `<path d="M44 30 L33 52 h9 l-6 20 17-26 h-9 l6-16 z" fill="${on?CL.hot:CL.dim}"/>`
-    + `<text x="42" y="76" text-anchor="middle" fill="${CL.muted}" font-size="9" font-family="Segoe UI,Arial">${supplyV} V</text>`
-    + `<line x1="74" y1="30" x2="95" y2="30" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
-    + `<line x1="74" y1="70" x2="95" y2="70" stroke="${CL.blue}" stroke-width="2.5"/>`
-    + `<text x="77" y="23" fill="${CL.red}" font-size="8" font-family="Segoe UI,Arial">L</text>`
-    + `<text x="77" y="86" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">N</text>`
-    + `<circle cx="42" cy="11" r="4" fill="${on?CL.green:CL.red}"/>`
-    + txt(42,96,on?'MAIN ON':'OFF',8,on?CL.green:CL.red)
+    `<rect x="8" y="8" width="80" height="109" rx="8" fill="url(#bodyGrad)" stroke="${CL.edge}" stroke-width="2"/>`
+    + `<rect x="16" y="16" width="64" height="18" rx="3" fill="#1e293b"/>`
+    + txt(48,29,'1~ SUPPLY',7,'#e2e8f0')
+    + `<path d="M48 42 L37 64 h9 l-6 20 17-26 h-9 l6-16 z" fill="${on?CL.hot:CL.dim}"/>`
+    + `<text x="48" y="98" text-anchor="middle" fill="${CL.muted}" font-size="8" font-family="Segoe UI,Arial">${supplyV} V</text>`
+    + `<line x1="88" y1="30" x2="115" y2="30" stroke="${on?'#ef4444':CL.dim}" stroke-width="3"/>`
+    + `<line x1="88" y1="70" x2="115" y2="70" stroke="${on?'#93c5fd':CL.dim}" stroke-width="3"/>`
+    + `<line x1="88" y1="110" x2="115" y2="110" stroke="${on?'#22c55e':CL.dim}" stroke-width="3"/>`
+    + `<text x="92" y="27" fill="#ef4444" font-size="7" font-weight="bold" font-family="Segoe UI,Arial">L</text>`
+    + `<text x="92" y="67" fill="#93c5fd" font-size="7" font-weight="bold" font-family="Segoe UI,Arial">N</text>`
+    + `<text x="92" y="107" fill="#22c55e" font-size="7" font-weight="bold" font-family="Segoe UI,Arial">PE</text>`
+    + `<circle cx="60" cy="82" r="4" fill="${on?CL.green:CL.red}"/>`
   );
 }
 
@@ -631,6 +688,81 @@ function symMcb(c){
     + txt(45,88,on?'ON':'OFF',9,on?CL.green:CL.red)
   );
 }
+
+function symMcb3(c){
+  const on = c.state.closed;
+  const xs = [22,55,88];
+  let poles = '';
+  xs.forEach((x,i) => {
+    poles += `<rect x="${x-13}" y="22" width="26" height="118" rx="3" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>`
+      + `<line x1="${x}" y1="8" x2="${x}" y2="22" stroke="${CL.metal}" stroke-width="2.5"/>`
+      + `<line x1="${x}" y1="140" x2="${x}" y2="162" stroke="${CL.metal}" stroke-width="2.5"/>`
+      + `<rect x="${x-6}" y="34" width="12" height="30" rx="2" fill="${on?'#052e16':'#450a0a'}" stroke="${on?CL.green:CL.red}" stroke-width="1.5"/>`
+      + (on
+          ? `<line x1="${x}" y1="40" x2="${x}" y2="112" stroke="#1e293b" stroke-width="3"/>`
+          : `<line x1="${x}" y1="40" x2="${x+9}" y2="86" stroke="${CL.red}" stroke-width="3"/>`)
+      + `<circle cx="${x}" cy="116" r="3" fill="${CL.metal}" stroke="#0f172a"/>`
+      + txt(x,132,['1','3','5'][i],6,CL.muted);
+  });
+  return wrap(c,
+    `<rect x="4" y="16" width="102" height="132" rx="5" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>`
+    + poles
+    + `<rect x="18" y="118" width="74" height="13" rx="3" fill="${on?'#052e16':'#450a0a'}" stroke="${on?CL.green:CL.red}"/>`
+    + txt(55,128,on?'I  ON':'O  OFF',7,on?CL.green:CL.red)
+    + txt(55,156,(c.data.curve||'C')+' · '+(c.data.rating||25)+'A · 3P',7,CL.muted)
+  );
+}
+
+function symMccb3(c){
+  const on = c.state.closed;
+  const xs = [35,70,105];
+  let poles = '';
+  xs.forEach((x,i) => {
+    poles += `<rect x="${x-14}" y="24" width="28" height="104" rx="4" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>`
+      + `<line x1="${x}" y1="8" x2="${x}" y2="24" stroke="${CL.metal}" stroke-width="3"/>`
+      + `<line x1="${x}" y1="128" x2="${x}" y2="152" stroke="${CL.metal}" stroke-width="3"/>`
+      + `<rect x="${x-8}" y="34" width="16" height="36" rx="2" fill="#111c33" stroke="${on?CL.green:CL.red}" stroke-width="1.5"/>`
+      + (on
+          ? `<line x1="${x}" y1="42" x2="${x}" y2="112" stroke="${CL.green}" stroke-width="3"/>`
+          : `<line x1="${x}" y1="42" x2="${x+10}" y2="82" stroke="${CL.red}" stroke-width="3"/>`)
+      + `<circle cx="${x}" cy="116" r="3" fill="${CL.metal}"/>`
+      + txt(x,36,['1','3','5'][i],5,'#e2e8f0');
+  });
+  return wrap(c,
+    `<rect x="4" y="16" width="132" height="130" rx="6" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>`
+    + poles
+    + `<rect x="22" y="76" width="96" height="18" rx="3" fill="#0b1220" stroke="${on?CL.green:CL.red}"/>`
+    + txt(70,89,on?'I  ON':'TRIP',8,on?CL.green:CL.red)
+    + txt(70,142,(c.data.rating||63)+'A · 3P · '+(c.data.trip||'TM'),7,CL.muted)
+  );
+}
+
+function symTimerSd(c){
+  const on = c.state.coil;
+  const done = on && c.state.elapsed;
+  const remain = Math.max(0, c.state.delay - c.state.t);
+  const star = !done;
+  return wrap(c,
+    `<rect x="4" y="4" width="142" height="162" rx="10" fill="url(#bodyGrad)" stroke="#475569" stroke-width="2"/>`
+    + txt(75,18,c.label,10,'#1e293b')
+    + `<polyline points="10,40 22,40 22,62" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
+    + `<polyline points="10,150 22,150 22,126" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
+    + `<rect x="22" y="62" width="34" height="64" rx="5" fill="#334155" stroke="${on?CL.blue:CL.edge}" stroke-width="2"/>`
+    + `<path d="M39 72 q-7 6 0 12 q7 6 0 12 q-7 6 0 12 q7 6 0 12" fill="none" stroke="${on?CL.blue:CL.dim}" stroke-width="2"/>`
+    + txt(39,146,'COIL',7,on?CL.blue:CL.dim)
+    + `<circle cx="92" cy="60" r="16" fill="#0b1220" stroke="${done?CL.green:CL.amber}" stroke-width="2"/>`
+    + `<line x1="92" y1="60" x2="${done?104:99}" y2="${done?60:50}" stroke="${done?CL.green:CL.amber}" stroke-width="2.5"/>`
+    + txt(92,88,on?(done?'Δ DELTA':remain.toFixed(1)+' s'):'IDLE',7,on?(done?CL.green:CL.amber):CL.dim)
+    + `<line x1="120" y1="45" x2="140" y2="45" stroke="${CL.metal}" stroke-width="2"/>`
+    + `<line x1="120" y1="80" x2="140" y2="80" stroke="${CL.metal}" stroke-width="2"/>`
+    + contactV(120,45,80,star)
+    + txt(96,108,'15-16 ★',7,star?CL.green:CL.dim)
+    + `<line x1="120" y1="125" x2="140" y2="125" stroke="${CL.metal}" stroke-width="2"/>`
+    + txt(96,140,'15-18 Δ',7,done?CL.green:CL.dim)
+    + txt(75,158,done?'STAR → DELTA DONE':(on?'STAR TIMER RUNNING':'STAR READY'),7,on?CL.green:CL.muted)
+  );
+}
+
 
 function symPb(c){
   const no = c.type === 'pb_no';
@@ -680,35 +812,42 @@ function symSelector(c){
 
 function symContactor(c){
   const on = c.state.coil;
+  const xs = [60,105,150];
+  let poles = '';
+  xs.forEach((x,i) => {
+    poles += `<line x1="${x}" y1="8" x2="${x}" y2="56" stroke="${CL.metal}" stroke-width="3"/>`
+      + `<line x1="${x}" y1="128" x2="${x}" y2="232" stroke="${CL.metal}" stroke-width="3"/>`
+      + `<circle cx="${x}" cy="56" r="4" fill="${CL.metal}" stroke="#0f172a"/>`
+      + `<circle cx="${x}" cy="128" r="4" fill="${CL.metal}" stroke="#0f172a"/>`
+      + (on
+          ? `<line x1="${x}" y1="58" x2="${x}" y2="126" stroke="#1e293b" stroke-width="3"/>`
+          : `<line x1="${x}" y1="58" x2="${x+24}" y2="112" stroke="${CL.dim}" stroke-width="3"/>`)
+      + txt(x,42,['1','3','5'][i],7,'#1e293b')
+      + txt(x,150,['2','4','6'][i],7,'#1e293b');
+  });
   return wrap(c,
-    `<rect x="4" y="4" width="152" height="192" rx="10" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>`
-    + txt(70,17,c.label,10,'#1e293b')
-    + txt(10,30,'L1',6,'#1e293b','start')
-    + txt(10,55,'L2',6,'#1e293b','start')
-    + txt(10,80,'L3',6,'#1e293b','start')
-    + txt(10,55,'L2',6,'#1e293b','start')
-    + txt(10,80,'L3',6,'#1e293b','start')
-    + `<polyline points="10,30 20,30 20,52" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<polyline points="10,150 20,150 20,128" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
-    + txt(25,44,'A1',7,CL.muted,'start')
-    + txt(25,142,'A2',7,CL.muted,'start')
-    + `<rect x="20" y="52" width="38" height="76" rx="5" fill="#334155" stroke="${on?CL.blue:CL.edge}" stroke-width="2"/>`
-    + `<path d="M39 62 q-7 6 0 12 q7 6 0 12 q-7 6 0 12 q7 6 0 12" fill="none" stroke="${on?CL.blue:CL.dim}" stroke-width="2"/>`
-    + (on ? `<circle cx="39" cy="90" r="22" fill="${CL.blue}" opacity="0.13"/>` : '')
-    + txt(39,138,'COIL',7,on?CL.blue:CL.dim)
-    + `<line x1="112" y1="28" x2="130" y2="28" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<line x1="112" y1="56" x2="130" y2="56" stroke="${CL.metal}" stroke-width="2"/>`
-    + contactV(112,28,56,on)
-    + txt(94,74,'MAIN',7,on?CL.green:CL.dim,'end')
-    + `<line x1="112" y1="86" x2="130" y2="86" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<line x1="112" y1="114" x2="130" y2="114" stroke="${CL.metal}" stroke-width="2"/>`
-    + contactV(112,86,114,on)
-    + txt(94,105,'NO',7,on?CL.green:CL.dim,'end')
-    + `<line x1="112" y1="140" x2="130" y2="140" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<line x1="112" y1="168" x2="130" y2="168" stroke="${CL.metal}" stroke-width="2"/>`
-    + contactV(112,140,168,!on)
-    + txt(94,159,'NC',7,on?CL.dim:CL.green,'end')
-    + txt(70,150,on?'ENERGIZED':'OFF',8,on?CL.green:CL.dim)
+    `<rect x="4" y="4" width="172" height="232" rx="12" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>`
+    + `<rect x="14" y="10" width="152" height="24" rx="4" fill="#334155"/>`
+    + txt(90,27,c.label,10,'#f8fafc')
+    + poles
+    + `<polyline points="12,40 32,40 32,84" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
+    + `<polyline points="12,210 32,210 32,166" fill="none" stroke="${CL.metal}" stroke-width="2"/>`
+    + `<rect x="32" y="84" width="28" height="82" rx="5" fill="#334155" stroke="${on?CL.blue:CL.edge}" stroke-width="2"/>`
+    + `<path d="M46 96 q-6 6 0 12 q6 6 0 12 q-6 6 0 12 q6 6 0 12" fill="none" stroke="${on?CL.blue:CL.dim}" stroke-width="2"/>`
+    + txt(24,78,'A1',7,'#1e293b','start')
+    + txt(24,162,'A2',7,'#1e293b','start')
+    + txt(90,92,'MAIN',7,CL.muted)
+    + (on ? `<circle cx="90" cy="110" r="34" fill="${CL.blue}" opacity="0.10"/>` : '')
+    + txt(90,190,on?'ENERGIZED':'OFF',8,on?CL.green:CL.dim)
+    + `<line x1="168" y1="130" x2="152" y2="130" stroke="${CL.metal}" stroke-width="1.5"/>`
+    + `<line x1="168" y1="155" x2="152" y2="155" stroke="${CL.metal}" stroke-width="1.5"/>`
+    + contactV(152,130,155,on)
+    + txt(140,146,'13-14',6,'#1e293b','end')
+    + `<line x1="168" y1="180" x2="152" y2="180" stroke="${CL.metal}" stroke-width="1.5"/>`
+    + `<line x1="168" y1="205" x2="152" y2="205" stroke="${CL.metal}" stroke-width="1.5"/>`
+    + contactV(152,180,205,!on)
+    + txt(140,196,'21-22',6,'#1e293b','end')
+    + txt(90,218,on?'NO CLOSED · NC OPEN':'NO OPEN · NC CLOSED',6,CL.muted)
   );
 }
 
@@ -758,21 +897,32 @@ function symTimer(c){
 
 function symOl(c){
   const trip = c.state.tripped;
+  const xs = [30,70,110];
+  let heaters = '';
+  xs.forEach((x,i) => {
+    heaters += `<line x1="${x}" y1="8" x2="${x}" y2="26" stroke="${CL.metal}" stroke-width="2.5"/>`
+      + `<path d="M${x} 26 l-8 8 l16 10 l-16 10 l16 10 l-16 10 l16 10 l-8 8" fill="none" stroke="${trip?CL.red:CL.amber}" stroke-width="2"/>`
+      + `<line x1="${x}" y1="92" x2="${x}" y2="122" stroke="${CL.metal}" stroke-width="2.5"/>`
+      + txt(x,74,['1','3','5'][i],6,'#1e293b')
+      + txt(x,116,['2','4','6'][i],6,'#1e293b');
+  });
   return wrap(c,
-    `<rect x="4" y="4" width="112" height="112" rx="10" fill="none" stroke="#334155"/>`
-    + txt(60,17,c.label,10,'#1e293b')
-    + `<line x1="8" y1="26" x2="20" y2="26" stroke="${CL.metal}" stroke-width="2"/>`
-    + (trip
-        ? `<line x1="20" y1="26" x2="38" y2="26" stroke="${CL.red}" stroke-width="2"/>` + txt(60,30,'TRIPPED',8,CL.red) + `<line x1="82" y1="26" x2="112" y2="26" stroke="${CL.metal}" stroke-width="2"/>`
-        : `<path d="M20 26 l10 -10 l10 20 l10 -20 l10 20 l10 -20 l10 20 l10 -10" fill="none" stroke="${CL.amber}" stroke-width="2"/>` + `<line x1="100" y1="26" x2="112" y2="26" stroke="${CL.metal}" stroke-width="2"/>`)
-    + txt(60,52,'THERMAL',7,CL.muted)
-    + txt(60,64,(c.data.setA||0)+' A SET',8,CL.amber)
-    + `<rect x="42" y="70" width="36" height="14" rx="3" fill="${trip?'#7f1d1d':'#1e293b'}" stroke="${trip?CL.red:CL.edge}"/>`
-    + txt(60,80,trip?'RESET':'OK',7,'#ffffff')
-    + `<line x1="8" y1="96" x2="34" y2="96" stroke="${CL.metal}" stroke-width="2"/>`
-    + contactH(34,86,96,!trip)
-    + `<line x1="86" y1="96" x2="112" y2="96" stroke="${CL.metal}" stroke-width="2"/>`
-    + txt(60,112,'NC 95-96',7,trip?CL.red:CL.green)
+    `<rect x="4" y="4" width="132" height="162" rx="8" fill="url(#bodyGrad)" stroke="#475569" stroke-width="2"/>`
+    + `<rect x="14" y="10" width="112" height="18" rx="3" fill="#334155"/>`
+    + txt(70,23,c.label,9,'#f8fafc')
+    + heaters
+    + txt(70,104,(c.data.setA||0)+' A',7,trip?CL.red:CL.amber)
+    + `<rect x="52" y="128" width="36" height="14" rx="3" fill="${trip?'#7f1d1d':'#1e293b'}" stroke="${trip?CL.red:CL.edge}"/>`
+    + txt(70,138,trip?'RESET':'SET',6,'#ffffff')
+    + `<line x1="30" y1="145" x2="42" y2="145" stroke="${CL.metal}" stroke-width="1.5"/>`
+    + `<line x1="58" y1="145" x2="70" y2="145" stroke="${CL.metal}" stroke-width="1.5"/>`
+    + contactV(42,145,145,!trip)
+    + txt(84,148,'95-96',6,'#1e293b','start')
+    + `<line x1="30" y1="162" x2="42" y2="162" stroke="${CL.metal}" stroke-width="1.5"/>`
+    + `<line x1="58" y1="162" x2="70" y2="162" stroke="${CL.metal}" stroke-width="1.5"/>`
+    + contactV(42,162,162,trip)
+    + txt(84,165,'97-98',6,'#1e293b','start')
+    + txt(70,178,trip?'OVERLOAD TRIPPED':'THERMAL OK',7,trip?CL.red:CL.green)
   );
 }
 
@@ -798,56 +948,86 @@ function symMotor(c){
   const kind = c.type;
   const accent = kind === 'motor_1ph' ? '#c084fc' : kind === 'motor_dc' ? '#60a5fa' : kind === 'motor_stepper' ? '#34d399' : kind === 'motor_servo' ? '#fb923c' : '#24b99b';
   const badge = kind === 'motor_1ph' ? '1~' : kind === 'motor_dc' ? 'DC' : kind === 'motor_stepper' ? 'STEP' : kind === 'motor_servo' ? 'SERVO' : '3~';
-  let extra = '';
-  if(kind === 'motor_1ph'){
-    extra = `<line x1="68" y1="76" x2="76" y2="76" stroke="${CL.metal}" stroke-width="1.5"/>`
-      + `<line x1="72" y1="72" x2="72" y2="80" stroke="${CL.metal}" stroke-width="1.5"/>`
-      + `<line x1="76" y1="72" x2="76" y2="80" stroke="${CL.metal}" stroke-width="1.5"/>`
-      + txt(78,84,'C '+(d.cap||0)+'µF',6,CL.muted,'start');
-  } else if(kind === 'motor_dc'){
-    extra = `<line x1="46" y1="56" x2="60" y2="56" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
-      + `<line x1="53" y1="49" x2="53" y2="63" stroke="${on?accent:CL.metal}" stroke-width="1.5" stroke-dasharray="2 2"/>`;
-  } else if(kind === 'motor_stepper'){
-    extra = [0,1,2,3].map(i => {
-      const a = i * Math.PI / 2;
-      return `<circle cx="${55+22*Math.cos(a)}" cy="${45+22*Math.sin(a)}" r="2.5" fill="${on?accent:CL.dim}"/>`;
-    }).join('');
-  } else if(kind === 'motor_servo'){
-    extra = `<circle cx="83" cy="45" r="9" fill="#0b1220" stroke="${on?accent:CL.edge}" stroke-width="1.5"/>`
-      + txt(83,48,'E',7,on?accent:CL.muted);
+
+  if(kind !== 'motor'){
+    let extra = '';
+    if(kind === 'motor_1ph'){
+      extra = `<line x1="68" y1="76" x2="76" y2="76" stroke="${CL.metal}" stroke-width="1.5"/>`
+        + `<line x1="72" y1="72" x2="72" y2="80" stroke="${CL.metal}" stroke-width="1.5"/>`
+        + `<line x1="76" y1="72" x2="76" y2="80" stroke="${CL.metal}" stroke-width="1.5"/>`
+        + txt(78,84,'C '+(d.cap||0)+'µF',6,CL.muted,'start');
+    } else if(kind === 'motor_dc'){
+      extra = `<line x1="46" y1="56" x2="60" y2="56" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
+        + `<line x1="53" y1="49" x2="53" y2="63" stroke="${on?accent:CL.metal}" stroke-width="1.5" stroke-dasharray="2 2"/>`;
+    } else if(kind === 'motor_stepper'){
+      extra = [0,1,2,3].map(i => {
+        const a = i * Math.PI / 2;
+        return `<circle cx="${55+22*Math.cos(a)}" cy="${45+22*Math.sin(a)}" r="2.5" fill="${on?accent:CL.dim}"/>`;
+      }).join('');
+    } else if(kind === 'motor_servo'){
+      extra = `<circle cx="83" cy="45" r="9" fill="#0b1220" stroke="${on?accent:CL.edge}" stroke-width="1.5"/>`
+        + txt(83,48,'E',7,on?accent:CL.muted);
+    }
+    return wrap(c,
+      `<line x1="8" y1="55" x2="29" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
+      + `<line x1="81" y1="55" x2="102" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
+      + `<g class="${on?'vib':''}">`
+      + `<ellipse cx="55" cy="45" rx="30" ry="24" fill="url(#motorGrad)" stroke="#222a23" stroke-width="2.5"/>`
+      + `<g stroke="#8a947b" stroke-width="1" opacity=".7">${[0,1,2,3,4,5,6,7].map(i=>`<path d="M${39+i*3} 24 L${42+i*3} 66"/>`).join('')}</g>`
+      + `<rect x="40" y="8" width="30" height="12" rx="3" fill="#68745c" stroke="#30392e" stroke-width="2"/>`
+      + `<rect x="42" y="10" width="26" height="8" rx="2" fill="#b76524"/>`
+      + `<g fill="#d9d2bd" stroke="#514b3e" stroke-width="1">${[0,1,2].map(i=>`<circle cx="${46+i*8}" cy="14" r="2.5"/>`).join('')}</g>`
+      + `<g class="${on?'spin':''}">`
+      + `<line x1="37" y1="45" x2="73" y2="45" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
+      + `<line x1="55" y1="27" x2="55" y2="63" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
+      + `<circle cx="55" cy="45" r="7" fill="${CL.body}" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
+      + `</g>`
+      + extra
+      + `<rect x="72" y="16" width="32" height="13" rx="3" fill="#0b1220" stroke="${on?accent:CL.edge}"/>`
+      + txt(88,25,badge,7,on?accent:CL.muted)
+      + `</g>`
+      + txt(55,90,c.label,8,'#1e293b')
+      + txt(55,102,(d.kw||0)+' kW · '+(d.rpm||0)+' rpm',7,on?CL.green:CL.muted)
+      + (on ? txt(55,112,(c.state.amps||0).toFixed(1)+' A',7,CL.amber) : '')
+    );
   }
+
+  const mode = c.state.mode || 'OPEN';
+  const modeColor = mode === 'DELTA' ? CL.green : mode === 'STAR' ? CL.cyan : CL.red;
+  const modeText = mode === 'DELTA' ? 'Δ DELTA' : mode === 'STAR' ? 'Y STAR' : 'OPEN';
+
   return wrap(c,
-    `<line x1="8" y1="25" x2="29" y2="25" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<line x1="8" y1="45" x2="29" y2="45" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<line x1="8" y1="65" x2="29" y2="65" stroke="${CL.metal}" stroke-width="2"/>`
-    + txt(2,12,'IN',6,'#1e293b','start')
-    + txt(4,25,'U1',5,'#1e293b','start')
-    + txt(4,45,'V1',5,'#1e293b','start')
-    + txt(4,65,'W1',5,'#1e293b','start')
-    + txt(100,12,'OUT',6,'#1e293b','start')
-    + `<line x1="81" y1="25" x2="102" y2="25" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<line x1="81" y1="45" x2="102" y2="45" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<line x1="81" y1="65" x2="102" y2="65" stroke="${CL.metal}" stroke-width="2"/>`
-    + txt(106,25,'U2',5,'#1e293b','start')
-    + txt(106,45,'V2',5,'#1e293b','start')
-    + txt(106,65,'W2',5,'#1e293b','start')
-    + `<ellipse cx="55" cy="45" rx="30" ry="24" fill="url(#motorGrad)" stroke="#222a23" stroke-width="2.5"/>`
-    + `<g stroke="#8a947b" stroke-width="1" opacity=".7">${[0,1,2,3,4,5,6,7].map(i=>`<path d="M${39+i*3} 24 L${42+i*3} 66"/>`).join('')}</g>`
-    + `<rect x="40" y="8" width="30" height="12" rx="3" fill="#68745c" stroke="#30392e" stroke-width="2"/>`
-    + `<rect x="42" y="10" width="26" height="8" rx="2" fill="#b76524"/>`
-    + `<g fill="#d9d2bd" stroke="#514b3e" stroke-width="1">${[0,1,2].map(i=>`<circle cx="${46+i*8}" cy="14" r="2.5"/>`).join('')}</g>`
+    `<line x1="8" y1="55" x2="42" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<line x1="8" y1="90" x2="42" y2="90" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<line x1="8" y1="125" x2="42" y2="125" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<line x1="138" y1="55" x2="172" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<line x1="138" y1="90" x2="172" y2="90" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<line x1="138" y1="125" x2="172" y2="125" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + txt(12,48,'U1',6,'#1e293b','start') + txt(12,83,'V1',6,'#1e293b','start') + txt(12,118,'W1',6,'#1e293b','start')
+    + txt(166,48,'U2',6,'#1e293b','end') + txt(166,83,'V2',6,'#1e293b','end') + txt(166,118,'W2',6,'#1e293b','end')
+    + `<rect x="4" y="34" width="20" height="12" rx="2" fill="#e2e8f0" stroke="#64748b"/>`
+    + txt(14,43,'IN',6,'#1e293b')
+    + `<rect x="156" y="34" width="20" height="12" rx="2" fill="#e2e8f0" stroke="#64748b"/>`
+    + txt(166,43,'OUT',6,'#1e293b')
+    + `<g class="${on?'vib':''}">`
+    + `<ellipse cx="90" cy="90" rx="48" ry="44" fill="url(#motorGrad)" stroke="#222a23" stroke-width="3"/>`
+    + `<g stroke="#8a947b" stroke-width="1.2" opacity=".65">${Array.from({length:11},(_,i)=>`<path d="M${64+i*5} 48 L${68+i*5} 132"/>`).join('')}</g>`
+    + `<rect x="66" y="10" width="48" height="20" rx="3" fill="#68745c" stroke="#30392e" stroke-width="2"/>`
+    + `<rect x="69" y="13" width="42" height="14" rx="2" fill="#b76524"/>`
+    + `<g fill="#d9d2bd" stroke="#514b3e" stroke-width="1">${[0,1,2,3,4,5].map(i=>`<circle cx="${73+i*7}" cy="20" r="2.3"/>`).join('')}</g>`
     + `<g class="${on?'spin':''}">`
-    + `<line x1="37" y1="45" x2="73" y2="45" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
-    + `<line x1="55" y1="27" x2="55" y2="63" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
-    + `<circle cx="55" cy="45" r="7" fill="${CL.body}" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
+    + `<line x1="62" y1="90" x2="118" y2="90" stroke="${on?accent:CL.metal}" stroke-width="2.5"/>`
+    + `<line x1="90" y1="62" x2="90" y2="118" stroke="${on?accent:CL.metal}" stroke-width="2.5"/>`
+    + `<circle cx="90" cy="90" r="10" fill="${CL.body}" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
     + `</g>`
-    + extra
-    + `<rect x="72" y="16" width="32" height="13" rx="3" fill="#0b1220" stroke="${on?accent:CL.edge}"/>`
-    + txt(88,25,badge,7,on?accent:CL.muted)
-    + txt(55,90,c.label,8,'#1e293b')
-    + txt(55,102,(d.kw||0)+' kW · '+(d.rpm||0)+' rpm',7,on?CL.green:CL.muted)
-    + (on ? txt(55,112,(c.state.amps||0).toFixed(1)+' A',7,CL.amber) : '')
-    + (on ? txt(55,112,(c.state.amps||0).toFixed(1)+' A',7,CL.amber) : '')
+    + `<rect x="118" y="34" width="34" height="13" rx="3" fill="#0b1220" stroke="${on?accent:CL.edge}"/>`
+    + txt(135,43,badge,7,on?accent:CL.muted)
+    + `</g>`
+    + `<rect x="60" y="140" width="60" height="14" rx="3" fill="${modeColor}22" stroke="${modeColor}"/>`
+    + txt(90,150,modeText,7,modeColor)
+    + txt(90,162,c.label,8,'#1e293b')
+    + txt(90,172,(d.kw||0)+' kW · '+(d.rpm||0)+' rpm',7,on?CL.green:CL.muted)
+    + txt(90,178,on?((c.state.amps||0).toFixed(1)+' A'):'0.0 A',7,on?CL.amber:CL.dim)
   );
 }
 
@@ -1084,6 +1264,26 @@ function symCtMeter(c){
   );
 }
 
+function symVoltmeter(c){
+  const v = c.state.volts;
+  const live = v !== null && v !== undefined;
+  const shown = !live ? '---' : v === 0 ? '0' : String(v);
+  return wrap(c,
+    `<line x1="8" y1="60" x2="22" y2="60" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<line x1="98" y1="60" x2="112" y2="60" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<rect x="18" y="8" width="84" height="94" rx="7" fill="url(#bodyGrad)" stroke="#475569" stroke-width="2"/>`
+    + `<rect x="26" y="16" width="68" height="32" rx="3" fill="#0b1220" stroke="${live?'#14532d':'#334155'}" stroke-width="1.5"/>`
+    + txt(60,38,shown,15,live?(v>0?CL.green:CL.amber):'#334155')
+    + txt(88,44,'V',8,live?CL.green:CL.muted)
+    + `<text x="60" y="60" text-anchor="middle" fill="${CL.muted}" font-size="7" font-family="Segoe UI,Arial">AC VOLTMETER</text>`
+    + `<circle cx="60" cy="76" r="11" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5"/>`
+    + `<line x1="60" y1="76" x2="66" y2="67" stroke="#334155" stroke-width="2"/>`
+    + txt(60,98,(c.data.cls||'1.5')+' · '+(c.data.range||'0–500 V'),6,CL.muted)
+    + txt(14,54,'1',6,'#1e293b') + txt(106,54,'2',6,'#1e293b')
+    + `<circle cx="60" cy="14" r="3" fill="${live&&v>0?CL.green:CL.dim}"/>`
+  );
+}
+
 function symFloat(c){
   const trig = c.state.triggered;
   return wrap(c,
@@ -1218,6 +1418,7 @@ function svgFor(c){
     case 'power':
   case 'power_1ph': return symPower(c);
     case 'mcb':      return symMcb(c);
+    case 'mcb_3p':   return symMcb3(c);
     case 'pb_no':
     case 'pb_nc':    return symPb(c);
     case 'estop':    return symEstop(c);
@@ -1234,10 +1435,12 @@ function svgFor(c){
     case 'motor_servo': return symMotor(c);
     case 'alarm':    return symAlarm(c);
     case 'mccb':     return symMccb(c);
+    case 'mccb_3p':  return symMccb3(c);
     case 'rccb':     return symRccb(c);
     case 'fuse':     return symFuse(c);
     case 'spd':      return symSpd(c);
     case 'timer_off':return symTimerOff(c);
+    case 'timer_sd': return symTimerSd(c);
     case 'flasher':  return symFlasher(c);
     case 'phase':    return symPhase(c);
     case 'terminal': return symTerminal(c);
@@ -1245,6 +1448,7 @@ function svgFor(c){
     case 'generator':return symGenerator(c);
     case 'ats':      return symAts(c);
     case 'ctmeter':  return symCtMeter(c);
+    case 'voltmeter':return symVoltmeter(c);
     case 'float':    return symFloat(c);
     case 'pressure': return symPressure(c);
     case 'thermostat': return symThermostat(c);
@@ -1269,7 +1473,9 @@ function internalEdges(c){
   const id = c.id + ':', s = c.state, e = [];
   switch(c.type){
     case 'mcb':      if(s.closed)  e.push([id+'1', id+'2']); break;
+    case 'mcb_3p':   if(s.closed)  e.push([id+'1', id+'2'], [id+'3', id+'4'], [id+'5', id+'6']); break;
     case 'mccb':     if(s.closed)  e.push([id+'1', id+'2']); break;
+    case 'mccb_3p':  if(s.closed)  e.push([id+'1', id+'2'], [id+'3', id+'4'], [id+'5', id+'6']); break;
     case 'rccb':     if(s.closed && !s.tripped) e.push([id+'1', id+'2']); break;
     case 'fuse':     if(!s.blown)  e.push([id+'1', id+'2']); break;
     case 'spd':      break;
@@ -1279,6 +1485,7 @@ function internalEdges(c){
     case 'selector': if(s.on)      e.push([id+'1', id+'2']); break;
     case 'contactor':
       if(s.coil){ e.push([id+'1', id+'2'], [id+'3', id+'4'], [id+'5', id+'6'], [id+'13', id+'14']); }
+      else      { e.push([id+'21', id+'22']); }
       break;
     case 'relay':
       if(s.coil) e.push([id+'13', id+'14']);
@@ -1287,6 +1494,10 @@ function internalEdges(c){
     case 'timer':
       if(s.coil && s.elapsed) e.push([id+'15', id+'18']);
       break;
+    case 'timer_sd':
+      if(!s.elapsed) e.push([id+'15', id+'16']);
+      else           e.push([id+'15', id+'18']);
+      break;
     case 'timer_off':
       if(s.held) e.push([id+'15', id+'18']);
       break;
@@ -1294,7 +1505,8 @@ function internalEdges(c){
       if(s.coil && s.blinkOn) e.push([id+'15', id+'18']);
       break;
     case 'ol':
-      if(!s.tripped){ e.push([id+'1', id+'2'], [id+'95', id+'96']); }
+      if(!s.tripped){ e.push([id+'1', id+'2'], [id+'3', id+'4'], [id+'5', id+'6'], [id+'95', id+'96']); }
+      else          { e.push([id+'97', id+'98']); }
       break;
     case 'phase':
       if(!s.fault) e.push([id+'13', id+'14']);
@@ -1338,14 +1550,37 @@ function acrossRoots(c, p1, p2, roots){
   return roots.some(r => (a === r.hot && b === r.neu) || (b === r.hot && a === r.neu));
 }
 
+/* Detect how a 6-terminal 3-phase motor is wired (external links). */
+function motorMode(c){
+  const setting = c.data && c.data.connection;
+  if(setting === 'STAR' || setting === 'DELTA') return setting;
+  const r = p => ufFind(c.id + ':' + p);
+  const same = (a,b) => r(a) === r(b);
+  if(same('U2','V2') && same('V2','W2')) return 'STAR';
+  if(same('U2','V1') && same('V2','W1') && same('W2','U1')) return 'DELTA';
+  return 'OPEN';
+}
+
+/* Voltmeter reading: 400 V phase-phase, 230 V phase-neutral, 0 V same node. */
+function meterVolts(c, roots){
+  if(!roots.length) return null;
+  const a = ufFind(c.id+':1'), b = ufFind(c.id+':2');
+  if(a === b) return 0;
+  const aHot = roots.some(r => r.hot === a), bHot = roots.some(r => r.hot === b);
+  const aNeu = roots.some(r => r.neu === a), bNeu = roots.some(r => r.neu === b);
+  if((aHot && bHot)) return 400;
+  if((aHot && bNeu) || (bHot && aNeu)) return 230;
+  return null;
+}
+
 function deenergizeAll(){
   components.forEach(c => {
     if(c.state.coil !== undefined) c.state.coil = false;
     if(c.state.energized !== undefined) c.state.energized = false;
-    if(c.type === 'timer' || c.type === 'timer_off'){
+    if(c.type === 'timer' || c.type === 'timer_off' || c.type === 'timer_sd'){
       c.state.t = 0;
-      if(c.type === 'timer') c.state.elapsed = false;
-      else c.state.held = false;
+      if(c.type === 'timer_off') c.state.held = false;
+      else c.state.elapsed = false;
     }
     if(c.type === 'flasher'){ c.state.t = 0; c.state.blinkOn = false; }
     if(c.type === 'ctmeter') c.state.amps = 0;
@@ -1457,7 +1692,7 @@ function simulate(dt){
     }
     components.forEach(c => {
       if(c.type === 'contactor' || c.type === 'relay' || c.type === 'timer' ||
-         c.type === 'timer_off' || c.type === 'flasher'){
+         c.type === 'timer_off' || c.type === 'timer_sd' || c.type === 'flasher'){
         const en = acrossRoots(c, 'A1', 'A2', roots);
         if(en !== c.state.coil){
           c.state.coil = en;
@@ -1476,6 +1711,12 @@ function simulate(dt){
   const timeRoots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':N') }));
   components.forEach(c => {
     if(c.type === 'timer'){
+      if(c.state.coil && !shorted){
+        c.state.t += (dt || 0);
+        if(c.state.t >= c.state.delay) c.state.elapsed = true;
+      } else if(!c.state.coil){ c.state.t = 0; c.state.elapsed = false; }
+    }
+    if(c.type === 'timer_sd'){
       if(c.state.coil && !shorted){
         c.state.t += (dt || 0);
         if(c.state.t >= c.state.delay) c.state.elapsed = true;
@@ -1516,7 +1757,7 @@ function simulate(dt){
       if(roots2.some(r => r.hot === r.neu)){ shorted = true; break; }
       components.forEach(c => {
         if(c.type === 'contactor' || c.type === 'relay' || c.type === 'timer' ||
-           c.type === 'timer_off' || c.type === 'flasher'){
+           c.type === 'timer_off' || c.type === 'timer_sd' || c.type === 'flasher'){
           const en = acrossRoots(c, 'A1', 'A2', roots2);
           if(en !== c.state.coil){
             c.state.coil = en;
@@ -1548,7 +1789,6 @@ function simulate(dt){
   let totalAmps = 0;
   components.forEach(c => {
     if(c.type === 'lamp' || c.type === 'alarm'){
-      const was = c.state.energized;
       c.state.energized = acrossRoots(c, '1', '2', roots);
     }
     if(isMotor(c.type) && c.type !== 'motor'){
@@ -1565,30 +1805,34 @@ function simulate(dt){
         c.state.amps = 0;
       }
     }
-    if(isMotor(c.type) && c.type === 'motor'){
+    if(c.type === 'motor'){
       const was = c.state.energized;
-      // 3-phase 6-terminal: energized if any of U1,V1,W1 is hot
-      c.state.energized = roots.some(r => {
-        return ufFind(c.id+':U1') === r.hot ||
-               ufFind(c.id+':V1') === r.hot ||
-               ufFind(c.id+':W1') === r.hot;
-      });
-      if(isMotor(c.type)){
-        if(c.state.energized){
-          c.state.runTime = (was ? (c.state.runTime || 0) : 0) + (dt || 0);
-          const fla = Number(c.data.fla) || 0;
-          const inrush = fla * (1 + 5 * Math.exp(-(c.state.runTime || 0) / 0.6));
-          c.state.amps = inrush;
-          totalAmps += inrush;
-        } else {
-          c.state.runTime = 0;
-          c.state.amps = 0;
-        }
+      const mode = motorMode(c);
+      const wasMode = c.state.mode || 'OPEN';
+      const hotIn = ['U1','V1','W1'].filter(p =>
+        roots.some(r => ufFind(c.id + ':' + p) === r.hot)).length;
+      c.state.mode = mode;
+      c.state.energized = (mode === 'STAR' || mode === 'DELTA') && hotIn >= 2;
+      if(c.state.energized){
+        const sameRun = was && wasMode === mode;
+        c.state.runTime = (sameRun ? (c.state.runTime || 0) : 0) + (dt || 0);
+        const fla = Number(c.data.fla) || 0;
+        const factor = mode === 'STAR' ? 0.33 : 1;
+        const inrush = fla * factor * (1 + 5 * Math.exp(-(c.state.runTime || 0) / 0.6));
+        c.state.amps = inrush;
+        totalAmps += inrush;
+      } else {
+        c.state.runTime = 0;
+        c.state.amps = 0;
       }
     }
     if(c.type === 'ctmeter'){
       c.state.energized = acrossRoots(c, '1', '2', roots);
       c.state.amps = c.state.energized ? totalAmps : 0;
+    }
+    if(c.type === 'voltmeter'){
+      c.state.volts = meterVolts(c, roots);
+      c.state.energized = c.state.volts !== null && c.state.volts > 0;
     }
     if(c.type === 'spd'){
       c.state.energized = acrossRoots(c, '1', '2', roots);
@@ -1711,6 +1955,7 @@ function updateStatus(){
     const L = c.label;
     switch(c.type){
       case 'mcb':       rows.push(statusRow(L+' · MCB', c.state.closed?'ON':'OFF', c.state.closed?'on':'off')); break;
+      case 'mcb_3p':    rows.push(statusRow(L+' · MCB 3P', c.state.closed?'ON':'OFF', c.state.closed?'on':'off')); break;
       case 'pb_no':
       case 'pb_nc':     rows.push(statusRow(L+' · '+(c.type==='pb_no'?'START':'STOP'), c.state.pressed?'PRESSED':'released', c.state.pressed?'on':'off')); break;
       case 'estop':     rows.push(statusRow(L+' · E-STOP', c.state.tripped?'TRIPPED':'RESET', c.state.tripped?'fault':'on')); break;
@@ -1726,11 +1971,13 @@ function updateStatus(){
       case 'motor_stepper':
       case 'motor_servo':{
         const tag = {motor:'MOTOR 3~',motor_1ph:'MOTOR 1~',motor_dc:'MOTOR DC',motor_stepper:'STEPPER',motor_servo:'SERVO'}[c.type];
-        rows.push(statusRow(L+' · '+tag, c.state.energized?'RUNNING':'STOPPED', c.state.energized?'on':'off'));
+        const extra = c.type === 'motor' ? ' · ' + (c.state.mode || 'OPEN') : '';
+        rows.push(statusRow(L+' · '+tag, (c.state.energized?'RUNNING':'STOPPED')+extra, c.state.energized?'on':'off'));
         break;
       }
       case 'alarm':     rows.push(statusRow(L+' · HORN', c.state.energized?'SOUNDING':'SILENT', c.state.energized?'fault':'off')); break;
       case 'mccb':      rows.push(statusRow(L+' · MCCB', c.state.closed?'ON':'OFF', c.state.closed?'on':'off')); break;
+      case 'mccb_3p':   rows.push(statusRow(L+' · MCCB 3P', c.state.closed?'ON':'OFF', c.state.closed?'on':'off')); break;
       case 'rccb':      rows.push(statusRow(L+' · RCCB', c.state.tripped?'TRIPPED':c.state.closed?'ON':'OFF', c.state.tripped?'fault':c.state.closed?'on':'off')); break;
       case 'fuse':      rows.push(statusRow(L+' · FUSE', c.state.blown?'BLOWN':'HEALTHY', c.state.blown?'fault':'on')); break;
       case 'spd':       rows.push(statusRow(L+' · SPD', c.state.fault?'FAULT':'OK', c.state.fault?'fault':'on')); break;
@@ -1740,6 +1987,8 @@ function updateStatus(){
       case 'generator': rows.push(statusRow(L+' · GENERATOR', c.state.on?'RUNNING':'STOPPED', c.state.on?'on':'off')); break;
       case 'ats':       rows.push(statusRow(L+' · ATS', c.state.pos==='OFF'?'OFF':'SOURCE '+c.state.pos, c.state.pos==='OFF'?'fault':'on')); break;
       case 'ctmeter':   rows.push(statusRow(L+' · AMMETER', (c.state.amps||0).toFixed(1)+' A', c.state.energized?'on':'off')); break;
+      case 'voltmeter': rows.push(statusRow(L+' · VOLTMETER', (c.state.volts===null||c.state.volts===undefined)?'---':c.state.volts+' V', c.state.volts>0?'on':'off')); break;
+      case 'timer_sd':  rows.push(statusRow(L+' · STAR-DELTA', c.state.coil?(c.state.elapsed?'DELTA':'STAR '+c.state.t.toFixed(1)+'/'+c.state.delay+'s'):'IDLE', c.state.elapsed?'on':(c.state.coil?'fault':'off'))); break;
       case 'float':     rows.push(statusRow(L+' · LEVEL', c.state.triggered?'HIGH':'LOW', c.state.triggered?'on':'off')); break;
       case 'pressure':  rows.push(statusRow(L+' · PRESSURE', c.state.triggered?'OK':'LOW', c.state.triggered?'on':'off')); break;
       case 'thermostat':rows.push(statusRow(L+' · THERMOSTAT', c.state.triggered?'HEAT CALL':'SATISFIED', c.state.triggered?'fault':'on')); break;
@@ -1859,6 +2108,9 @@ function renderProps(){
     if(c.type === 'motor'){
       h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${[2,4,6,8].map(v => `<option value="${v}"${Number(c.data.poles)===v?' selected':''}>${v} pole</option>`).join('')}</select></div>`;
       h += `<div class="prop"><label>Voltage</label><select onchange="setMeta('${c.id}','volts',this.value)">${['400 V Δ/Y','415 V','690 V'].map(v => `<option value="${v}"${c.data.volts===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+      h += `<div class="prop"><label>Wiring</label><select onchange="setMeta('${c.id}','connection',this.value)">${[['AUTO','AUTO (external links)'],['STAR','STAR Y (internal)'],['DELTA','DELTA Δ (internal)']].map(([v,n]) => `<option value="${v}"${(c.data.connection||'DELTA')===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
+      h += `<div class="prop"><label>Mode</label><span class="mini ${c.state.mode==='DELTA'?'go':c.state.mode==='STAR'?'':'stop'}">${c.state.mode==='DELTA'?'DELTA Δ':c.state.mode==='STAR'?'STAR Y':'OPEN'}</span></div>`;
+      h += `<div class="prop"><label>Terminals</label><span class="mini">U1 V1 W1 / U2 V2 W2</span></div>`;
     }
     if(c.type === 'motor_1ph'){
       h += `<div class="prop"><label>Run capacitor</label><input type="number" step="1" min="0" value="${c.data.cap}" onchange="setData('${c.id}','cap',this.value)"></div>`;
@@ -1879,11 +2131,11 @@ function renderProps(){
   if(powerKinds.some(([v]) => v === c.type)){
     h += `<div class="prop"><label>Power type</label><select onchange="changeType('${c.id}',this.value)">${powerKinds.map(([v,n]) => `<option value="${v}"${c.type===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
   }
-  const protectionKinds = [['mcb','MCB / Miniature'],['mccb','MCCB / Moulded Case'],['rccb','RCCB / RCBO'],['fuse','Fuse Cartridge']];
+  const protectionKinds = [['mcb','MCB 1P'],['mcb_3p','MCB 3P'],['mccb','MCCB 1P'],['mccb_3p','MCCB 3P'],['rccb','RCCB / RCBO'],['fuse','Fuse Cartridge']];
   if(protectionKinds.some(([v]) => v === c.type)){
     h += `<div class="prop"><label>Protection type</label><select onchange="changeType('${c.id}',this.value)">${protectionKinds.map(([v,n]) => `<option value="${v}"${c.type===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
   }
-  const timerKinds = [['timer','On-Delay Timer'],['timer_off','Off-Delay Timer'],['flasher','Flasher Relay']];
+  const timerKinds = [['timer','On-Delay Timer'],['timer_off','Off-Delay Timer'],['timer_sd','Star-Delta Timer'],['flasher','Flasher Relay']];
   if(timerKinds.some(([v]) => v === c.type)){
     h += `<div class="prop"><label>Timer type</label><select onchange="changeType('${c.id}',this.value)">${timerKinds.map(([v,n]) => `<option value="${v}"${c.type===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
   }
@@ -1899,14 +2151,14 @@ function renderProps(){
     h += `<div class="prop"><label>Set current A</label><input type="number" step="0.1" min="0" value="${c.data.setA}" onchange="setData('${c.id}','setA',this.value)"></div>`;
     h += `<div class="prop"><label>Trip class</label><select onchange="setMeta('${c.id}','cls',this.value)">${['Class 10','Class 10A','Class 20','Class 30'].map(v => `<option${(c.data.cls||'Class 10')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
-  if(c.type === 'mcb'){
+  if(c.type === 'mcb' || c.type === 'mcb_3p'){
     h += `<div class="prop"><label>Curve</label><select onchange="setMeta('${c.id}','curve',this.value)">${['B','C','D'].map(v => `<option${(c.data.curve||'C')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Rating</label><select onchange="setMeta('${c.id}','rating',this.value)">${[6,10,16,20,25,32,40,50,63].map(v => `<option value="${v}"${Number(c.data.rating||16)===v?' selected':''}>${v} A</option>`).join('')}</select></div>`;
-    h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${['1P','2P','3P','4P'].map(v => `<option${(c.data.poles||'3P')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${(c.type==='mcb_3p'?['3P']:['1P','2P']).map(v => `<option${(c.data.poles||'1P')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
-  if(c.type === 'mccb'){
+  if(c.type === 'mccb' || c.type === 'mccb_3p'){
     h += `<div class="prop"><label>Rating</label><select onchange="setMeta('${c.id}','rating',this.value)">${[16,25,40,63,100,160,250,400,630].map(v => `<option value="${v}"${Number(c.data.rating||63)===v?' selected':''}>${v} A</option>`).join('')}</select></div>`;
-    h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${['3P','4P'].map(v => `<option${(c.data.poles||'3P')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${(c.type==='mccb_3p'?['3P','4P']:['1P','2P']).map(v => `<option${(c.data.poles||'3P')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Trip unit</label><select onchange="setMeta('${c.id}','trip',this.value)">${['Thermal-Magnetic','Electronic','Motor Protection'].map(v => `<option${(c.data.trip||'Thermal-Magnetic')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'rccb'){
@@ -1918,8 +2170,8 @@ function renderProps(){
     h += `<div class="prop"><label>Coil voltage</label><select onchange="setMeta('${c.id}','coil',this.value)">${['24 V DC','230 V AC','400 V AC'].map(v => `<option${(c.data.coil||'230 V AC')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     if(c.type === 'contactor') h += `<div class="prop"><label>AC-3 rating</label><select onchange="setMeta('${c.id}','ac3',this.value)">${['9 A','12 A','18 A','25 A','32 A','40 A','65 A'].map(v => `<option${(c.data.ac3||'9 A')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
-  if(c.type === 'timer' || c.type === 'timer_off'){
-    h += `<div class="prop"><label>Range</label><select onchange="setMeta('${c.id}','range',this.value)">${['0–1 s','0–10 s','0–60 s','0–10 min'].map(v => `<option${(c.data.range||'0–10 s')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+  if(c.type === 'timer' || c.type === 'timer_off' || c.type === 'timer_sd'){
+    h += `<div class="prop"><label>Range</label><select onchange="setMeta('${c.id}','range',this.value)">${['0–1 s','0–10 s','0–30 s','0–60 s','0–10 min'].map(v => `<option${(c.data.range||'0–30 s')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'terminal'){
     h += `<div class="prop"><label>Size</label><select onchange="setMeta('${c.id}','size',this.value)">${['2.5 mm²','4 mm²','6 mm²','10 mm²'].map(v => `<option${(c.data.size||'4 mm²')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
@@ -1931,13 +2183,13 @@ function renderProps(){
     h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${['3P','4P'].map(v => `<option${(c.data.poles||'4P')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Rating</label><select onchange="setMeta('${c.id}','rating',this.value)">${['63 A','100 A','160 A','250 A','400 A'].map(v => `<option${(c.data.rating||'100 A')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
-  if(c.type === 'timer' || c.type === 'timer_off'){
+  if(c.type === 'timer' || c.type === 'timer_off' || c.type === 'timer_sd'){
     h += `<div class="prop"><label>Delay (s)</label><input type="number" step="0.1" min="0.1" value="${c.state.delay}" onchange="setDelay('${c.id}',this.value)"></div>`;
   }
   if(c.type === 'flasher'){
     h += `<div class="prop"><label>Period (s)</label><input type="number" step="0.1" min="0.2" value="${c.data.period}" onchange="setData('${c.id}','period',this.value)"></div>`;
   }
-  if(c.type === 'power'){
+  if(c.type === 'power' || c.type === 'power_1ph'){
     h += `<div class="prop"><label>Voltage</label><select onchange="setSupplyV(this.value)">${[24,230,400].map(v => `<option value="${v}"${supplyV==v?' selected':''}>${v} V</option>`).join('')}</select></div>`;
   }
   if(c.type === 'generator'){
@@ -1974,12 +2226,17 @@ function renderProps(){
   if(c.type === 'spd' || c.type === 'phase'){
     h += `<div class="prop"><label>Status</label><button class="mini ${c.state.fault?'stop':'go'}" onclick="toggleState('${c.id}','fault')">${c.state.fault?'FAULT — RESET':'INJECT FAULT'}</button></div>`;
   }
-  if(c.type === 'mccb'){
+  if(c.type === 'mcb' || c.type === 'mcb_3p' || c.type === 'mccb' || c.type === 'mccb_3p'){
     h += `<div class="prop"><label>Breaker</label><button class="mini ${c.state.closed?'go':'stop'}" onclick="toggleState('${c.id}','closed')">${c.state.closed?'ON — OPEN':'OFF — CLOSE'}</button></div>`;
   }
   if(c.type === 'ctmeter'){
     h += `<div class="prop"><label>Ratio</label><select onchange="setMeta('${c.id}','ratio',this.value)">${['50/5','100/5','200/5','300/5','600/5'].map(v => `<option${(c.data.ratio||'100/5')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Class</label><select onchange="setMeta('${c.id}','cls',this.value)">${['0.2','0.5','1','3'].map(v => `<option${(c.data.cls||'0.5')===v?' selected':''}>Class ${v}</option>`).join('')}</select></div>`;
+  }
+  if(c.type === 'voltmeter'){
+    h += `<div class="prop"><label>Reading</label><span class="mini ${c.state.volts>0?'go':'stop'}">${c.state.volts===null||c.state.volts===undefined?'---':c.state.volts+' V'}</span></div>`;
+    h += `<div class="prop"><label>Accuracy class</label><select onchange="setMeta('${c.id}','cls',this.value)">${['0.5','1','1.5','2.5'].map(v => `<option${(c.data.cls||'1.5')===v?' selected':''}>Class ${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Range</label><select onchange="setMeta('${c.id}','range',this.value)">${['0–250 V','0–500 V','0–750 V'].map(v => `<option${(c.data.range||'0–500 V AC')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'vfd'){
     h += `<div class="prop"><label>Drive</label><button class="mini ${c.state.on?'go':'stop'}" onclick="toggleState('${c.id}','on')">${c.state.on?'RUNNING — STOP':'STOPPED — RUN'}</button></div>`;
@@ -2101,9 +2358,12 @@ function onPointerUp(){
 
 function handleClickAction(c){
   switch(c.type){
-    case 'power':    supplyOn = !supplyOn; break;
-    case 'mcb':      c.state.closed = !c.state.closed; break;
-    case 'mccb':     c.state.closed = !c.state.closed; break;
+    case 'power':
+    case 'power_1ph':supplyOn = !supplyOn; break;
+    case 'mcb':
+    case 'mcb_3p':   c.state.closed = !c.state.closed; break;
+    case 'mccb':
+    case 'mccb_3p':  c.state.closed = !c.state.closed; break;
     case 'rccb':
       if(c.state.tripped){ c.state.tripped = false; c.state.closed = true; }
       else c.state.closed = !c.state.closed;
@@ -2279,378 +2539,496 @@ function link(a, pa, b, pb){
   wires.push({ id:'w'+(idCounter++), from:{ comp:a.id, port:pa }, to:{ comp:b.id, port:pb } });
 }
 
+/* ---- preset helpers ---- */
+function feed3(p, qf, k, ol, m){
+  const rows = [
+    { ph:'L1', t:'1', b:'2', mp:'U1' },
+    { ph:'L2', t:'3', b:'4', mp:'V1' },
+    { ph:'L3', t:'5', b:'6', mp:'W1' }
+  ];
+  rows.forEach(r => {
+    link(p, r.ph, qf, r.t);
+    if(k){ link(qf, r.b, k, r.t); link(k, r.b, ol, r.t); }
+    else { link(qf, r.b, ol, r.t); }
+    link(ol, r.b, m, r.mp);
+  });
+}
+function feed1(p, f, k, ol, m){
+  link(p, 'L', f, '1');
+  let cur = f, cp = '2';
+  if(k){ link(cur, cp, k, '1'); cur = k; cp = '2'; }
+  if(ol){ link(cur, cp, ol, '1'); cur = ol; cp = '2'; }
+  if(m) link(cur, cp, m, '1');
+}
+function coilLamp(h, k, n){
+  link(h, '1', k, 'A1');
+  link(h, '2', n, 'N');
+}
+
 function presetDol(){
-  $('projName').value = 'DOL Motor Starter';
-  const p  = addComp('power', 14, 210, 'PS1');
-  const f  = addComp('mcb', 150, 200, 'F1');
-  const k  = addComp('contactor', 286, 140, 'K1');
-  const ol = addComp('ol', 480, 205, 'F2');
-  const m  = addComp('motor', 650, 215, 'M1');
-  const st = addComp('pb_nc', 150, 395, 'S1');
-  const sa = addComp('pb_no', 300, 395, 'S2');
-  const h  = addComp('lamp', 470, 395, 'H1');
-  const e  = addComp('estop', 40, 400, 'E1');
-  link(p,'L',f,'1');
-  link(f,'2',k,'1');
-  link(k,'2',ol,'1');
-  link(ol,'2',m,'1');
-  link(m,'2',p,'N');
-  link(f,'2',st,'1');
-  link(st,'2',e,'1');
-  link(e,'2',ol,'95');
-  link(ol,'96',sa,'1');
-  link(sa,'2',k,'A1');
-  link(k,'A2',p,'N');
-  link(k,'13',sa,'1');
-  link(k,'14',sa,'2');
-  link(h,'1',k,'A1');
-  link(h,'2',k,'A2');
+  $('projName').value = 'DOL Motor Starter (3-Phase)';
+  const p  = addComp('power', 10, 240, 'PS1');
+  const qf = addComp('mcb_3p', 160, 240, 'QF1');
+  const k  = addComp('contactor', 310, 200, 'K1');
+  const ol = addComp('ol', 522, 250, 'F2');
+  const m  = addComp('motor', 700, 245, 'M1');
+  const s1 = addComp('pb_nc', 160, 470, 'S1');
+  const e1 = addComp('estop', 20, 470, 'E1');
+  const s2 = addComp('pb_no', 300, 470, 'S2');
+  const h  = addComp('lamp', 460, 470, 'H1');
+  const pv = addComp('voltmeter', 700, 470, 'PV1');
+  feed3(p, qf, k, ol, m);
+  m.data.connection = 'DELTA';
+  link(qf,'2', s1,'1');
+  link(s1,'2', e1,'1');
+  link(e1,'2', ol,'95');
+  link(ol,'96', s2,'1');
+  link(s2,'2', k,'A1');
+  link(k,'A2', p,'N');
+  link(k,'13', s2,'1');
+  link(k,'14', s2,'2');
+  coilLamp(h, k, p);
+  link(p,'L1', pv,'1');
+  link(p,'L2', pv,'2');
 }
 
 function presetStartStop(){
-  $('projName').value = 'Start Stop with Lamp';
-  const p  = addComp('power', 40, 250, 'PS1');
-  const f  = addComp('mcb', 180, 240, 'F1');
-  const st = addComp('pb_nc', 320, 120, 'S1');
-  const sa = addComp('pb_no', 320, 260, 'S2');
-  const k  = addComp('contactor', 480, 110, 'K1');
-  const h  = addComp('lamp', 680, 260, 'H1');
-  link(p,'L',f,'1');
-  link(f,'2',st,'1');
-  link(st,'2',sa,'1');
-  link(sa,'2',k,'A1');
-  link(k,'A2',p,'N');
-  link(k,'13',sa,'1');
-  link(k,'14',sa,'2');
-  link(h,'1',k,'A1');
-  link(h,'2',k,'A2');
+  $('projName').value = 'Start Stop with Lamp (1-Phase)';
+  const p  = addComp('power_1ph', 20, 250, 'PS1');
+  const f  = addComp('mcb', 160, 240, 'F1');
+  const s1 = addComp('pb_nc', 300, 160, 'S1');
+  const s2 = addComp('pb_no', 300, 300, 'S2');
+  const k  = addComp('contactor', 470, 140, 'K1');
+  const h  = addComp('lamp', 680, 300, 'H1');
+  link(p,'L', f,'1');
+  link(f,'2', s1,'1');
+  link(s1,'2', s2,'1');
+  link(s2,'2', k,'A1');
+  link(k,'A2', p,'N');
+  link(k,'13', s2,'1');
+  link(k,'14', s2,'2');
+  coilLamp(h, k, p);
 }
 
 function presetAlarm(){
-  $('projName').value = 'Alarm & Protection';
-  const p  = addComp('power', 20, 230, 'PS1');
-  const f  = addComp('mcb', 150, 220, 'F1');
-  const ol = addComp('ol', 280, 110, 'F2');
-  const st = addComp('pb_nc', 280, 300, 'S1');
-  const ka = addComp('relay', 480, 190, 'KA1');
-  const h  = addComp('lamp', 680, 90, 'H1');
-  const ha = addComp('alarm', 680, 300, 'HA1');
-  link(p,'L',f,'1');
-  link(f,'2',ol,'1');
-  link(f,'2',ol,'95');
-  link(ol,'96',st,'1');
-  link(st,'2',ka,'A1');
-  link(ka,'A2',p,'N');
-  link(f,'2',ka,'13');
-  link(ka,'14',h,'1');
-  link(h,'2',p,'N');
-  link(ka,'14',ha,'1');
-  link(ha,'2',p,'N');
+  $('projName').value = 'Alarm & Protection (1-Phase)';
+  const p  = addComp('power_1ph', 20, 240, 'PS1');
+  const f  = addComp('mcb', 150, 240, 'F1');
+  const ol = addComp('ol', 290, 150, 'F2');
+  const s1 = addComp('pb_nc', 290, 380, 'S1');
+  const ka = addComp('relay', 460, 210, 'KA1');
+  const h  = addComp('lamp', 620, 140, 'H1');
+  const ha = addComp('alarm', 620, 360, 'HA1');
+  link(p,'L', f,'1');
+  link(f,'2', ol,'95');
+  link(ol,'96', s1,'1');
+  link(s1,'2', ka,'A1');
+  link(ka,'A2', p,'N');
+  link(f,'2', ka,'21');
+  link(ka,'22', ha,'1');
+  link(ha,'2', p,'N');
+  coilLamp(h, ka, p);
 }
 
 function presetReversing(){
-  $('projName').value = 'Reversing Interlock';
-  const p  = addComp('power', 16, 250, 'PS1');
-  const f  = addComp('mcb', 140, 240, 'F1');
-  const st = addComp('pb_nc', 250, 110, 'S0');
-  const sf = addComp('pb_no', 250, 240, 'S1');
-  const sr = addComp('pb_no', 250, 380, 'S2');
-  const k1 = addComp('contactor', 430, 50, 'K1');
-  const k2 = addComp('contactor', 430, 320, 'K2');
-  const h1 = addComp('lamp', 650, 100, 'H1');
-  const h2 = addComp('lamp', 650, 370, 'H2');
-  link(p,'L',f,'1');
-  link(f,'2',st,'1');
-  link(st,'2',sf,'1');
-  link(st,'2',sr,'1');
-  link(sf,'2',k2,'21');
-  link(k2,'22',k1,'A1');
-  link(k1,'A2',p,'N');
-  link(k1,'13',sf,'1');
-  link(k1,'14',sf,'2');
-  link(sr,'2',k1,'21');
-  link(k1,'22',k2,'A1');
-  link(k2,'A2',p,'N');
-  link(k2,'13',sr,'1');
-  link(k2,'14',sr,'2');
-  link(h1,'1',k1,'A1');
-  link(h1,'2',k1,'A2');
-  link(h2,'1',k2,'A1');
-  link(h2,'2',k2,'A2');
+  $('projName').value = 'Reversing Interlock (3-Phase)';
+  const p  = addComp('power', 10, 300, 'PS1');
+  const qf = addComp('mcb_3p', 150, 300, 'QF1');
+  const ol = addComp('ol', 300, 305, 'F2');
+  const k1 = addComp('contactor', 470, 60, 'K1');
+  const k2 = addComp('contactor', 470, 420, 'K2');
+  const m  = addComp('motor', 700, 280, 'M1');
+  const s0 = addComp('pb_nc', 20, 620, 'S0');
+  const sf = addComp('pb_no', 150, 620, 'S1');
+  const sr = addComp('pb_no', 270, 620, 'S2');
+  const h1 = addComp('lamp', 700, 60, 'H1');
+  const h2 = addComp('lamp', 700, 500, 'H2');
+  [['L1','1','2'],['L2','3','4'],['L3','5','6']].forEach(([ph,t,b]) => {
+    link(p, ph, qf, t);
+    link(qf, b, ol, t);
+    link(ol, b, k1, t);
+    link(ol, b, k2, t);
+  });
+  link(k1,'2', m,'U1'); link(k1,'4', m,'V1'); link(k1,'6', m,'W1');
+  link(k2,'2', m,'W1'); link(k2,'4', m,'V1'); link(k2,'6', m,'U1');
+  m.data.connection = 'DELTA';
+  link(qf,'2', s0,'1');
+  link(s0,'2', sf,'1');
+  link(s0,'2', sr,'1');
+  link(sf,'2', k2,'21');
+  link(k2,'22', k1,'A1');
+  link(k1,'A2', p,'N');
+  link(k1,'13', sf,'1');
+  link(k1,'14', sf,'2');
+  link(sr,'2', k1,'21');
+  link(k1,'22', k2,'A1');
+  link(k2,'A2', p,'N');
+  link(k2,'13', sr,'1');
+  link(k2,'14', sr,'2');
+  coilLamp(h1, k1, p);
+  coilLamp(h2, k2, p);
 }
 
 function presetTimer(){
-  $('projName').value = 'Timer On-Delay';
-  const p  = addComp('power', 30, 250, 'PS1');
+  $('projName').value = 'Timer On-Delay (1-Phase)';
+  const p  = addComp('power_1ph', 20, 250, 'PS1');
   const f  = addComp('mcb', 160, 240, 'F1');
-  const sa = addComp('selector', 290, 250, 'SA1');
-  const kt = addComp('timer', 450, 100, 'KT1');
-  const h0 = addComp('lamp', 450, 340, 'H0');
-  const h1 = addComp('lamp', 660, 150, 'H1');
-  link(p,'L',f,'1');
-  link(f,'2',sa,'1');
-  link(sa,'2',kt,'A1');
-  link(kt,'A2',p,'N');
-  link(f,'2',kt,'15');
-  link(kt,'18',h1,'1');
-  link(h1,'2',p,'N');
-  link(sa,'2',h0,'1');
-  link(h0,'2',p,'N');
+  const sa = addComp('selector', 300, 250, 'SA1');
+  const kt = addComp('timer', 470, 120, 'KT1');
+  const h0 = addComp('lamp', 470, 360, 'H0');
+  const h1 = addComp('lamp', 670, 160, 'H1');
+  link(p,'L', f,'1');
+  link(f,'2', sa,'1');
+  link(sa,'2', kt,'A1');
+  link(kt,'A2', p,'N');
+  link(f,'2', kt,'15');
+  link(kt,'18', h1,'1');
+  link(h1,'2', p,'N');
+  link(sa,'2', h0,'1');
+  link(h0,'2', p,'N');
+  kt.state.delay = 3;
 }
 
 function presetStarDelta(){
   $('projName').value = 'Star-Delta Starter (Auto)';
-  const p  = addComp('power', 10, 250, 'PS1');
-  const f  = addComp('mcb', 140, 240, 'F1');
-  const k1 = addComp('contactor', 270, 140, 'K1');
-  const k2 = addComp('contactor', 460, 50, 'K2');
-  const k3 = addComp('contactor', 460, 330, 'K3');
-  const ol = addComp('ol', 640, 240, 'F2');
-  const m  = addComp('motor', 800, 250, 'M1');
-  const st = addComp('pb_nc', 140, 420, 'S1');
-  const sa = addComp('pb_no', 270, 420, 'S2');
-  const kt = addComp('timer', 640, 60, 'KT1');
-  const h1 = addComp('lamp', 650, 430, 'H1');
-  const h2 = addComp('lamp', 810, 430, 'H2');
-  const h3 = addComp('lamp', 960, 430, 'H3');
-  link(p,'L',f,'1');
-  link(f,'2',k1,'1');
-  link(k1,'2',ol,'1');
-  link(ol,'2',m,'1');
-  link(m,'2',p,'N');
-  link(f,'2',st,'1');
-  link(st,'2',sa,'1');
-  link(sa,'2',k1,'A1');
-  link(k1,'A2',p,'N');
-  link(k1,'13',st,'2');
-  link(k1,'14',sa,'2');
-  link(k1,'14',kt,'A1');
-  link(kt,'A2',p,'N');
-  link(f,'2',kt,'15');
-  link(kt,'18',k3,'A1');
-  link(k3,'A2',p,'N');
-  link(k1,'14',k3,'21');
-  link(k3,'22',k2,'A1');
-  link(k2,'A2',p,'N');
-  link(h1,'1',k2,'A1'); link(h1,'2',k2,'A2');
-  link(h2,'1',k3,'A1'); link(h2,'2',k3,'A2');
-  link(h3,'1',k1,'A1'); link(h3,'2',k1,'A2');
+  const p  = addComp('power', 8, 260, 'PS1');
+  const qm = addComp('mccb_3p', 150, 260, 'QM1');
+  const k1 = addComp('contactor', 300, 200, 'K1');
+  const ol = addComp('ol', 512, 255, 'F2');
+  const m  = addComp('motor', 690, 260, 'M1');
+  const k3 = addComp('contactor', 300, 500, 'K3');
+  const k2 = addComp('contactor', 690, 500, 'K2');
+  const kt = addComp('timer_sd', 515, 480, 'KT1');
+  const s1 = addComp('pb_nc', 8, 790, 'S1');
+  const e1 = addComp('estop', 120, 790, 'E1');
+  const s2 = addComp('pb_no', 250, 790, 'S2');
+  const h1 = addComp('lamp', 400, 790, 'H1');
+  const h2 = addComp('lamp', 530, 790, 'H2');
+  const h3 = addComp('lamp', 660, 790, 'H3');
+  const pv = addComp('voltmeter', 900, 700, 'PV1');
+
+  feed3(p, qm, k1, ol, m);
+  m.data.connection = 'AUTO';
+
+  /* Star: U2/V2/W2 shorted through K3 poles */
+  link(m,'U2', k3,'1');
+  link(m,'V2', k3,'3');
+  link(m,'W2', k3,'5');
+  link(k3,'2', k3,'4');
+  link(k3,'4', k3,'6');
+
+  /* Delta: U2->V1, V2->W1, W2->U1 through K2 poles */
+  link(m,'U2', k2,'1'); link(k2,'2', m,'V1');
+  link(m,'V2', k2,'3'); link(k2,'4', m,'W1');
+  link(m,'W2', k2,'5'); link(k2,'6', m,'U1');
+
+  /* Control */
+  link(qm,'2', s1,'1');
+  link(s1,'2', e1,'1');
+  link(e1,'2', ol,'95');
+  link(ol,'96', s2,'1');
+  link(s2,'2', k1,'A1');
+  link(k1,'A2', p,'N');
+  link(k1,'13', s2,'1');
+  link(k1,'14', s2,'2');
+
+  /* Timer coil runs with K1 */
+  link(s2,'2', kt,'A1');
+  link(kt,'A2', p,'N');
+
+  /* Star path: 15-16 closed until elapsed, through K2 NC */
+  link(s2,'2', kt,'15');
+  link(kt,'16', k2,'21');
+  link(k2,'22', k3,'A1');
+  link(k3,'A2', p,'N');
+
+  /* Delta path: 15-18 closed after elapsed, through K3 NC */
+  link(kt,'18', k3,'21');
+  link(k3,'22', k2,'A1');
+  link(k2,'A2', p,'N');
+
+  coilLamp(h1, k1, p);
+  coilLamp(h2, k3, p);
+  coilLamp(h3, k2, p);
+  link(p,'L1', pv,'1');
+  link(p,'L2', pv,'2');
+  kt.state.delay = 6;
 }
 
 function presetMultiStart(){
-  $('projName').value = 'Multi-Start / Multi-Stop';
-  const p  = addComp('power', 20, 230, 'PS1');
-  const f  = addComp('mcb', 150, 220, 'F1');
-  const k  = addComp('contactor', 450, 130, 'K1');
-  const ol = addComp('ol', 630, 220, 'F2');
-  const m  = addComp('motor', 790, 230, 'M1');
-  const s1 = addComp('pb_nc', 140, 350, 'S1');
-  const s4 = addComp('pb_nc', 280, 350, 'S4');
-  const s2 = addComp('pb_no', 140, 480, 'S2');
-  const s3 = addComp('pb_no', 280, 480, 'S3');
-  const h  = addComp('lamp', 640, 430, 'H1');
-  link(p,'L',f,'1');
-  link(f,'2',k,'1');
-  link(k,'2',ol,'1');
-  link(ol,'2',m,'1');
-  link(m,'2',p,'N');
-  link(f,'2',s1,'1');
-  link(s1,'2',s4,'1');
-  link(s4,'2',s2,'1');
-  link(s4,'2',s3,'1');
-  link(s2,'2',k,'A1');
-  link(s3,'2',k,'A1');
-  link(k,'A2',p,'N');
-  link(k,'13',s4,'2');
-  link(k,'14',k,'A1');
-  link(h,'1',k,'A1'); link(h,'2',k,'A2');
+  $('projName').value = 'Multi-Start / Multi-Stop (3-Phase)';
+  const p  = addComp('power', 10, 240, 'PS1');
+  const qf = addComp('mcb_3p', 160, 240, 'QF1');
+  const k  = addComp('contactor', 310, 200, 'K1');
+  const ol = addComp('ol', 522, 250, 'F2');
+  const m  = addComp('motor', 700, 245, 'M1');
+  const s1 = addComp('pb_nc', 160, 470, 'S1');
+  const s4 = addComp('pb_nc', 290, 470, 'S4');
+  const s2 = addComp('pb_no', 160, 600, 'S2');
+  const s3 = addComp('pb_no', 290, 600, 'S3');
+  const h  = addComp('lamp', 470, 470, 'H1');
+  feed3(p, qf, k, ol, m);
+  m.data.connection = 'DELTA';
+  link(qf,'2', s1,'1');
+  link(s1,'2', s4,'1');
+  link(s4,'2', s2,'1');
+  link(s4,'2', s3,'1');
+  link(s2,'2', k,'A1');
+  link(s3,'2', k,'A1');
+  link(k,'A2', p,'N');
+  link(k,'13', s4,'2');
+  link(k,'14', k,'A1');
+  coilLamp(h, k, p);
 }
 
 function presetGenerator(){
-  $('projName').value = 'Generator / ATS Changeover';
-  const p  = addComp('power', 20, 190, 'PS1');
-  const g  = addComp('generator', 20, 390, 'G1');
-  const at = addComp('ats', 250, 250, 'ATS1');
-  const f  = addComp('mcb', 480, 240, 'F1');
-  const h1 = addComp('lamp', 650, 100, 'H1');
-  const h2 = addComp('lamp', 650, 300, 'H2');
-  const m  = addComp('motor', 810, 300, 'M1');
-  link(p,'L',at,'AL'); link(p,'N',at,'AN');
-  link(g,'L',at,'BL'); link(g,'N',at,'BN');
-  link(at,'OL',f,'1');
-  link(f,'2',m,'1'); link(m,'2',at,'ON');
-  link(at,'OL',h1,'1'); link(h1,'2',at,'ON');
-  link(at,'OL',h2,'1'); link(h2,'2',at,'ON');
+  $('projName').value = 'Generator / ATS Changeover (1-Phase)';
+  const p  = addComp('power_1ph', 20, 180, 'PS1');
+  const g  = addComp('generator', 20, 380, 'G1');
+  const at = addComp('ats', 240, 250, 'ATS1');
+  const f  = addComp('mcb', 470, 250, 'F1');
+  const h1 = addComp('lamp', 630, 110, 'H1');
+  const h2 = addComp('lamp', 630, 290, 'H2');
+  const m  = addComp('motor_1ph', 800, 250, 'M1');
+  link(p,'L', at,'AL'); link(p,'N', at,'AN');
+  link(g,'L', at,'BL'); link(g,'N', at,'BN');
+  link(at,'OL', f,'1');
+  link(f,'2', m,'1');
+  link(m,'2', at,'ON');
+  link(at,'OL', h1,'1');
+  link(h1,'2', at,'ON');
+  link(g,'L', h2,'1');
+  link(h2,'2', g,'N');
   g.state.on = true;
   at.data.auto = false;
 }
 
 function presetLevel(){
-  $('projName').value = 'Tank Level Control';
-  const p  = addComp('power', 20, 230, 'PS1');
-  const f  = addComp('mcb', 150, 220, 'F1');
-  const st = addComp('pb_nc', 150, 390, 'S1');
-  const sa = addComp('pb_no', 290, 390, 'S2');
-  const k  = addComp('contactor', 430, 130, 'K1');
-  const ol = addComp('ol', 610, 220, 'F2');
-  const m  = addComp('motor', 770, 230, 'M1');
-  const ls = addComp('float', 430, 400, 'LS1');
-  const ka = addComp('relay', 430, 530, 'KA1');
-  const h1 = addComp('lamp', 640, 430, 'H1');
-  const h2 = addComp('lamp', 800, 430, 'H2');
-  link(p,'L',f,'1'); link(f,'2',k,'1'); link(k,'2',ol,'1');
-  link(ol,'2',m,'1'); link(m,'2',p,'N');
-  link(f,'2',st,'1'); link(st,'2',sa,'1');
-  link(sa,'2',ka,'21'); link(ka,'22',k,'A1'); link(k,'A2',p,'N');
-  link(k,'13',st,'2'); link(k,'14',sa,'2');
-  link(f,'2',ls,'1'); link(ls,'2',ka,'A1'); link(ka,'A2',p,'N');
-  link(h1,'1',k,'A1'); link(h1,'2',k,'A2');
-  link(h2,'1',ka,'A1'); link(h2,'2',ka,'A2');
-  ls.data.value = 30; ls.data.setpoint = 70;
+  $('projName').value = 'Tank Level Control (3-Phase)';
+  const p  = addComp('power', 10, 240, 'PS1');
+  const qf = addComp('mcb_3p', 160, 240, 'QF1');
+  const k  = addComp('contactor', 310, 200, 'K1');
+  const ol = addComp('ol', 522, 250, 'F2');
+  const m  = addComp('motor', 700, 245, 'M1');
+  const s1 = addComp('pb_nc', 160, 450, 'S1');
+  const s2 = addComp('pb_no', 290, 450, 'S2');
+  const ls = addComp('float', 430, 450, 'LS1');
+  const ka = addComp('relay', 620, 450, 'KA1');
+  const h1 = addComp('lamp', 820, 450, 'H1');
+  const h2 = addComp('lamp', 820, 580, 'H2');
+  feed3(p, qf, k, ol, m);
+  m.data.connection = 'DELTA';
+  link(qf,'2', s1,'1');
+  link(s1,'2', s2,'1');
+  link(s2,'2', ka,'21');
+  link(ka,'22', k,'A1');
+  link(k,'A2', p,'N');
+  link(k,'13', s2,'1');
+  link(k,'14', s2,'2');
+  link(qf,'2', ls,'1');
+  link(ls,'2', ka,'A1');
+  link(ka,'A2', p,'N');
+  coilLamp(h1, k, p);
+  coilLamp(h2, ka, p);
+  ls.data.value = 30;
+  ls.data.setpoint = 70;
 }
 
 function presetPressure(){
-  $('projName').value = 'Pressure Booster Control';
-  const p  = addComp('power', 20, 220, 'PS1');
-  const f  = addComp('mcb', 150, 210, 'F1');
-  const sa = addComp('selector', 290, 260, 'SA1');
-  const k  = addComp('contactor', 440, 130, 'K1');
-  const ol = addComp('ol', 620, 220, 'F2');
-  const m  = addComp('motor', 780, 230, 'M1');
-  const ps = addComp('pressure', 440, 370, 'PS2');
-  const ka = addComp('relay', 440, 500, 'KA1');
-  const h1 = addComp('lamp', 650, 430, 'H1');
-  const h2 = addComp('lamp', 810, 430, 'H2');
-  link(p,'L',f,'1'); link(f,'2',k,'1'); link(k,'2',ol,'1');
-  link(ol,'2',m,'1'); link(m,'2',p,'N');
-  link(f,'2',sa,'1'); link(sa,'2',ka,'21');
-  link(ka,'22',k,'A1'); link(k,'A2',p,'N');
-  link(f,'2',ps,'1'); link(ps,'2',ka,'A1'); link(ka,'A2',p,'N');
-  link(h1,'1',k,'A1'); link(h1,'2',k,'A2');
-  link(h2,'1',ka,'A1'); link(h2,'2',ka,'A2');
-  ps.data.value = 3; ps.data.setpoint = 6;
+  $('projName').value = 'Pressure Booster Control (3-Phase)';
+  const p  = addComp('power', 10, 240, 'PS1');
+  const qf = addComp('mcb_3p', 160, 240, 'QF1');
+  const k  = addComp('contactor', 310, 200, 'K1');
+  const ol = addComp('ol', 522, 250, 'F2');
+  const m  = addComp('motor', 700, 245, 'M1');
+  const sa = addComp('selector', 160, 450, 'SA1');
+  const ps = addComp('pressure', 300, 450, 'PS2');
+  const ka = addComp('relay', 470, 450, 'KA1');
+  const h1 = addComp('lamp', 660, 450, 'H1');
+  const h2 = addComp('lamp', 830, 450, 'H2');
+  feed3(p, qf, k, ol, m);
+  m.data.connection = 'DELTA';
+  link(qf,'2', sa,'1');
+  link(sa,'2', ka,'21');
+  link(ka,'22', k,'A1');
+  link(k,'A2', p,'N');
+  link(qf,'2', ps,'1');
+  link(ps,'2', ka,'A1');
+  link(ka,'A2', p,'N');
+  coilLamp(h1, k, p);
+  coilLamp(h2, ka, p);
+  ps.data.value = 3;
+  ps.data.setpoint = 6;
 }
 
 function presetTemperature(){
-  $('projName').value = 'Temperature / Heater Control';
-  const p  = addComp('power', 20, 220, 'PS1');
-  const f  = addComp('mcb', 150, 210, 'F1');
-  const sa = addComp('selector', 290, 260, 'SA1');
-  const k  = addComp('contactor', 440, 130, 'K1');
-  const ts = addComp('thermostat', 440, 370, 'TS1');
-  const ka = addComp('relay', 440, 500, 'KA1');
-  const h1 = addComp('lamp', 650, 150, 'H1');
-  const ha = addComp('alarm', 810, 380, 'HA1');
-  const h2 = addComp('lamp', 650, 430, 'H2');
-  link(p,'L',f,'1');
-  link(f,'2',sa,'1'); link(sa,'2',ka,'21');
-  link(ka,'22',k,'A1'); link(k,'A2',p,'N');
-  link(f,'2',k,'1'); link(k,'2',h1,'1'); link(h1,'2',p,'N');
-  link(f,'2',ts,'1'); link(ts,'2',ka,'A1'); link(ka,'A2',p,'N');
-  link(f,'2',ka,'13'); link(ka,'14',ha,'1'); link(ha,'2',p,'N');
-  link(h2,'1',ka,'A1'); link(h2,'2',ka,'A2');
-  ts.data.value = 25; ts.data.setpoint = 80;
+  $('projName').value = 'Temperature / Heater Control (1-Phase)';
+  const p  = addComp('power_1ph', 20, 240, 'PS1');
+  const f  = addComp('mcb', 150, 240, 'F1');
+  const sa = addComp('selector', 290, 250, 'SA1');
+  const k  = addComp('contactor', 440, 150, 'K1');
+  const ts = addComp('thermostat', 440, 405, 'TS1');
+  const ka = addComp('relay', 620, 380, 'KA1');
+  const h1 = addComp('lamp', 630, 120, 'H1');
+  const ha = addComp('alarm', 800, 240, 'HA1');
+  const h2 = addComp('lamp', 800, 380, 'H2');
+  link(p,'L', f,'1');
+  link(f,'2', sa,'1');
+  link(sa,'2', ka,'21');
+  link(ka,'22', k,'A1');
+  link(k,'A2', p,'N');
+  link(f,'2', ts,'1');
+  link(ts,'2', ka,'A1');
+  link(ka,'A2', p,'N');
+  link(f,'2', k,'1');
+  link(k,'2', h1,'1');
+  link(h1,'2', p,'N');
+  link(f,'2', ka,'13');
+  link(ka,'14', ha,'1');
+  link(ha,'2', p,'N');
+  coilLamp(h2, ka, p);
+  ts.data.value = 25;
+  ts.data.setpoint = 80;
 }
 
 function presetFlasher(){
-  $('projName').value = 'Flasher / Blinking Lamps';
-  const p  = addComp('power', 20, 240, 'PS1');
+  $('projName').value = 'Flasher / Blinking Lamps (1-Phase)';
+  const p  = addComp('power_1ph', 20, 240, 'PS1');
   const f  = addComp('mcb', 150, 230, 'F1');
-  const sa = addComp('selector', 290, 260, 'SA1');
+  const sa = addComp('selector', 290, 250, 'SA1');
   const kf = addComp('flasher', 440, 140, 'KF1');
-  const h1 = addComp('lamp', 660, 130, 'H1');
-  const h2 = addComp('lamp', 810, 130, 'H2');
-  const ha = addComp('alarm', 660, 350, 'HA1');
-  link(p,'L',f,'1');
-  link(f,'2',sa,'1'); link(sa,'2',kf,'A1'); link(kf,'A2',p,'N');
-  link(f,'2',kf,'15'); link(kf,'18',h1,'1'); link(h1,'2',p,'N');
-  link(kf,'18',h2,'1'); link(h2,'2',p,'N');
-  link(kf,'18',ha,'1'); link(ha,'2',p,'N');
+  const h1 = addComp('lamp', 650, 120, 'H1');
+  const h2 = addComp('lamp', 650, 280, 'H2');
+  const ha = addComp('alarm', 650, 430, 'HA1');
+  link(p,'L', f,'1');
+  link(f,'2', sa,'1');
+  link(sa,'2', kf,'A1');
+  link(kf,'A2', p,'N');
+  link(f,'2', kf,'15');
+  link(kf,'18', h1,'1'); link(h1,'2', p,'N');
+  link(kf,'18', h2,'1'); link(h2,'2', p,'N');
+  link(kf,'18', ha,'1'); link(ha,'2', p,'N');
   kf.data.period = 0.8;
 }
 
 function presetPhase(){
-  $('projName').value = 'Phase Failure Protection';
-  const p  = addComp('power', 20, 230, 'PS1');
-  const f  = addComp('mcb', 150, 220, 'F1');
-  const kp = addComp('phase', 290, 150, 'KP1');
-  const k  = addComp('contactor', 490, 130, 'K1');
-  const ol = addComp('ol', 670, 220, 'F2');
-  const m  = addComp('motor', 830, 230, 'M1');
-  const h1 = addComp('lamp', 290, 430, 'H1');
-  const ha = addComp('alarm', 490, 420, 'HA1');
-  link(p,'L',f,'1');
-  link(f,'2',kp,'13'); link(kp,'14',k,'A1'); link(k,'A2',p,'N');
-  link(f,'2',k,'1'); link(k,'2',ol,'1'); link(ol,'2',m,'1'); link(m,'2',p,'N');
-  link(f,'2',kp,'21'); link(kp,'22',ha,'1'); link(ha,'2',p,'N');
-  link(kp,'14',h1,'1'); link(h1,'2',p,'N');
+  $('projName').value = 'Phase Failure Protection (3-Phase)';
+  const p  = addComp('power', 10, 240, 'PS1');
+  const qf = addComp('mcb_3p', 160, 240, 'QF1');
+  const kp = addComp('phase', 300, 120, 'KP1');
+  const k  = addComp('contactor', 500, 200, 'K1');
+  const ol = addComp('ol', 710, 255, 'F2');
+  const m  = addComp('motor', 890, 250, 'M1');
+  const h  = addComp('lamp', 300, 340, 'H1');
+  const ha = addComp('alarm', 500, 455, 'HA1');
+  feed3(p, qf, k, ol, m);
+  m.data.connection = 'DELTA';
+  link(qf,'2', kp,'13');
+  link(kp,'14', k,'A1');
+  link(k,'A2', p,'N');
+  link(qf,'2', kp,'21');
+  link(kp,'22', ha,'1');
+  link(ha,'2', p,'N');
+  link(kp,'14', h,'1');
+  link(h,'2', p,'N');
 }
 
 function presetProtection(){
-  $('projName').value = 'MCCB + RCCB Protection';
-  const p  = addComp('power', 20, 230, 'PS1');
-  const q1 = addComp('mccb', 150, 220, 'Q1');
-  const q2 = addComp('rccb', 300, 220, 'Q2');
-  const fu = addComp('fuse', 450, 230, 'FU1');
-  const k  = addComp('contactor', 560, 130, 'K1');
-  const ol = addComp('ol', 740, 220, 'F2');
-  const m  = addComp('motor', 900, 230, 'M1');
-  const st = addComp('pb_nc', 300, 390, 'S1');
-  const sa = addComp('pb_no', 440, 390, 'S2');
-  const sp = addComp('spd', 300, 520, 'SPD1');
+  $('projName').value = 'MCCB + RCCB Protection (1-Phase)';
+  const p  = addComp('power_1ph', 20, 240, 'PS1');
+  const q1 = addComp('mccb', 150, 240, 'Q1');
+  const q2 = addComp('rccb', 300, 240, 'Q2');
+  const fu = addComp('fuse', 450, 250, 'FU1');
+  const k  = addComp('contactor', 570, 150, 'K1');
+  const ol = addComp('ol', 760, 255, 'F2');
+  const m  = addComp('motor_1ph', 930, 250, 'M1');
+  const st = addComp('pb_nc', 300, 430, 'S1');
+  const sa = addComp('pb_no', 440, 430, 'S2');
+  const sp = addComp('spd', 300, 560, 'SPD1');
   const h  = addComp('lamp', 620, 430, 'H1');
-  link(p,'L',q1,'1'); link(q1,'2',q2,'1'); link(q2,'2',fu,'1');
-  link(fu,'2',k,'1'); link(k,'2',ol,'1'); link(ol,'2',m,'1'); link(m,'2',p,'N');
-  link(q2,'2',st,'1'); link(st,'2',sa,'1'); link(sa,'2',k,'A1'); link(k,'A2',p,'N');
-  link(k,'13',st,'2'); link(k,'14',sa,'2');
-  link(fu,'2',sp,'1'); link(sp,'2',p,'N');
-  link(h,'1',k,'A1'); link(h,'2',k,'A2');
+  link(p,'L', q1,'1');
+  link(q1,'2', q2,'1');
+  link(q2,'2', fu,'1');
+  link(fu,'2', k,'1');
+  link(k,'2', ol,'1');
+  link(ol,'2', m,'1');
+  link(m,'2', p,'N');
+  link(fu,'2', st,'1');
+  link(st,'2', sa,'1');
+  link(sa,'2', k,'A1');
+  link(k,'A2', p,'N');
+  link(k,'13', sa,'1');
+  link(k,'14', sa,'2');
+  link(fu,'2', sp,'1');
+  link(sp,'2', p,'N');
+  coilLamp(h, k, p);
 }
 
 function presetMotors(){
   $('projName').value = 'Motor Types Gallery';
-  const p  = addComp('power', 20, 300, 'PS1');
-  const f  = addComp('mcb', 160, 290, 'F1');
-  const m1 = addComp('motor', 320, 40, 'M1');
-  const m2 = addComp('motor_1ph', 320, 180, 'M2');
-  const m3 = addComp('motor_dc', 320, 320, 'M3');
-  const m4 = addComp('motor_stepper', 320, 460, 'M4');
-  const m5 = addComp('motor_servo', 320, 600, 'M5');
-  link(p,'L',f,'1');
-  [m1,m2,m3,m4,m5].forEach(m => { link(f,'2',m,'1'); link(m,'2',p,'N'); });
+  const p3 = addComp('power', 10, 60, 'PS1');
+  const p1 = addComp('power_1ph', 10, 320, 'PS2');
+  const m1 = addComp('motor', 230, 40, 'M1');
+  const m2 = addComp('motor_1ph', 230, 300, 'M2');
+  const m3 = addComp('motor_dc', 430, 60, 'M3');
+  const m4 = addComp('motor_stepper', 430, 300, 'M4');
+  const m5 = addComp('motor_servo', 630, 60, 'M5');
+  link(p3,'L1', m1,'U1');
+  link(p3,'L2', m1,'V1');
+  link(p3,'L3', m1,'W1');
+  link(m1,'U2', m1,'V1');
+  link(m1,'V2', m1,'W1');
+  link(m1,'W2', m1,'U1');
+  m1.data.connection = 'AUTO';
+  [m2,m3,m4,m5].forEach(x => {
+    link(p1,'L', x,'1');
+    link(x,'2', p1,'N');
+  });
 }
 
 function presetVfd(){
-  $('projName').value = 'VFD Motor Drive';
-  const p  = addComp('power', 20, 220, 'PS1');
-  const f  = addComp('mcb', 150, 210, 'F1');
-  const v  = addComp('vfd', 300, 170, 'VFD1');
-  const m  = addComp('motor', 540, 200, 'M1');
-  const h  = addComp('lamp', 560, 360, 'H1');
-  link(p,'L',f,'1'); link(f,'2',v,'L'); link(p,'N',v,'N');
-  link(v,'1',m,'1'); link(v,'2',m,'2');
-  link(v,'1',h,'1'); link(h,'2',v,'2');
-  v.data.target = 50; v.data.accel = 8; v.data.decel = 6;
+  $('projName').value = 'VFD Motor Drive (1-Phase in)';
+  const p  = addComp('power_1ph', 20, 240, 'PS1');
+  const f  = addComp('mcb', 150, 230, 'F1');
+  const v  = addComp('vfd', 300, 180, 'VFD1');
+  const m  = addComp('motor_1ph', 540, 240, 'M1');
+  const h  = addComp('lamp', 560, 420, 'H1');
+  link(p,'L', f,'1');
+  link(f,'2', v,'L');
+  link(p,'N', v,'N');
+  link(v,'1', m,'1');
+  link(v,'2', m,'2');
+  link(v,'1', h,'1');
+  link(h,'2', v,'2');
+  v.data.target = 50;
+  v.data.accel = 8;
+  v.data.decel = 6;
+  v.state.on = true;
 }
 
 function presetPlc(){
   $('projName').value = 'PLC Motor Control (Ladder)';
-  const p  = addComp('power', 20, 230, 'PS1');
-  const f  = addComp('mcb', 150, 220, 'F1');
-  const pc = addComp('plc', 280, 150, 'PLC1');
-  const k  = addComp('contactor', 570, 150, 'K1');
-  const ol = addComp('ol', 750, 240, 'F2');
-  const m  = addComp('motor', 910, 250, 'M1');
-  const s1 = addComp('pb_nc', 150, 430, 'S1');
-  const s2 = addComp('pb_no', 280, 430, 'S2');
-  const h  = addComp('lamp', 570, 430, 'H1');
-  link(p,'L',f,'1');
-  link(f,'2',pc,'L'); link(p,'N',pc,'N');
-  link(f,'2',s1,'1'); link(s1,'2',pc,'I2');
-  link(f,'2',s2,'1'); link(s2,'2',pc,'I1');
-  link(pc,'Q1',k,'A1'); link(k,'A2',p,'N');
-  link(f,'2',k,'1'); link(k,'2',ol,'1'); link(ol,'2',m,'1'); link(m,'2',p,'N');
-  link(pc,'Q2',h,'1'); link(h,'2',p,'N');
+  const p  = addComp('power', 10, 240, 'PS1');
+  const qf = addComp('mcb_3p', 160, 240, 'QF1');
+  const pc = addComp('plc', 310, 120, 'PLC1');
+  const k  = addComp('contactor', 600, 200, 'K1');
+  const ol = addComp('ol', 810, 255, 'F2');
+  const m  = addComp('motor', 990, 250, 'M1');
+  const s1 = addComp('pb_nc', 160, 430, 'S1');
+  const s2 = addComp('pb_no', 310, 430, 'S2');
+  const h  = addComp('lamp', 600, 470, 'H1');
+  feed3(p, qf, k, ol, m);
+  m.data.connection = 'DELTA';
+  link(qf,'2', pc,'L');
+  link(p,'N', pc,'N');
+  link(qf,'2', s1,'1');
+  link(s1,'2', pc,'I2');
+  link(qf,'2', s2,'1');
+  link(s2,'2', pc,'I1');
+  link(pc,'Q1', k,'A1');
+  link(k,'A2', p,'N');
+  link(pc,'Q2', h,'1');
+  link(h,'2', p,'N');
 }
 
 function loadPreset(name){
