@@ -1613,9 +1613,13 @@ function drawWires(){
     const p1 = portAbs(a, w.from.port), p2 = portAbs(b, w.to.port);
     const live = isWireLive(w);
     let d;
-    const dx = p2.x - p1.x, dy = p2.y - p1.y;
-    const mx = p1.x + dx/2, my = p1.y + dy/2;
-    d = `M${p1.x},${p1.y} C${mx},${p1.y} ${mx},${p2.y} ${p2.x},${p2.y}`;
+    if(Math.abs(p1.x - p2.x) >= Math.abs(p1.y - p2.y)){
+      const mx = (p1.x + p2.x) / 2;
+      d = `M${p1.x},${p1.y} L${mx},${p1.y} L${mx},${p2.y} L${p2.x},${p2.y}`;
+    } else {
+      const my = (p1.y + p2.y) / 2;
+      d = `M${p1.x},${p1.y} L${p1.x},${my} L${p2.x},${my} L${p2.x},${p2.y}`;
+    }
     parts.push(`<path d="${d}" class="wire${live?' live':''}"/>`);
     const col = live ? '#f5c518' : '#64748b';
     parts.push(`<circle cx="${p1.x}" cy="${p1.y}" r="2.2" fill="${col}"/>`);
