@@ -857,8 +857,7 @@ function symMccb(c){
 function symRccb(c){
   const on = c.state.closed && !c.state.tripped;
   return wrap(c,
-    `<rect x="16" y="12" width="72" height="86" rx="7" fill="url(#gRccb)" stroke="#475569" stroke-width="1.5"/>`
-    + `<defs><linearGradient id="gRccb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#334155"/><stop offset="1" stop-color="#0f172a"/></linearGradient></defs>`
+    `<rect x="16" y="12" width="72" height="86" rx="7" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>`
     + txt(52,25,c.label,9,'#1e293b')
     + `<circle cx="52" cy="40" r="11" fill="${on?'#052e16':'#450a0a'}" stroke="${on?CL.green:CL.red}" stroke-width="2"/>`
     + `<line x1="52" y1="40" x2="${closingLineX(on)}" y2="${on?30:49}" stroke="${on?CL.green:CL.red}" stroke-width="2.5"/>`
