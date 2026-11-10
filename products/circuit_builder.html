@@ -253,7 +253,7 @@ const NS = 'http://www.w3.org/2000/svg';
 
 /* ---------- Component types (size + port geometry) ---------- */
 const TYPES = {
-  power:    { label:'Power Supply',  w:100, h:100, color:'#ef4444', ports:[{id:'L',x:95,y:30},{id:'N',x:95,y:70}] },
+  power:    { label:'Power Supply 3Φ',  w:100, h:120, color:'#ef4444', ports:[{id:'L1',x:95,y:20},{id:'L2',x:95,y:40},{id:'L3',x:95,y:60},{id:'N',x:95,y:90}] },
   mcb:      { label:'MCB',           w:90,  h:90,  color:'#f59e0b', ports:[{id:'1',x:7,y:55},{id:'2',x:83,y:55}] },
   pb_no:    { label:'Push Button NO',w:90,  h:95,  color:'#22c55e', ports:[{id:'1',x:7,y:68},{id:'2',x:83,y:68}] },
   pb_nc:    { label:'Push Button NC',w:90,  h:95,  color:'#ef4444', ports:[{id:'1',x:7,y:68},{id:'2',x:83,y:68}] },
@@ -275,7 +275,7 @@ const TYPES = {
     {id:'1',x:8,y:26},{id:'2',x:112,y:26},
     {id:'95',x:8,y:96},{id:'96',x:112,y:96}] },
   lamp:     { label:'Lamp',          w:90,  h:90,  color:'#f5c518', ports:[{id:'1',x:8,y:55},{id:'2',x:82,y:55}] },
-  motor:    { label:'Motor 3-Phase', w:110, h:110, color:'#a78bfa', ports:[{id:'1',x:8,y:55},{id:'2',x:102,y:55}] },
+  motor:    { label:'Motor 3-Phase', w:110, h:120, color:'#a78bfa', ports:[{id:'U',x:8,y:30},{id:'V',x:8,y:55},{id:'W',x:8,y:80},{id:'N',x:102,y:55}] },
   motor_1ph:{ label:'Motor 1-Phase', w:110, h:110, color:'#c084fc', ports:[{id:'1',x:8,y:55},{id:'2',x:102,y:55}] },
   motor_dc: { label:'DC Motor',      w:110, h:110, color:'#60a5fa', ports:[{id:'1',x:8,y:55},{id:'2',x:102,y:55}] },
   motor_stepper:{label:'Stepper Motor',w:110,h:110,color:'#34d399', ports:[{id:'1',x:8,y:55},{id:'2',x:102,y:55}] },
@@ -577,15 +577,19 @@ function wrap(c, inner){
 function symPower(c){
   const on = supplyOn;
   return wrap(c,
-    `<rect x="10" y="18" width="64" height="64" rx="8" fill="url(#bodyGrad)" stroke="${CL.edge}"/>`
-    + `<path d="M44 30 L33 52 h9 l-6 20 17-26 h-9 l6-16 z" fill="${on?CL.hot:CL.dim}"/>`
-    + `<text x="42" y="76" text-anchor="middle" fill="${CL.muted}" font-size="9" font-family="Segoe UI,Arial">${supplyV} V</text>`
-    + `<line x1="74" y1="30" x2="95" y2="30" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
-    + `<line x1="74" y1="70" x2="95" y2="70" stroke="${CL.blue}" stroke-width="2.5"/>`
-    + `<text x="77" y="23" fill="${CL.red}" font-size="8" font-family="Segoe UI,Arial">L</text>`
-    + `<text x="77" y="86" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">N</text>`
+    `<rect x="10" y="10" width="64" height="100" rx="8" fill="url(#bodyGrad)" stroke="${CL.edge}"/>`
+    + `<path d="M42 30 L31 52 h9 l-6 20 17-26 h-9 l6-16 z" fill="${on?CL.hot:CL.dim}"/>`
+    + `<text x="42" y="96" text-anchor="middle" fill="${CL.muted}" font-size="9" font-family="Segoe UI,Arial">${supplyV} V</text>`
+    + `<line x1="74" y1="20" x2="95" y2="20" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
+    + `<line x1="74" y1="40" x2="95" y2="40" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
+    + `<line x1="74" y1="60" x2="95" y2="60" stroke="${on?CL.amber:CL.dim}" stroke-width="2.5"/>`
+    + `<line x1="74" y1="90" x2="95" y2="90" stroke="${CL.blue}" stroke-width="2.5"/>`
+    + `<text x="77" y="18" fill="${CL.red}" font-size="8" font-family="Segoe UI,Arial">L1</text>`
+    + `<text x="77" y="38" fill="${CL.amber}" font-size="8" font-family="Segoe UI,Arial">L2</text>`
+    + `<text x="77" y="58" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">L3</text>`
+    + `<text x="77" y="96" fill="${CL.blue}" font-size="8" font-family="Segoe UI,Arial">N</text>`
     + `<circle cx="42" cy="11" r="4" fill="${on?CL.green:CL.red}"/>`
-    + txt(42,96,on?'MAIN ON':'OFF',8,on?CL.green:CL.red)
+    + txt(42,108,on?'MAIN ON':'OFF',8,on?CL.green:CL.red)
   );
 }
 
@@ -791,13 +795,19 @@ function symMotor(c){
       + txt(83,48,'E',7,on?accent:CL.muted);
   }
   return wrap(c,
-    `<line x1="8" y1="55" x2="29" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
+    `<line x1="8" y1="30" x2="29" y2="30" stroke="${CL.metal}" stroke-width="2"/>`
+    + `<line x1="8" y1="55" x2="29" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
+    + `<line x1="8" y1="80" x2="29" y2="80" stroke="${CL.metal}" stroke-width="2"/>`
+    + txt(4,30,'U',6,'#1e293b','start')
+    + txt(4,55,'V',6,'#1e293b','start')
+    + txt(4,80,'W',6,'#1e293b','start')
     + `<line x1="81" y1="55" x2="102" y2="55" stroke="${CL.metal}" stroke-width="2"/>`
-    + `<ellipse cx="55" cy="45" rx="30" ry="24" fill="url(#motorGrad)" stroke="#222a23" stroke-width="2.5"/>`
-    + `<g stroke="#8a947b" stroke-width="1" opacity=".7">${[0,1,2,3,4,5,6,7].map(i=>`<path d="M${39+i*3} 24 L${42+i*3} 66"/>`).join('')}</g>`
-    + `<rect x="40" y="8" width="30" height="12" rx="3" fill="#68745c" stroke="#30392e" stroke-width="2"/>`
-    + `<rect x="42" y="10" width="26" height="8" rx="2" fill="#b76524"/>`
-    + `<g fill="#d9d2bd" stroke="#514b3e" stroke-width="1">${[0,1,2].map(i=>`<circle cx="${46+i*8}" cy="14" r="2.5"/>`).join('')}</g>`
+    + txt(106,55,'N',6,'#1e293b','start')
+    + `<ellipse cx="55" cy="55" rx="30" ry="24" fill="url(#motorGrad)" stroke="#222a23" stroke-width="2.5"/>`
+    + `<g stroke="#8a947b" stroke-width="1" opacity=".7">${[0,1,2,3,4,5,6,7].map(i=>`<path d="M${39+i*3} 34 L${42+i*3} 76"/>`).join('')}</g>`
+    + `<rect x="40" y="20" width="30" height="12" rx="3" fill="#68745c" stroke="#30392e" stroke-width="2"/>`
+    + `<rect x="42" y="22" width="26" height="8" rx="2" fill="#b76524"/>`
+    + `<g fill="#d9d2bd" stroke="#514b3e" stroke-width="1">${[0,1,2].map(i=>`<circle cx="${46+i*8}" cy="26" r="2.5"/>`).join('')}</g>`
     + `<g class="${on?'spin':''}">`
     + `<line x1="37" y1="45" x2="73" y2="45" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
     + `<line x1="55" y1="27" x2="55" y2="63" stroke="${on?accent:CL.metal}" stroke-width="2"/>`
@@ -808,6 +818,7 @@ function symMotor(c){
     + txt(88,25,badge,7,on?accent:CL.muted)
     + txt(55,90,c.label,8,'#1e293b')
     + txt(55,102,(d.kw||0)+' kW · '+(d.rpm||0)+' rpm',7,on?CL.green:CL.muted)
+    + (on ? txt(55,112,(c.state.amps||0).toFixed(1)+' A',7,CL.amber) : '')
     + (on ? txt(55,112,(c.state.amps||0).toFixed(1)+' A',7,CL.amber) : '')
   );
 }
@@ -1323,8 +1334,14 @@ function deenergizeAll(){
 function sourceList(){
   const out = [];
   const pc = components.find(c => c.type === 'power');
-  if(pc && supplyOn) out.push(pc);
-  components.filter(c => c.type === 'generator' && c.state.on).forEach(g => out.push(g));
+  if(pc && supplyOn){
+    out.push({ comp: pc, port: 'L1' });
+    out.push({ comp: pc, port: 'L2' });
+    out.push({ comp: pc, port: 'L3' });
+  }
+  components.filter(c => c.type === 'generator' && c.state.on).forEach(g => {
+    out.push({ comp: g, port: 'L' });
+  });
   return out;
 }
 
@@ -1401,7 +1418,7 @@ function simulate(dt){
   while(changed && it++ < 24){
     changed = false;
     buildUF();
-    const roots = srcs.map(s => ({ hot: ufFind(s.id+':L'), neu: ufFind(s.id+':N') }));
+    const roots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':N') }));
     if(roots.some(r => r.hot === r.neu)){ shorted = true; break; }
     for(let i=0;i<roots.length;i++) for(let j=i+1;j<roots.length;j++){
       if(roots[i].hot === roots[j].hot) sourceFault = true;
@@ -1424,7 +1441,7 @@ function simulate(dt){
   }
 
   buildUF();
-  const timeRoots = srcs.map(s => ({ hot: ufFind(s.id+':L'), neu: ufFind(s.id+':N') }));
+  const timeRoots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':N') }));
   components.forEach(c => {
     if(c.type === 'timer'){
       if(c.state.coil && !shorted){
@@ -1463,7 +1480,7 @@ function simulate(dt){
     while(changed2 && it2++ < 24){
       changed2 = false;
       buildUF();
-      const roots2 = srcs.map(s => ({ hot: ufFind(s.id+':L'), neu: ufFind(s.id+':N') }));
+      const roots2 = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':N') }));
       if(roots2.some(r => r.hot === r.neu)){ shorted = true; break; }
       components.forEach(c => {
         if(c.type === 'contactor' || c.type === 'relay' || c.type === 'timer' ||
@@ -1486,7 +1503,7 @@ function simulate(dt){
   if(shorted){ deenergizeAll(); return; }
 
   buildUF();
-  const roots = srcs.map(s => ({ hot: ufFind(s.id+':L'), neu: ufFind(s.id+':N') }));
+  const roots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':N') }));
   if(roots.some(r => r.hot === r.neu)){ shorted = true; deenergizeAll(); return; }
   for(let i=0;i<roots.length;i++) for(let j=i+1;j<roots.length;j++){
     if(roots[i].hot === roots[j].hot) sourceFault = true;
@@ -1498,9 +1515,34 @@ function simulate(dt){
 
   let totalAmps = 0;
   components.forEach(c => {
-    if(c.type === 'lamp' || isMotor(c.type) || c.type === 'alarm'){
+    if(c.type === 'lamp' || c.type === 'alarm'){
       const was = c.state.energized;
       c.state.energized = acrossRoots(c, '1', '2', roots);
+    }
+    if(isMotor(c.type) && c.type !== 'motor'){
+      const was = c.state.energized;
+      c.state.energized = acrossRoots(c, '1', '2', roots);
+      if(c.state.energized){
+        c.state.runTime = (was ? (c.state.runTime || 0) : 0) + (dt || 0);
+        const fla = Number(c.data.fla) || 0;
+        const inrush = fla * (1 + 5 * Math.exp(-(c.state.runTime || 0) / 0.6));
+        c.state.amps = inrush;
+        totalAmps += inrush;
+      } else {
+        c.state.runTime = 0;
+        c.state.amps = 0;
+      }
+    }
+    if(isMotor(c.type) && c.type === 'motor'){
+      const was = c.state.energized;
+      // 3-phase: energized if any of U,V,W is hot and N is neutral
+      c.state.energized = roots.some(r => {
+        const uHot = ufFind(c.id+':U') === r.hot;
+        const vHot = ufFind(c.id+':V') === r.hot;
+        const wHot = ufFind(c.id+':W') === r.hot;
+        const nNeu = ufFind(c.id+':N') === r.neu;
+        return (uHot||vHot||wHot) && nNeu;
+      });
       if(isMotor(c.type)){
         if(c.state.energized){
           c.state.runTime = (was ? (c.state.runTime || 0) : 0) + (dt || 0);
