@@ -246,7 +246,11 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
         6. كليك يمين على المكوّن = حذف.<br>
         7. انقر على سلك لاختياره؛ استخدم لوحة الخصائص لتغيير لونه أو حذفه.<br>
         8. تكبير/تصغير: أزرار +/− (أسفل-يمين)، Ctrl+عجلة، أو مفاتيح + / − / 0 / F (ملء).
-        9. الموتور 3 فاز له 6 أطراف: U1/V1/W1 دخول و U2/V2/W2 خرج. الموتور لا يعمل إلا بعد ربط الخرج: استار (U2+V2+W2 مع بعض) أو دلتا (U2→V1، V2→W1، W2→U1)، أو من خاصية Wiring لو الربط داخلي.<br>
+        9. الموتور 3 فاز له 6 أطراف: U1/V1/W1 دخول و U2/V2/W2 خرج، ولا يلف والخرج مفتوح. التوصيلة زي اللوحة الحقيقية:<br>
+        &nbsp;&nbsp;• استار: وصّل U2/V2/W2 على أعمدة كونتاكتور الاستار K3، واقفل أطراف K3 التانية (2/4/6) على بعضها = نقطة النجمة — لما K3 يشتغل الموتور يلف استار.<br>
+        &nbsp;&nbsp;• دلتا: وصّل أعمدة كونتاكتور الدلتا K2 بين خرج الموتور وأطراف الكونتاكتور الرئيسي K1: U2→V1، V2→W1، W2→U1 — لما K2 يشتغل يلف دلتا.<br>
+        &nbsp;&nbsp;• لو K2 و K3 قفلوا مع بعض = قصر بين الأطوار والقاطع بيفصل فورًا — عشان كده اللوحات الحقيقية فيها interlock بتلامسات NC.<br>
+        &nbsp;&nbsp;• للاختبار السريع: اربط الخرج بأسلاك مباشرة أو من خاصية Wiring. شوف مثالي Star-Delta Starter و Star-Delta Panel.<br>
         10. المولدات والمحولات: محول التحكم 1 فاز يعزل دائرة التحكم تمامًا (ثانوي حي 230 فولت لما الابتدائي على 400 فولت). جرّب مثال Control Transformer ومثال AMF: عند سقوط المصدر تراقب KP1 الأطوار، وبعد تأخير بدء 3 ثوانٍ يبدأ المولد تلقائيًا وينقل الـATS الحمل، وعند رجوع المصدر يرجع الحمل بعد 5 ثوانٍ ثم يفصل المولد — كل التحكم متغذي من بطارية 24 فولت.
       </div>
       <div class="hint en-only">
@@ -258,7 +262,11 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
         6. Right-click a component to delete it.<br>
         7. Click a wire to select it; use the panel to change its colour or delete it.<br>
         8. Zoom: +/− buttons (bottom-right), Ctrl+wheel, or keys + / − / 0 / F (fit).
-        9. A 3-phase motor has 6 leads: U1/V1/W1 in, U2/V2/W2 out. It will NOT run until the output is linked: star (U2+V2+W2 together) or delta (U2→V1, V2→W1, W2→U1), or set internal links in the Wiring property.<br>
+        9. A 3-phase motor has 6 leads: U1/V1/W1 in, U2/V2/W2 out — it will not run while the output is open. Wire it like a real panel:<br>
+        &nbsp;&nbsp;• STAR: land U2/V2/W2 on the star contactor (K3) poles and tie the far ends (2/4/6) together = star point — with K3 closed the motor runs in star.<br>
+        &nbsp;&nbsp;• DELTA: wire the delta contactor (K2) poles between the motor outputs and the main contactor (K1) terminals: U2→V1, V2→W1, W2→U1 — with K2 closed it runs in delta.<br>
+        &nbsp;&nbsp;• K2 and K3 closed together = phase-to-phase short and the breaker trips instantly — real panels interlock them with NC contacts.<br>
+        &nbsp;&nbsp;• Quick test shortcut: direct wires between the leads, or the Wiring property. See the Star-Delta Starter and Star-Delta Panel examples.<br>
         10. Transformers & generators: the 1Φ control transformer fully isolates the control circuit (live 230 V secondary while the primary sits on 400 V). Try the Control Transformer example, and the AMF example: on mains failure KP1 detects phase loss, after a 3 s start delay the genset auto-starts and the ATS transfers the load; when the mains returns the load switches back after 5 s and the genset shuts down — all control logic runs from a 24 V battery.
       </div>
     </details>
@@ -1104,7 +1112,8 @@ function symMotor(c){
 
   const mode = c.state.mode || 'OPEN';
   const modeColor = mode === 'DELTA' ? CL.green : mode === 'STAR' ? CL.cyan : CL.red;
-  const modeText = mode === 'DELTA' ? 'Δ DELTA' : mode === 'STAR' ? 'Y STAR' : 'OPEN';
+  const modeText = mode === 'DELTA' ? 'Δ DELTA' : mode === 'STAR' ? 'Y STAR' : 'OPEN — WIRE U2/V2/W2';
+  const modeW = mode === 'OPEN' ? 100 : 60;
 
   return wrap(c,
     `<line x1="8" y1="55" x2="42" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
@@ -1133,7 +1142,7 @@ function symMotor(c){
     + `<rect x="118" y="34" width="34" height="13" rx="3" fill="#0b1220" stroke="${on?accent:CL.edge}"/>`
     + txt(135,43,badge,7,on?accent:CL.muted)
     + `</g>`
-    + `<rect x="60" y="140" width="60" height="14" rx="3" fill="${modeColor}22" stroke="${modeColor}"/>`
+    + `<rect x="${90 - modeW/2}" y="140" width="${modeW}" height="14" rx="3" fill="${modeColor}22" stroke="${modeColor}"/>`
     + txt(90,150,modeText,7,modeColor)
     + txt(90,162,c.label,8,'#1e293b')
     + txt(90,172,(d.kw||0)+' kW · '+(d.rpm||0)+' rpm',7,on?CL.green:CL.muted)
@@ -2510,8 +2519,8 @@ function renderProps(){
     if(c.type === 'motor'){
       h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${[2,4,6,8].map(v => `<option value="${v}"${Number(c.data.poles)===v?' selected':''}>${v} pole</option>`).join('')}</select></div>`;
       h += `<div class="prop"><label>Voltage</label><select onchange="setMeta('${c.id}','volts',this.value)">${['400 V Δ/Y','415 V','690 V'].map(v => `<option value="${v}"${c.data.volts===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
-      h += `<div class="prop"><label>Wiring</label><select onchange="setMeta('${c.id}','connection',this.value)">${[['AUTO','AUTO — wire U2/V2/W2 out'],['STAR','STAR Y (internal links)'],['DELTA','DELTA Δ (internal links)']].map(([v,n]) => `<option value="${v}"${(c.data.connection||'AUTO')===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
-      h += `<div class="prop"><label>Mode</label><span class="mini ${c.state.mode==='DELTA'?'go':c.state.mode==='STAR'?'':'stop'}">${c.state.mode==='DELTA'?'DELTA Δ':c.state.mode==='STAR'?'STAR Y':'OPEN — link U2/V2/W2'}</span></div>`;
+      h += `<div class="prop"><label>Wiring</label><select onchange="setMeta('${c.id}','connection',this.value)">${[['AUTO','AUTO — wire outputs to star/delta contactor'],['STAR','STAR Y (internal links)'],['DELTA','DELTA Δ (internal links)']].map(([v,n]) => `<option value="${v}"${(c.data.connection||'AUTO')===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
+      h += `<div class="prop"><label>Mode</label><span class="mini ${c.state.mode==='DELTA'?'go':c.state.mode==='STAR'?'':'stop'}">${c.state.mode==='DELTA'?'DELTA Δ':c.state.mode==='STAR'?'STAR Y':'OPEN — wire outputs (K3 star / K2 delta)'}</span></div>`;
       h += `<div class="prop"><label>Terminals</label><span class="mini">U1 V1 W1 / U2 V2 W2</span></div>`;
     }
     if(c.type === 'motor_1ph'){
