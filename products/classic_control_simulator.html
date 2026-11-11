@@ -2462,7 +2462,7 @@ function routeWire(a, pa, b, pb, boxes, used, lanes){
 
   return [p1, ...cleaned, p2];
 }
-PY/* insert "hop" points wherever this wire crosses an earlier wire head-on —
+/* insert "hop" points wherever this wire crosses an earlier wire head-on —
    roundedPath turns each pair into a small arc bridge (classic schematic hop,
    showing the two wires pass WITHOUT touching) */
 function addHops(pts, used){
