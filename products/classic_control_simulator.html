@@ -131,6 +131,8 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
     <option value="stardelta_panel">Star-Delta Panel (Real Layout)</option>
     <option value="multistart">Multi-Start / Multi-Stop</option>
     <option value="generator">Generator / ATS Changeover</option>
+    <option value="ctrlxfmr">Control Transformer (400/230 V)</option>
+    <option value="amf">AMF Generator Changeover (Auto)</option>
     <option value="level">Tank Level Control</option>
     <option value="pressure">Pressure Booster Control</option>
     <option value="temperature">Temperature / Heater Control</option>
@@ -186,6 +188,7 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
       <button class="compbtn" data-type="phase" onclick="selectPlace('phase')">🟢 Phase Monitor</button>
       <button class="compbtn" data-type="generator" onclick="selectPlace('generator')">🔋 Generator 1Φ</button>
       <button class="compbtn" data-type="generator_3p" onclick="selectPlace('generator_3p')">🔋 Generator 3Φ</button>
+      <button class="compbtn" data-type="battery" onclick="selectPlace('battery')">🔋 Battery 24V</button>
       <button class="compbtn" data-type="transformer" onclick="selectPlace('transformer')">🧲 Transformer 1Φ</button>
       <button class="compbtn" data-type="transformer_3p" onclick="selectPlace('transformer_3p')">🧲 Transformer 3Φ</button>
       <button class="compbtn" data-type="ats" onclick="selectPlace('ats')">🔀 ATS Changeover</button>
@@ -243,6 +246,8 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
         6. كليك يمين على المكوّن = حذف.<br>
         7. انقر على سلك لاختياره؛ استخدم لوحة الخصائص لتغيير لونه أو حذفه.<br>
         8. تكبير/تصغير: أزرار +/− (أسفل-يمين)، Ctrl+عجلة، أو مفاتيح + / − / 0 / F (ملء).
+        9. الموتور 3 فاز له 6 أطراف: U1/V1/W1 دخول و U2/V2/W2 خرج. الموتور لا يعمل إلا بعد ربط الخرج: استار (U2+V2+W2 مع بعض) أو دلتا (U2→V1، V2→W1، W2→U1)، أو من خاصية Wiring لو الربط داخلي.<br>
+        10. المولدات والمحولات: محول التحكم 1 فاز يعزل دائرة التحكم تمامًا (ثانوي حي 230 فولت لما الابتدائي على 400 فولت). جرّب مثال Control Transformer ومثال AMF: عند سقوط المصدر تراقب KP1 الأطوار، وبعد تأخير بدء 3 ثوانٍ يبدأ المولد تلقائيًا وينقل الـATS الحمل، وعند رجوع المصدر يرجع الحمل بعد 5 ثوانٍ ثم يفصل المولد — كل التحكم متغذي من بطارية 24 فولت.
       </div>
       <div class="hint en-only">
         1. Choose a component, then click on canvas to place it.<br>
@@ -253,6 +258,8 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
         6. Right-click a component to delete it.<br>
         7. Click a wire to select it; use the panel to change its colour or delete it.<br>
         8. Zoom: +/− buttons (bottom-right), Ctrl+wheel, or keys + / − / 0 / F (fit).
+        9. A 3-phase motor has 6 leads: U1/V1/W1 in, U2/V2/W2 out. It will NOT run until the output is linked: star (U2+V2+W2 together) or delta (U2→V1, V2→W1, W2→U1), or set internal links in the Wiring property.<br>
+        10. Transformers & generators: the 1Φ control transformer fully isolates the control circuit (live 230 V secondary while the primary sits on 400 V). Try the Control Transformer example, and the AMF example: on mains failure KP1 detects phase loss, after a 3 s start delay the genset auto-starts and the ATS transfers the load; when the mains returns the load switches back after 5 s and the genset shuts down — all control logic runs from a 24 V battery.
       </div>
     </details>
   </aside>
@@ -391,6 +398,7 @@ const TYPES = {
   generator:{ label:'Generator',     w:110, h:100, color:'#22c55e', ports:[{id:'L',x:102,y:35},{id:'N',x:102,y:70}] },
   generator_3p:{ label:'Generator 3Φ', w:160, h:150, color:'#22c55e', ports:[
     {id:'L1',x:152,y:35},{id:'L2',x:152,y:62},{id:'L3',x:152,y:89},{id:'N',x:152,y:120}] },
+   battery:  { label:'Battery 24V',   w:100, h:110, color:'#22c55e', ports:[{id:'+',x:8,y:55},{id:'-',x:92,y:55}] },
   transformer:{ label:'Transformer 1Φ', w:160, h:140, color:'#a78bfa', ports:[
     {id:'1',x:8,y:38},{id:'2',x:8,y:100},
     {id:'3',x:152,y:38},{id:'4',x:152,y:100}] },
@@ -417,7 +425,7 @@ const PREFIX = {
   power:'PS',power_1ph:'PS',mcb:'F',mcb_3p:'QF',pb_no:'S',pb_nc:'S',estop:'E',selector:'SA',contactor:'K',
   relay:'KA',timer:'KT',timer_sd:'KT',ol:'F',lamp:'H',motor:'M',motor_1ph:'M',motor_dc:'M',motor_stepper:'SM',motor_servo:'SV',alarm:'HA',
   mccb:'Q',mccb_3p:'QM',rccb:'Q',fuse:'FU',spd:'SPD',timer_off:'KT',flasher:'KF',phase:'KP',
-  terminal:'XT',busbar:'BB',busbar_3p:'BB',terminal_6:'XT',generator:'G',generator_3p:'G',transformer:'T',transformer_3p:'T',ats:'ATS',ctmeter:'PA',voltmeter:'PV',float:'LS',
+  terminal:'XT',busbar:'BB',busbar_3p:'BB',terminal_6:'XT',generator:'G',generator_3p:'G',battery:'GB',transformer:'T',transformer_3p:'T',ats:'ATS',ctmeter:'PA',voltmeter:'PV',float:'LS',
   pressure:'PS',thermostat:'TS',plc:'PLC',vfd:'VFD'
 };
 
@@ -488,7 +496,7 @@ function isMotor(type){
 }
 function isPower(type){ return type === 'power' || type === 'power_1ph'; }
 function defaultData(type){
-  if(type === 'motor')  return { kw:2.2, fla:4.8, rpm:1440, poles:4, volts:'400 V Δ/Y', connection:'DELTA' };
+  if(type === 'motor')  return { kw:2.2, fla:4.8, rpm:1440, poles:4, volts:'400 V Δ/Y', connection:'AUTO' };
   if(type === 'motor_1ph') return { kw:0.75, fla:4.2, rpm:1440, cap:25, volts:'230 V' };
   if(type === 'motor_dc')  return { kw:1.5, fla:8, rpm:1500, volts:'220 V DC' };
   if(type === 'motor_stepper') return { kw:0.1, fla:2, rpm:300, steps:200 };
@@ -497,9 +505,10 @@ function defaultData(type){
   if(type === 'flasher')return { period:1 };
   if(type === 'generator') return { kva:50, volts:'400 V', fuel:'Diesel' };
   if(type === 'generator_3p') return { kva:100, volts:'400 V', fuel:'Diesel' };
+  if(type === 'battery')   return { volts:'24 V DC', ah:7 };
   if(type === 'transformer') return { kva:1, primary:'400 V', secondary:'230 V' };
   if(type === 'transformer_3p') return { kva:100, primary:'400 V', secondary:'400 V' };
-  if(type === 'ats')    return { auto:false, poles:'4P', rating:'100 A' };
+  if(type === 'ats')    return { auto:false, poles:'4P', rating:'100 A', retDelay:0 };
   if(type === 'float')  return { value:30, setpoint:70, unit:'%', contact:'NO' };
   if(type === 'pressure') return { value:3, setpoint:6, unit:'bar', contact:'NO' };
   if(type === 'thermostat') return { value:25, setpoint:80, unit:'°C', contact:'NO' };
@@ -560,8 +569,9 @@ function defaultState(type){
     case 'phase':    return { fault:false, healthy:true };
     case 'generator':return { on:false };
     case 'generator_3p':return { on:false };
-    case 'transformer': case 'transformer_3p': return {};
-    case 'ats':      return { pos:'A' };
+    case 'battery':  return { off:false };
+    case 'transformer': case 'transformer_3p': return { energized:false };
+    case 'ats':      return { pos:'A', retT:0 };
     case 'ctmeter':  return { energized:false, amps:0 };
     case 'voltmeter':return { energized:false, volts:null };
     case 'float':
@@ -1257,6 +1267,22 @@ function symGenerator3(c){
   );
 }
 
+function symBattery(c){
+  const on = !c.state.off;
+  return wrap(c,
+    `<line x1="7" y1="55" x2="20" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<line x1="80" y1="55" x2="93" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
+    + `<rect x="20" y="18" width="60" height="74" rx="7" fill="url(#genGrad)" stroke="#bd5c00" stroke-width="2.5"/>`
+    + txt(50,32,c.label,8,'#1e293b')
+    + `<line x1="34" y1="46" x2="66" y2="46" stroke="${on?CL.green:CL.dim}" stroke-width="3.5"/>`
+    + `<line x1="41" y1="57" x2="59" y2="57" stroke="${on?CL.green:CL.dim}" stroke-width="3.5"/>`
+    + txt(27,53,'+',10,on?CL.green:CL.dim)
+    + txt(73,53,'-',10,on?CL.green:CL.dim)
+    + txt(50,78,on?'ONLINE':'OFFLINE',8,on?CL.green:CL.muted)
+    + txt(50,104,(c.data.volts||'24 V DC')+' · '+(c.data.ah||7)+' Ah',7,CL.muted)
+  );
+}
+
 function symTransformer(c){
   const ratio = (c.data.primary||'400 V')+' / '+(c.data.secondary||'230 V');
   return wrap(c,
@@ -1377,7 +1403,7 @@ function symFlasher(c){
 }
 
 function symPhase(c){
-  const fault = c.state.fault;
+  const fault = !c.state.healthy;   /* unhealthy = injected fault OR supply loss */
   return wrap(c,
     `<rect x="4" y="4" width="122" height="132" rx="10" fill="none" stroke="#334155"/>`
     + txt(66,18,c.label,9,'#1e293b')
@@ -1661,6 +1687,7 @@ function svgFor(c){
     case 'busbar_3p':return symBusbar3(c);
     case 'generator':return symGenerator(c);
     case 'generator_3p':return symGenerator3(c);
+    case 'battery':  return symBattery(c);
     case 'transformer':return symTransformer(c);
     case 'transformer_3p':return symTransformer3(c);
     case 'ats':      return symAts(c);
@@ -1726,8 +1753,8 @@ function internalEdges(c){
       else          { e.push([id+'97', id+'98']); }
       break;
     case 'phase':
-      if(!s.fault) e.push([id+'13', id+'14']);
-      else         e.push([id+'21', id+'22']);
+      if(s.healthy) e.push([id+'13', id+'14']);
+      else          e.push([id+'21', id+'22']);
       break;
     case 'terminal':
       e.push([id+'1', id+'3'], [id+'2', id+'4']);
@@ -1743,8 +1770,10 @@ function internalEdges(c){
       if(s.pos === 'A'){ e.push([id+'AL', id+'OL'], [id+'AN', id+'ON']); }
       else if(s.pos === 'B'){ e.push([id+'BL', id+'OL'], [id+'BN', id+'ON']); }
       break;
+    /* 1Φ control transformer: the secondary (3,4) is an ISOLATED live source while
+       the primary (1,2) is fed — see sourceList(). The 3Φ unit passes phases
+       straight through (1-2, 3-4, 5-6) like a real bus through-link. */
     case 'transformer':
-      e.push([id+'1', id+'3'], [id+'2', id+'4']);
       break;
     case 'transformer_3p':
       e.push([id+'1', id+'2'], [id+'3', id+'4'], [id+'5', id+'6']);
@@ -1822,6 +1851,7 @@ function deenergizeAll(){
 }
 
 function sourceList(){
+  buildUF(); /* fresh union-find so the fed-checks below see the current wiring */
   const out = [];
   const pc = components.find(c => c.type === 'power');
   if(pc && supplyOn){
@@ -1840,6 +1870,29 @@ function sourceList(){
       out.push({ comp: g, port: 'L' });
     }
   });
+  /* standby battery: an always-on isolated 24 V DC control source (AMF panels) */
+  components.forEach(c => {
+    if(c.type === 'battery' && !c.state.off) out.push({ comp: c, port: '+', neu: '-' });
+  });
+  /* 1Φ control transformer: the secondary (3,4) becomes an isolated live source
+     while the primary (1,2) sits across an active source — L-N (230 V) or
+     phase-to-phase (400 V) — exactly like a real control transformer. Re-check
+     every call (start from a clean slate), looping so a transformer fed from
+     another transformer's secondary also goes live. */
+  components.forEach(t => { if(t.type === 'transformer') t.state.energized = false; });
+  let xfmrChanged = true;
+  while(xfmrChanged){
+    xfmrChanged = false;
+    const baseRoots = out.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':'+(s.neu||'N')) }));
+    components.forEach(t => {
+      if(t.type !== 'transformer' || t.state.energized) return;
+      const a = ufFind(t.id+':1'), b = ufFind(t.id+':2');
+      const fed = (a !== b) && baseRoots.some(r =>
+        (r.hot === a && r.neu === b) || (r.hot === b && r.neu === a) ||
+        (r.hot === a && baseRoots.some(r2 => r2.hot === b)) || (r.hot === b && baseRoots.some(r2 => r2.hot === a)));
+      if(fed){ t.state.energized = true; out.push({ comp: t, port: '3', neu: '4' }); xfmrChanged = true; }
+    });
+  }
   return out;
 }
 
@@ -1893,21 +1946,64 @@ function plcScan(c, roots, dt, doTime){
   return before !== JSON.stringify([s.in, s.out, s.mem, s.timer, s.counter]);
 }
 
+/* A real short (phase-to-phase, e.g. star + delta contactors both closed, or L-N)
+   trips the breakers / blows the fuses that sit inside the faulted node — like a
+   real installation. The user resets them by clicking. */
+function tripFaulted(node){
+  let tripped = false;
+  components.forEach(c => {
+    const poles = (c.type === 'mcb_3p' || c.type === 'mccb_3p') ? [['1','2'],['3','4'],['5','6']]
+                : (c.type === 'mcb' || c.type === 'mccb' || c.type === 'fuse') ? [['1','2']] : null;
+    if(!poles) return;
+    const s = c.state;
+    const healthy = c.type === 'fuse' ? !s.blown : s.closed;
+    if(!healthy) return;
+    const carries = poles.some(p => ufFind(c.id+':'+p[0]) === node && ufFind(c.id+':'+p[1]) === node);
+    if(carries){
+      if(c.type === 'fuse') s.blown = true; else s.closed = false;
+      tripped = true;
+      toast('⚠ ' + c.label + (c.type === 'fuse' ? ' BLOWN' : ' TRIPPED') + ' — short circuit');
+    }
+  });
+  return tripped;
+}
+
 function simulate(dt){
   shorted = false;
   sourceFault = false;
   hotMap = {};
   phaseRoots = {};
 
-  const genOn = components.some(c => c.type === 'generator' && c.state.on);
+  /* AMF auto-start: a generator flagged `autostart` follows its start relay
+     (any relay/contactor flagged `genStart`) — like a genset cranked by the
+     panel instead of by hand. */
   components.forEach(c => {
-    if(c.type === 'ats' && c.data.auto) c.state.pos = (!supplyOn && genOn) ? 'B' : 'A';
+    if((c.type === 'generator' || c.type === 'generator_3p') && c.data.autostart){
+      c.state.on = components.some(r =>
+        (r.type === 'relay' || r.type === 'contactor') && r.data.genStart && r.state.coil);
+    }
+  });
+
+  const genOn = components.some(c => (c.type === 'generator' || c.type === 'generator_3p') && c.state.on);
+
+  /* ATS in AUTO: transfer to B when the mains fails and a genset is running;
+     when the mains returns, honour the return-to-mains delay (retDelay, 0 = instant). */
+  components.forEach(c => {
+    if(c.type !== 'ats' || !c.data.auto) return;
+    if(!supplyOn && genOn){ c.state.pos = 'B'; c.state.retT = 0; }
+    else if(c.state.pos === 'B'){
+      c.state.retT = (c.state.retT || 0) + (dt || 0);
+      if(c.state.retT >= (Number(c.data.retDelay) || 0)){ c.state.pos = 'A'; c.state.retT = 0; }
+    } else { c.state.pos = 'A'; c.state.retT = 0; }
   });
 
   components.forEach(c => {
     if((c.type === 'float' || c.type === 'pressure' || c.type === 'thermostat') && c.data.auto){
       c.state.triggered = Number(c.data.value) >= Number(c.data.setpoint);
     }
+    /* phase-failure monitor: healthy while the mains supply is present
+       (an injected fault overrides — a real relay watches the supply) */
+    if(c.type === 'phase'){ c.state.healthy = !c.state.fault && supplyOn; }
   });
 
   const srcs = sourceList();
@@ -1917,11 +2013,16 @@ function simulate(dt){
   while(changed && it++ < 24){
     changed = false;
     buildUF();
-    const roots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':N') }));
-    if(roots.some(r => r.hot === r.neu)){ shorted = true; break; }
+    const roots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':'+(s.neu||'N')) }));
+    let faultNode = null;
+    const bad = roots.find(r => r.hot === r.neu);
+    if(bad){ shorted = true; faultNode = bad.hot; }
     for(let i=0;i<roots.length;i++) for(let j=i+1;j<roots.length;j++){
-      if(roots[i].hot === roots[j].hot) sourceFault = true;
+      if(roots[i].hot === roots[j].hot){ sourceFault = true; faultNode = roots[i].hot; }
     }
+    /* a real phase-to-phase (or L-N) short trips the breakers/fuses inside the faulted node */
+    if(faultNode && tripFaulted(faultNode)){ changed = true; continue; }
+    if(shorted) break;
     components.forEach(c => {
       if(c.type === 'contactor' || c.type === 'relay' || c.type === 'timer' ||
          c.type === 'timer_off' || c.type === 'timer_sd' || c.type === 'flasher'){
@@ -1940,7 +2041,7 @@ function simulate(dt){
   }
 
   buildUF();
-  const timeRoots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':N') }));
+  const timeRoots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':'+(s.neu||'N')) }));
   components.forEach(c => {
     if(c.type === 'timer'){
       if(c.state.coil && !shorted){
@@ -1985,7 +2086,7 @@ function simulate(dt){
     while(changed2 && it2++ < 24){
       changed2 = false;
       buildUF();
-      const roots2 = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':N') }));
+      const roots2 = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':'+(s.neu||'N')) }));
       if(roots2.some(r => r.hot === r.neu)){ shorted = true; break; }
       components.forEach(c => {
         if(c.type === 'contactor' || c.type === 'relay' || c.type === 'timer' ||
@@ -2008,7 +2109,7 @@ function simulate(dt){
   if(shorted){ deenergizeAll(); return; }
 
   buildUF();
-  const roots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':N') }));
+  const roots = srcs.map(s => ({ hot: ufFind(s.comp.id+':'+s.port), neu: ufFind(s.comp.id+':'+(s.neu||'N')) }));
   if(roots.some(r => r.hot === r.neu)){ shorted = true; deenergizeAll(); return; }
   for(let i=0;i<roots.length;i++) for(let j=i+1;j<roots.length;j++){
     if(roots[i].hot === roots[j].hot) sourceFault = true;
@@ -2019,7 +2120,7 @@ function simulate(dt){
       : s.port === 'L1' ? 'L1' : s.port === 'L2' ? 'L2' : s.port === 'L3' ? 'L3' : 'L';
     phaseRoots[ufFind(s.comp.id+':'+s.port)] = key;
   });
-  srcs.forEach(s => { phaseRoots[ufFind(s.comp.id+':N')] = 'N'; });
+  srcs.forEach(s => { phaseRoots[ufFind(s.comp.id+':'+(s.neu||'N'))] = 'N'; });
   components.forEach(c => {
     if(TYPES[c.type].ports.some(p => p.id === 'PE')) phaseRoots[ufFind(c.id+':PE')] = 'PE';
   });
@@ -2054,7 +2155,7 @@ function simulate(dt){
       const hotIn = ['U1','V1','W1'].filter(p =>
         roots.some(r => ufFind(c.id + ':' + p) === r.hot)).length;
       c.state.mode = mode;
-      c.state.energized = (mode === 'STAR' || mode === 'DELTA') && hotIn >= 2;
+      c.state.energized = (mode === 'STAR' || mode === 'DELTA') && hotIn >= 2 && !sourceFault;
       if(c.state.energized){
         const sameRun = was && wasMode === mode;
         c.state.runTime = (sameRun ? (c.state.runTime || 0) : 0) + (dt || 0);
@@ -2261,10 +2362,11 @@ function updateStatus(){
       case 'spd':       rows.push(statusRow(L+' · SPD', c.state.fault?'FAULT':'OK', c.state.fault?'fault':'on')); break;
       case 'timer_off': rows.push(statusRow(L+' · OFF-DELAY', c.state.coil?(c.state.held?'HOLD '+Math.max(0,c.state.delay-c.state.t).toFixed(1)+'s':'IDLE'):(c.state.held?'TIMING':'IDLE'), c.state.held?'fault':'off')); break;
       case 'flasher':   rows.push(statusRow(L+' · FLASHER', c.state.coil?(c.state.blinkOn?'ON':'OFF'):'IDLE', c.state.blinkOn?'on':'off')); break;
-      case 'phase':     rows.push(statusRow(L+' · PHASE', c.state.fault?'PHASE LOSS':'HEALTHY', c.state.fault?'fault':'on')); break;
+      case 'phase':     rows.push(statusRow(L+' · PHASE', c.state.healthy?'HEALTHY':'PHASE LOSS', c.state.healthy?'on':'fault')); break;
       case 'generator': rows.push(statusRow(L+' · GENERATOR', c.state.on?'RUNNING':'STOPPED', c.state.on?'on':'off')); break;
       case 'generator_3p': rows.push(statusRow(L+' · GENERATOR 3Φ', c.state.on?'RUNNING':'STOPPED', c.state.on?'on':'off')); break;
-      case 'transformer':
+      case 'battery':   rows.push(statusRow(L+' · BATTERY', c.state.off?'OFFLINE':'ONLINE · '+(c.data.volts||'24 V DC'), c.state.off?'off':'on')); break;
+      case 'transformer': rows.push(statusRow(L+' · TRANSFORMER', c.state.energized?'SEC LIVE · '+(c.data.secondary||'230 V'):'PRIMARY OFF', c.state.energized?'on':'off')); break;
       case 'transformer_3p': rows.push(statusRow(L+' · TRANSFORMER', 'LINKED', 'on')); break;
       case 'ats':       rows.push(statusRow(L+' · ATS', c.state.pos==='OFF'?'OFF':'SOURCE '+c.state.pos, c.state.pos==='OFF'?'fault':'on')); break;
       case 'ctmeter':   rows.push(statusRow(L+' · AMMETER', (c.state.amps||0).toFixed(1)+' A', c.state.energized?'on':'off')); break;
@@ -2308,7 +2410,7 @@ function updateAlarm(){
   const b = $('banner');
   if(sourceFault){
     b.className = 'banner show short';
-    b.textContent = '⚠ TWO SOURCES PARALLELED — CHECK ATS INTERLOCK';
+    b.textContent = '⚠ PHASE-TO-PHASE SHORT — CHECK WIRING (STAR+DELTA BOTH CLOSED?) / ATS INTERLOCK';
   } else if(shorted){
     b.className = 'banner show short';
     b.textContent = '⚡ SHORT CIRCUIT DETECTED — CHECK WIRING';
@@ -2408,8 +2510,8 @@ function renderProps(){
     if(c.type === 'motor'){
       h += `<div class="prop"><label>Poles</label><select onchange="setMeta('${c.id}','poles',this.value)">${[2,4,6,8].map(v => `<option value="${v}"${Number(c.data.poles)===v?' selected':''}>${v} pole</option>`).join('')}</select></div>`;
       h += `<div class="prop"><label>Voltage</label><select onchange="setMeta('${c.id}','volts',this.value)">${['400 V Δ/Y','415 V','690 V'].map(v => `<option value="${v}"${c.data.volts===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
-      h += `<div class="prop"><label>Wiring</label><select onchange="setMeta('${c.id}','connection',this.value)">${[['AUTO','AUTO (external links)'],['STAR','STAR Y (internal)'],['DELTA','DELTA Δ (internal)']].map(([v,n]) => `<option value="${v}"${(c.data.connection||'DELTA')===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
-      h += `<div class="prop"><label>Mode</label><span class="mini ${c.state.mode==='DELTA'?'go':c.state.mode==='STAR'?'':'stop'}">${c.state.mode==='DELTA'?'DELTA Δ':c.state.mode==='STAR'?'STAR Y':'OPEN'}</span></div>`;
+      h += `<div class="prop"><label>Wiring</label><select onchange="setMeta('${c.id}','connection',this.value)">${[['AUTO','AUTO — wire U2/V2/W2 out'],['STAR','STAR Y (internal links)'],['DELTA','DELTA Δ (internal links)']].map(([v,n]) => `<option value="${v}"${(c.data.connection||'AUTO')===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
+      h += `<div class="prop"><label>Mode</label><span class="mini ${c.state.mode==='DELTA'?'go':c.state.mode==='STAR'?'':'stop'}">${c.state.mode==='DELTA'?'DELTA Δ':c.state.mode==='STAR'?'STAR Y':'OPEN — link U2/V2/W2'}</span></div>`;
       h += `<div class="prop"><label>Terminals</label><span class="mini">U1 V1 W1 / U2 V2 W2</span></div>`;
     }
     if(c.type === 'motor_1ph'){
@@ -2505,14 +2607,24 @@ function renderProps(){
       h += `<div class="prop"><label>Fuel</label><select onchange="setMeta('${c.id}','fuel',this.value)">${['Diesel','Gas','Petrol'].map(v => `<option${(c.data.fuel||'Diesel')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     }
     h += `<div class="prop"><label>Engine</label><button class="mini ${c.state.on?'go':'stop'}" onclick="toggleState('${c.id}','on')">${c.state.on?'RUNNING — STOP':'STOPPED — START'}</button></div>`;
+    h += `<div class="prop"><label>AMF auto-start</label><input type="checkbox" ${c.data.autostart?'checked':''} onchange="setState('${c.id}','autostart',this.checked)" style="width:auto"></div>`;
+  }
+  if(c.type === 'battery'){
+    h += `<div class="prop"><label>Voltage</label><select onchange="setMeta('${c.id}','volts',this.value)">${['12 V DC','24 V DC','48 V DC'].map(v => `<option${(c.data.volts||'24 V DC')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>Capacity</label><select onchange="setMeta('${c.id}','ah',this.value)">${[7,12,17,25,38,55,75].map(v => `<option value="${v}"${Number(c.data.ah||7)===v?' selected':''}>${v} Ah</option>`).join('')}</select></div>`;
+    h += `<div class="prop"><label>State</label><button class="mini ${!c.state.off?'go':'stop'}" onclick="toggleState('${c.id}','off')">${c.state.off?'OFFLINE — CONNECT':'ONLINE — DISCONNECT'}</button></div>`;
   }
   if(c.type === 'transformer' || c.type === 'transformer_3p'){
     h += `<div class="prop"><label>Rating kVA</label><input type="number" step="0.1" min="0.1" value="${c.data.kva||1}" onchange="setData('${c.id}','kva',this.value)"></div>`;
     h += `<div class="prop"><label>Primary</label><select onchange="setMeta('${c.id}','primary',this.value)">${['230 V','400 V','690 V'].map(v => `<option${(c.data.primary||'400 V')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Secondary</label><select onchange="setMeta('${c.id}','secondary',this.value)">${['230 V','110 V','24 V','400 V'].map(v => `<option${(c.data.secondary||'230 V')===v?' selected':''}>${v}</option>`).join('')}</select></div>`;
+    if(c.type === 'transformer'){
+      h += `<div class="prop"><label>Status</label><span class="mini ${c.state.energized?'go':'stop'}">${c.state.energized?'SECONDARY LIVE · '+(c.data.secondary||'230 V'):'PRIMARY NOT ENERGIZED'}</span></div>`;
+    }
   }
   if(c.type === 'ats'){
     h += `<div class="prop"><label>Auto mode</label><input type="checkbox" ${c.data.auto?'checked':''} onchange="setState('${c.id}','auto',this.checked)" style="width:auto"></div>`;
+    h += `<div class="prop"><label>Return delay</label><select onchange="setMeta('${c.id}','retDelay',this.value)">${['0','5','10','30','60'].map(v => `<option value="${v}"${String(c.data.retDelay!==undefined?c.data.retDelay:0)===v?' selected':''}>${v==='0'?'Instant':v+' s'}</option>`).join('')}</select></div>`;
     h += `<div class="prop"><label>Position</label><select onchange="setState('${c.id}','pos',this.value)">${['A','B','OFF'].map(v => `<option value="${v}"${c.state.pos===v?' selected':''}>${v==='A'?'SOURCE A':v==='B'?'SOURCE B':'OFF'}</option>`).join('')}</select></div>`;
   }
   if(c.type === 'float' || c.type === 'pressure' || c.type === 'thermostat'){
@@ -2573,7 +2685,7 @@ function renderProps(){
     const oo = ['Q1','Q2','Q3','Q4'].map(a => a+'='+(c.state.out[a]?'1':'0')).join('  ');
     h += `<div class="plcio">${io}<br>${oo}</div>`;
   }
-  const desc = {power:'Main supply',mcb:'Miniature circuit breaker',pb_no:'Normally open push button',pb_nc:'Normally closed push button',estop:'Emergency stop (latching)',selector:'Maintained selector switch',contactor:'Coil + main / NO / NC contacts',relay:'Auxiliary relay (NO + NC)',timer:'On-delay timer',ol:'Thermal overload relay',lamp:'Indicator lamp',motor:'Three-phase motor',alarm:'Audible horn',mccb:'Moulded case circuit breaker',rccb:'Residual current breaker (30 mA)',fuse:'Fuse cartridge',spd:'Surge protection device',timer_off:'Off-delay timer',flasher:'Flashing / blinking relay',phase:'Phase failure monitor',terminal:'Terminal block (2 through-links)',busbar:'Distribution busbar',generator:'Standby generator',ats:'Automatic transfer switch',ctmeter:'Current transformer ammeter',float:'Float / level switch',pressure:'Pressure switch',thermostat:'Thermostat',plc:'Ladder PLC (LOGO! style)',vfd:'Variable frequency drive',motor_1ph:'Single-phase motor',motor_dc:'DC motor',motor_stepper:'Stepper motor',motor_servo:'Servo motor',timer_sd:'Star-delta timer',mcb_3p:'3-pole MCB',mccb_3p:'3-pole MCCB',power_1ph:'Single-phase supply',busbar_3p:'3-phase busbar',terminal_6:'6-way terminal strip',generator_3p:'3-phase generator',transformer:'Control transformer',transformer_3p:'3-phase transformer'}[c.type] || '';
+  const desc = {power:'Main supply',mcb:'Miniature circuit breaker',pb_no:'Normally open push button',pb_nc:'Normally closed push button',estop:'Emergency stop (latching)',selector:'Maintained selector switch',contactor:'Coil + main / NO / NC contacts',relay:'Auxiliary relay (NO + NC)',timer:'On-delay timer',ol:'Thermal overload relay',lamp:'Indicator lamp',motor:'Three-phase motor',alarm:'Audible horn',mccb:'Moulded case circuit breaker',rccb:'Residual current breaker (30 mA)',fuse:'Fuse cartridge',spd:'Surge protection device',timer_off:'Off-delay timer',flasher:'Flashing / blinking relay',phase:'Phase failure monitor',terminal:'Terminal block (2 through-links)',busbar:'Distribution busbar',generator:'Standby generator',ats:'Automatic transfer switch',ctmeter:'Current transformer ammeter',float:'Float / level switch',pressure:'Pressure switch',thermostat:'Thermostat',plc:'Ladder PLC (LOGO! style)',vfd:'Variable frequency drive',motor_1ph:'Single-phase motor',motor_dc:'DC motor',motor_stepper:'Stepper motor',motor_servo:'Servo motor',timer_sd:'Star-delta timer',mcb_3p:'3-pole MCB',mccb_3p:'3-pole MCCB',power_1ph:'Single-phase supply',busbar_3p:'3-phase busbar',terminal_6:'6-way terminal strip',generator_3p:'3-phase generator',battery:'Standby control battery (24 V DC)',transformer:'Control transformer',transformer_3p:'3-phase transformer'}[c.type] || '';
   h += `<div class="muted" style="margin:6px 0">${desc}</div>`;
   h += `<button class="del" onclick="deleteComp('${c.id}')">🗑 حذف المكوّن</button>`;
   box.innerHTML = h;
@@ -2779,7 +2891,7 @@ function setData(id, key, v){
 }
 function setState(id, key, val){
   const c = byId(id); if(!c) return;
-  if(key === 'auto') c.data.auto = !!val;
+  if(key === 'auto' || key === 'autostart') c.data[key] = !!val;
   else c.state[key] = val;
   simulate(0); renderProps(); paint();
 }
@@ -3198,6 +3310,127 @@ function presetGenerator(){
   at.data.auto = false;
 }
 
+/* Control-transformer example: 400/230 V isolation — the 230 V control circuit
+   is completely separated from the 400 V power circuit. */
+function presetCtrlXfmr(){
+  $('projName').value = 'Control Transformer 400/230 V';
+  const p  = addComp('power', 8, 240, 'PS1');
+  const qm = addComp('mccb_3p', 150, 240, 'QM1');
+  const k  = addComp('contactor', 300, 190, 'K1');
+  const ol = addComp('ol', 512, 245, 'F2');
+  const m  = addComp('motor', 690, 250, 'M1');
+  const t  = addComp('transformer', 300, 470, 'T1');
+  const qf = addComp('mcb', 540, 480, 'QF1');
+  const s1 = addComp('pb_nc', 700, 430, 'S1');
+  const s2 = addComp('pb_no', 700, 570, 'S2');
+  const h1 = addComp('lamp', 870, 420, 'H1');
+  const h2 = addComp('lamp', 870, 550, 'H2');
+  const pv = addComp('voltmeter', 1020, 640, 'PV2');
+
+  feed3(p, qm, k, ol, m);
+  m.data.connection = 'DELTA';
+  t.data.primary = '400 V';
+  t.data.secondary = '230 V';
+
+  /* primary across L1-L2 (400 V) at the MCCB output — BEFORE the contactor,
+     so the control circuit stays live even when the motor is off */
+  link(qm,'2', t,'1');
+  link(qm,'4', t,'2');
+
+  /* isolated 230 V control circuit from the secondary (3,4) */
+  link(t,'3', qf,'1');
+  link(qf,'2', s1,'1');
+  link(s1,'2', s2,'1');
+  link(s2,'2', k,'A1');
+  link(k,'A2', t,'4');
+  link(k,'13', s2,'1');            /* K1 seal-in (NO across START) */
+  link(k,'14', s2,'2');
+  link(qf,'2', h1,'1');            /* H1 CONTROL ON */
+  link(h1,'2', t,'4');
+  link(k,'14', h2,'1');            /* H2 RUN */
+  link(h2,'2', t,'4');
+  link(t,'3', pv,'1');             /* PV2 reads the secondary voltage */
+  link(pv,'2', t,'4');
+}
+
+/* AMF (Automatic Mains Failure) panel: battery-fed control that survives a
+   mains failure — KP1 phase monitor → KA1 mains-OK relay → KT1 start delay →
+   KA2 genset start (auto-crank) → ATS AUTO transfer → KT2 return delay → KA3
+   stop relay → genset shuts down after transfer back to the mains. */
+function presetAmf(){
+  $('projName').value = 'AMF Generator Changeover (Auto)';
+  /* ---- power: mains / genset / ATS / load ---- */
+  const p  = addComp('power_1ph', 20, 170, 'PS1');
+  const q1 = addComp('mcb', 170, 170, 'QF1');
+  const g  = addComp('generator', 20, 400, 'G1');
+  const q2 = addComp('mcb', 170, 400, 'QF2');
+  const at = addComp('ats', 330, 260, 'ATS1');
+  const m  = addComp('motor_1ph', 560, 260, 'M1');
+  const pv = addComp('voltmeter', 560, 440, 'PV1');
+  link(p,'L', q1,'1');
+  link(q1,'2', at,'AL');
+  link(p,'N', at,'AN');
+  link(g,'L', q2,'1');
+  link(q2,'2', at,'BL');
+  link(g,'N', at,'BN');
+  link(at,'OL', m,'1');
+  link(m,'2', at,'ON');
+  link(at,'OL', pv,'1');
+  link(pv,'2', at,'ON');
+  at.data.auto = true;
+  at.data.retDelay = 5;
+
+  /* ---- 24 V control fed from the standby battery (survives mains failure) ---- */
+  const gb = addComp('battery', 20, 640, 'GB1');
+  const kp = addComp('phase', 170, 620, 'KP1');
+  const ka1= addComp('relay', 330, 610, 'KA1');
+  const kt1= addComp('timer', 490, 610, 'KT1');
+  const ka2= addComp('relay', 650, 610, 'KA2');
+  const kt2= addComp('timer', 810, 610, 'KT2');
+  const ka3= addComp('relay', 970, 610, 'KA3');
+  const sa = addComp('selector', 170, 800, 'S1');
+  const h1 = addComp('lamp', 330, 810, 'H1');
+  const h2 = addComp('lamp', 450, 810, 'H2');
+  const h3 = addComp('lamp', 570, 810, 'H3');
+  const h4 = addComp('lamp', 690, 810, 'H4');
+
+  /* KP1 watches the mains: KA1 = mains-OK relay */
+  link(gb,'+', kp,'13');
+  link(kp,'14', ka1,'A1');
+  link(ka1,'A2', gb,'-');
+  link(gb,'+', ka1,'13');
+  link(ka1,'14', h1,'1');            /* H1 MAINS ON */
+  link(h1,'2', gb,'-');
+  link(ka1,'14', kt2,'A1');          /* KT2 return timer runs while mains OK */
+  link(kt2,'A2', gb,'-');
+  /* mains loss (S1 in AUTO) → KT1 start delay → KA2 genset start (seals in) */
+  link(gb,'+', ka1,'21');
+  link(ka1,'22', sa,'1');
+  link(sa,'2', kt1,'A1');
+  link(kt1,'A2', gb,'-');
+  link(gb,'+', kt1,'15');
+  link(kt1,'18', ka2,'A1');
+  link(gb,'+', ka2,'13');            /* KA2 seal-in */
+  link(ka2,'14', ka2,'A1');
+  link(ka2,'A2', ka3,'21');          /* KA3 NC breaks KA2 after return delay */
+  link(ka3,'22', gb,'-');
+  link(gb,'+', kt2,'15');
+  link(kt2,'18', ka3,'A1');
+  link(ka3,'A2', gb,'-');
+  link(ka2,'14', h2,'1');            /* H2 GEN START */
+  link(h2,'2', gb,'-');
+  link(g,'L', h3,'1');               /* H3 GEN VOLTAGE */
+  link(h3,'2', g,'N');
+  link(gb,'+', h4,'1');              /* H4 CONTROL ON */
+  link(h4,'2', gb,'-');
+
+  kt1.state.delay = 3;               /* genset start delay */
+  kt2.state.delay = 5;               /* return / genset-stop delay */
+  sa.state.on = true;                /* panel starts in AUTO */
+  g.data.autostart = true;           /* genset cranked by KA2 (AMF logic) */
+  ka2.data.genStart = true;
+}
+
 function presetLevel(){
   $('projName').value = 'Tank Level Control (3-Phase)';
   const p  = addComp('power', 10, 240, 'PS1');
@@ -3438,6 +3671,8 @@ function loadPreset(name){
   else if(name === 'stardelta_panel') presetStarDeltaPanel();
   else if(name === 'multistart') presetMultiStart();
   else if(name === 'generator') presetGenerator();
+  else if(name === 'ctrlxfmr') presetCtrlXfmr();
+  else if(name === 'amf') presetAmf();
   else if(name === 'level') presetLevel();
   else if(name === 'pressure') presetPressure();
   else if(name === 'temperature') presetTemperature();
