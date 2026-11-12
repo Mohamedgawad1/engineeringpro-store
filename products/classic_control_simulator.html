@@ -314,7 +314,18 @@ body.lang-en .ar-only{display:none}body.lang-en .en-only{display:inline}
 <input type="file" id="fileInput" accept=".json,application/json" style="display:none" onchange="importProject(event)">
 <div class="toast" id="toast"></div>
 
-<div class="modal" id="plcModal" onclick="if(event.target===this)closePlcEditor()">
+<div class="modal" id="inspectModal" onclick="if(event.target===this)closeInspect()">
+  <div class="modalCard" style="max-width:520px">
+    <div class="modalHead">
+      <span id="inspectTitle">Component</span>
+      <button class="mini" onclick="closeInspect()">✕ Close</button>
+    </div>
+    <div class="modalBody" style="text-align:center">
+      <div id="inspectSvg" style="display:inline-block;transform:scale(2.4);transform-origin:center;margin:40px 0"></div>
+      <div id="inspectTerms" class="muted" style="margin-top:12px;font-size:11px"></div>
+    </div>
+  </div>
+</div>
   <div class="modalCard">
     <div class="modalHead">
       <span id="plcTitle">PLC Ladder Editor</span>
@@ -2330,6 +2341,7 @@ function render(){
       d.appendChild(pd);
     });
     d.addEventListener('pointerdown', ev => compPointerDown(ev, c.id));
+    d.addEventListener('dblclick', ev => { ev.preventDefault(); inspectComp(c.id); });
     d.addEventListener('contextmenu', ev => { ev.preventDefault(); deleteComp(c.id); });
     STAGE.appendChild(d);
     c.el = d;
@@ -3104,6 +3116,17 @@ function setWireColor(id, val){
   paint();
   toast('Wire colour set');
 }
+function inspectComp(id){
+  const c = byId(id); if(!c) return;
+  const t = TYPES[c.type];
+  $('inspectTitle').textContent = c.label + ' · ' + (t.label || c.type);
+  const svg = svgFor(c);
+  $('inspectSvg').innerHTML = svg;
+  const ports = t.ports.map(p => p.id).join('  ');
+  $('inspectTerms').textContent = 'Terminals: ' + ports;
+  $('inspectModal').classList.add('show');
+}
+function closeInspect(){ $('inspectModal').classList.remove('show'); $('inspectSvg').innerHTML = ''; }
 function canvasPointerDown(e){
   if(e.target.closest('.comp')) return;
   ensureAudio();
@@ -4103,6 +4126,15 @@ CANVAS.addEventListener('pointerdown', canvasPointerDown);
 STAGE.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; });
 STAGE.addEventListener('drop', stageDrop);
 initPaletteDrag();
+window.addEventListener('keydown', e => {
+  const t = e.target;
+  if(t && (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+  if(e.key === 'Escape'){ closeInspect(); closePlcEditor(); }
+  if(e.key === '+' || e.key === '='){ if(typeof zoomBy==='function') zoomBy(1.15); e.preventDefault(); }
+  else if(e.key === '-'){ if(typeof zoomBy==='function') zoomBy(0.87); e.preventDefault(); }
+  else if(e.key === '0'){ if(typeof setZoom==='function') setZoom(1); e.preventDefault(); }
+  else if(e.key === 'f' || e.key === 'F'){ if(typeof zoomFit==='function') zoomFit(); }
+});
 const _pb = $('phaseBtn'); if(_pb) _pb.classList.toggle('tog', wireColorMode);
 loadPreset('dol');
 setInterval(() => {
