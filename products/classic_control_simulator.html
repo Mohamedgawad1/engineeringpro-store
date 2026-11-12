@@ -491,11 +491,22 @@ function wirePhase(w){
   const a = byId(w.from.comp), b = byId(w.to.comp);
   if(!a || !b) return null;
   if(!powerPortSet(a).includes(w.from.port) || !powerPortSet(b).includes(w.to.port)) return null;
+  // motor terminal identity hint (U→L1, V→L2, W→L3) — used when the node
+  // is floating (not energised) so the user can still tell leads apart
+  const motorHint = (comp, port) => {
+    if(comp.type !== 'motor') return null;
+    if(port === 'U1' || port === 'U2') return 'L1';
+    if(port === 'V1' || port === 'V2') return 'L2';
+    if(port === 'W1' || port === 'W2') return 'L3';
+    return null;
+  };
   const ra = ufFind(w.from.comp+':'+w.from.port);
-  if(phaseRoots[ra]) return phaseRoots[ra];
+  const nodePhase = phaseRoots[ra] || null;
+  if(nodePhase) return nodePhase;
   const rb = ufFind(w.to.comp+':'+w.to.port);
-  if(phaseRoots[rb]) return phaseRoots[rb];
-  return null;
+  const nodePhase2 = phaseRoots[rb] || null;
+  if(nodePhase2) return nodePhase2;
+  return motorHint(a, w.from.port) || motorHint(b, w.to.port);
 }
 let shorted = false;
 let sourceFault = false;
@@ -1134,8 +1145,8 @@ function symMotor(c){
     + `<line x1="138" y1="55" x2="172" y2="55" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<line x1="138" y1="90" x2="172" y2="90" stroke="${CL.metal}" stroke-width="2.5"/>`
     + `<line x1="138" y1="125" x2="172" y2="125" stroke="${CL.metal}" stroke-width="2.5"/>`
-    + txt(12,48,'U1',6,'#1e293b','start') + txt(12,83,'V1',6,'#1e293b','start') + txt(12,118,'W1',6,'#1e293b','start')
-    + txt(166,48,'U2',6,'#1e293b','end') + txt(166,83,'V2',6,'#1e293b','end') + txt(166,118,'W2',6,'#1e293b','end')
+    + txt(12,48,'U1',6,'#b45309','start') + txt(12,83,'V1',6,'#475569','start') + txt(12,118,'W1',6,'#94a3b8','start')
+    + txt(166,48,'U2',6,'#b45309','end') + txt(166,83,'V2',6,'#475569','end') + txt(166,118,'W2',6,'#94a3b8','end')
     + `<rect x="4" y="34" width="20" height="12" rx="2" fill="#e2e8f0" stroke="#64748b"/>`
     + txt(14,43,'IN',6,'#1e293b')
     + `<rect x="156" y="34" width="20" height="12" rx="2" fill="#e2e8f0" stroke="#64748b"/>`
