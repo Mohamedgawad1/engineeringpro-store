@@ -10,8 +10,9 @@
 
   var AD = {
     /* ---- Google AdSense (needs approval) ---- */
-    adsenseClient: '',          // e.g. 'ca-pub-1234567890123456'
-    adsenseSlots: { top: '', mid: '', bottom: '' },
+    adsenseClient: 'ca-pub-3186261470444005',   // approved AdSense publisher
+    adsenseAutoAds: true,                        // let Google place ads automatically
+    adsenseSlots: { top: '', mid: '', bottom: '' },  // optional manual ad unit IDs (override auto ads)
 
     /* ---- Carbon Ads — engineering/developer only, hand-curated ---- */
     carbon: {
@@ -105,7 +106,11 @@
   }
 
   function renderAdsense(slot, slotId) {
-    if (!AD.adsenseClient || !slotId || !slot) return false;
+    if (!AD.adsenseClient || !slot) return false;
+    if (!slotId) {
+      // Auto ads: the page-level script is enough, Google chooses placements.
+      return AD.adsenseAutoAds;
+    }
     var ins = document.createElement('ins');
     ins.className = 'adsbygoogle';
     ins.style.display = 'block';
@@ -172,7 +177,7 @@
         return;
       }
       var done = false;
-      if (AD.adsenseClient && AD.adsenseSlots[name]) done = renderAdsense(slot, AD.adsenseSlots[name]);
+      if (AD.adsenseClient) done = renderAdsense(slot, AD.adsenseSlots[name]);
       if (!done) done = renderCarbon(slot);
       if (!done) done = renderEthical(slot);
       if (!done) done = renderMediaNet(slot, AD.mediaNet.slots[name]);
