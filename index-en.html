@@ -128,6 +128,14 @@ footer a{color:var(--accent)}
 .member-panel .btn{width:100%;margin-top:6px;font-size:13px}
 .locked{cursor:not-allowed!important;opacity:.5}
 @media(max-width:768px){.sub-wrap{grid-template-columns:1fr}}
+/* MORE INCOME STREAMS */
+.money-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.money-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:block;color:var(--text);text-decoration:none;transition:.2s}
+.money-card:hover{border-color:var(--gold);transform:translateY(-3px)}
+.money-card .mi{font-size:30px}
+.money-card h4{color:var(--gold);font-size:17px;margin:8px 0}
+.money-card p{color:var(--muted);font-size:13px;line-height:1.7}
+.money-card .price{color:var(--green);font-weight:800;font-size:15px;margin-top:10px}
 /* ADS — halal, engineering-only */
 .ad-slot{margin:26px 0}
 .ad-head{font-size:12px;color:var(--muted);margin-bottom:10px;text-align:center}
@@ -473,6 +481,34 @@ footer a{color:var(--accent)}
       <button class="btn btn-ghost" onclick="openSubscriptions()">Manage / cancel in PayPal</button>
       <p style="font-size:12px;color:var(--muted);margin-top:10px">💡 Note: final payment verification happens in your PayPal dashboard; this device only stores access for display.</p>
     </div>
+  </div>
+</div>
+</section>
+
+<!-- MORE INCOME — SAME $5 PRICE -->
+<section style="padding:46px 0">
+<div class="container">
+  <h2 class="section-title">💰 More than one income stream — still $5</h2>
+  <p class="section-sub">The price has not changed. Subscription stays $5/month. Higher-priced services are separate and completely optional.</p>
+  <div class="money-grid">
+    <a class="money-card" href="https://www.fiverr.com/mohamedgawad1" target="_blank" rel="noopener">
+      <div class="mi">🛠️</div>
+      <h4>Custom work — highest earnings</h4>
+      <p>ITR, commissioning docs, cable schedules, LinkedIn optimisation, CV writing. Delivered in 1-3 days.</p>
+      <div class="price">$50 to $300+ per order</div>
+    </a>
+    <a class="money-card" href="#subscribe">
+      <div class="mi">🔓</div>
+      <h4>Pro subscription — recurring income</h4>
+      <p>All tools and simulators for just $5/month. Renews automatically, cancel anytime in PayPal.</p>
+      <div class="price">$5 / month — no price increase</div>
+    </a>
+    <a class="money-card" href="#products">
+      <div class="mi">📦</div>
+      <h4>Resellable ready-made templates</h4>
+      <p>Subscribers can rebrand the templates and sell them to their own clients — extra value that makes the subscription worth it.</p>
+      <div class="price">15 ITR forms + ready bundles</div>
+    </a>
   </div>
 </div>
 </section>

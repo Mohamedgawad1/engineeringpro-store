@@ -128,6 +128,14 @@ footer a{color:var(--accent)}
 .member-panel .btn{width:100%;margin-top:6px;font-size:13px}
 .locked{cursor:not-allowed!important;opacity:.5}
 @media(max-width:768px){.sub-wrap{grid-template-columns:1fr}}
+/* EXTRA INCOME STREAMS */
+.money-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+.money-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:block;color:var(--text);text-decoration:none;transition:.2s}
+.money-card:hover{border-color:var(--gold);transform:translateY(-3px)}
+.money-card .mi{font-size:30px}
+.money-card h4{color:var(--gold);font-size:17px;margin:8px 0}
+.money-card p{color:var(--muted);font-size:13px;line-height:1.7}
+.money-card .price{color:var(--green);font-weight:800;font-size:15px;margin-top:10px}
 /* ADS — halal, engineering-only */
 .ad-slot{margin:26px 0}
 .ad-head{font-size:12px;color:var(--muted);margin-bottom:10px;text-align:center}
@@ -474,6 +482,34 @@ footer a{color:var(--accent)}
       <button class="btn btn-ghost" onclick="openSubscriptions()">إدارة / إلغاء الاشتراك في PayPal</button>
       <p style="font-size:12px;color:var(--muted);margin-top:10px">💡 ملاحظة: التحقق النهائي من الدفع بيتم في لوحة PayPal؛ الحفظ هنا على الجهاز لعرض الوصول.</p>
     </div>
+  </div>
+</div>
+</section>
+
+<!-- MORE INCOME — SAME $5 PRICE -->
+<section style="padding:46px 0">
+<div class="container">
+  <h2 class="section-title">💰 أكتر من مصدر دخل — والاشتراك لسه بـ $5</h2>
+  <p class="section-sub">السعر ما اتغيّرش. الاشتراك $5/شهر بس، والخدمات الأعلى سعر منفصلة تماماً ومش إلزامية.</p>
+  <div class="money-grid">
+    <a class="money-card" href="https://www.fiverr.com/mohamedgawad1" target="_blank" rel="noopener">
+      <div class="mi">🛠️</div>
+      <h4>أعمال مخصصة — الأعلى ربحاً</h4>
+      <p>ITR، مستندات تكليف، جداول كابلات، تحسين LinkedIn، كتابة CV. تسليم في 1-3 أيام.</p>
+      <div class="price">من $50 إلى $300+ لكل طلب</div>
+    </a>
+    <a class="money-card" href="#subscribe">
+      <div class="mi">🔓</div>
+      <h4>اشتراك Pro — الدخل المتكرر</h4>
+      <p>كل أدوات الموقع والمحاكيات بـ $5 شهرياً فقط. التجديد تلقائي والإلغاء في أي وقت من PayPal.</p>
+      <div class="price">$5 / شهر — ثابت بدون زيادة</div>
+    </a>
+    <a class="money-card" href="#products">
+      <div class="mi">📦</div>
+      <h4>قوالب جاهزة للإعادة بيعها</h4>
+      <p>المشترك يقدر يعدّل القوالب باسمه ويبيعها لعملائه — قيمة إضافية تخلي الاشتراك يستاهل.</p>
+      <div class="price">15 قالب ITR + حزم جاهزة</div>
+    </a>
   </div>
 </div>
 </section>
