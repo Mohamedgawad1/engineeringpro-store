@@ -44,6 +44,14 @@ a.back{display:inline-block;margin-bottom:18px;color:var(--accent)}
       <h3>🏦 لوحة PayPal الرئيسية</h3>
       <p>الرصيد، التحويل لحسابك البنكي، وإعدادات الاستلام.</p>
     </a>
+    <a class="card" href="https://www.google.com/adsense/" target="_blank" rel="noopener">
+      <h3>📣 Google AdSense</h3>
+      <p>الأرباح، المشاهدات، نسبة النقر، وحظر التصنيفات غير المناسبة.</p>
+    </a>
+    <a class="card" href="legal.html">
+      <h3>📄 صفحات السياسات</h3>
+      <p>الخصوصية والشروط ومن نحن واتصل بنا — مطلوبة لقبول AdSense.</p>
+    </a>
   </div>
 
   <div class="info">
@@ -53,6 +61,26 @@ a.back{display:inline-block;margin-bottom:18px;color:var(--accent)}
     <p><strong>Plan ID:</strong> <code>P-5W120923YC4158443NL7MXQY</code></p>
     <p style="color:var(--muted);font-size:13px">زرار الاشتراك الموجود في الصفحة الرئيسية مرتبط بهذه الخطة مباشرة. أي مشترك بيدفع، بيظهر فوراً في صفحة «المشتركين» على PayPal مع حالة التجديد.</p>
   </div>
+
+  <div class="info">
+    <h3 style="color:var(--gold);margin-top:0">📣 الإعلانات — Ad clicks</h3>
+    <p>نقرات الإعلانات المختارة على هذا الجهاز: <code id="adClicks">0</code></p>
+    <p id="adBreakdown" style="color:var(--muted);font-size:13px"></p>
+    <p style="color:var(--muted);font-size:13px">AdSense غير مُفعّل حالياً. بعد موافقة Google، ضع <code>ca-pub-...</code> في <code>ads.js</code> (الحقل adsenseClient) وسيظهر تلقائياً.</p>
+  </div>
 </div>
+<script>
+(function(){
+  var list=[];
+  try{list=JSON.parse(localStorage.getItem('engineeringpro_ad_clicks')||'[]')}catch(e){}
+  var el=document.getElementById('adClicks');
+  if(el)el.textContent=list.length;
+  var counts={};
+  list.forEach(function(x){counts[x.id]=(counts[x.id]||0)+1});
+  var parts=Object.keys(counts).map(function(k){return k+': '+counts[k]});
+  var b=document.getElementById('adBreakdown');
+  if(b)b.textContent=parts.length?parts.join(' · '):'لا توجد نقرات بعد / No clicks yet';
+})();
+</script>
 </body>
 </html>

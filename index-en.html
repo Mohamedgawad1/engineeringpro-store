@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EngineeringPro — Templates &amp; Tools for Engineers | Start Earning Today</title>
+<meta name="description" content="Professional templates, engineering calculators and ready-to-use tools. Sell them or use them in your work. Start earning fast.">
+<style>
+:root{
+ --bg:#0a0e1a;--bg2:#11162a;--card:#161c33;--card2:#1c2340;
+ --accent:#00d4ff;--accent2:#7c3aed;--gold:#f5c518;--green:#22c55e;
+ --text:#e8ecf4;--muted:#9aa3bf;--border:#2a3150;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+img{max-width:100%}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+/* NAV */
+nav{position:sticky;top:0;z-index:50;background:rgba(10,14,26,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .container{display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+.logo{font-weight:800;font-size:20px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.navlinks{display:flex;gap:24px;align-items:center}
+.navlinks a{color:var(--muted);font-size:14px}
+.navlinks a:hover{color:var(--text)}
+.btn{display:inline-block;padding:12px 26px;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;border:none;transition:.2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 8px 24px rgba(0,212,255,.25)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,212,255,.35)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#ff8c00);color:#000}
+/* HERO */
+.hero{padding:80px 0 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,.15),transparent 70%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.hero h1{font-size:46px;font-weight:900;line-height:1.2;margin-bottom:20px}
+.hero h1 span{background:linear-gradient(90deg,var(--accent),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:18px;margin-bottom:32px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.stat .n{font-size:28px;font-weight:800;color:var(--accent)}
+.stat .l{font-size:12px;color:var(--muted)}
+.hero-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.hero-card h3{margin-bottom:16px;color:var(--gold)}
+.earn-box{background:var(--bg);border-radius:12px;padding:20px;margin:16px 0;border:1px dashed var(--accent)}
+.earn-box .big{font-size:36px;font-weight:900;color:var(--green)}
+/* SECTIONS */
+section{padding:70px 0}
+.section-title{font-size:34px;font-weight:800;text-align:center;margin-bottom:12px}
+.section-sub{color:var(--muted);text-align:center;margin-bottom:48px;font-size:16px}
+/* PRODUCTS */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.product{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.25s;position:relative;overflow:hidden}
+.product:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 16px 40px rgba(0,212,255,.12)}
+.product .tag{position:absolute;top:14px;left:14px;background:var(--accent2);color:#fff;font-size:11px;padding:4px 10px;border-radius:20px;font-weight:700}
+.product .icon{font-size:40px;margin-bottom:14px}
+.product h3{font-size:19px;margin-bottom:8px}
+.product p{color:var(--muted);font-size:14px;margin-bottom:16px}
+.product .price{font-size:24px;font-weight:800;color:var(--gold);margin-bottom:14px}
+.product .price span{font-size:13px;color:var(--muted);font-weight:400}
+.product ul{list-style:none;margin-bottom:18px}
+.product ul li{font-size:13px;color:var(--muted);padding:4px 0;padding-right:18px;position:relative}
+.product ul li::before{content:'✓';position:absolute;right:0;color:var(--green);font-weight:700}
+/* CALCULATOR */
+.calc{background:linear-gradient(135deg,var(--card),var(--bg2));border:1px solid var(--border);border-radius:20px;padding:32px;max-width:720px;margin:0 auto}
+.calc h3{margin-bottom:20px;color:var(--accent)}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.calc label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.calc input,.calc select{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px}
+.calc .result{margin-top:20px;background:var(--bg);border-radius:12px;padding:20px;border:1px solid var(--accent)}
+.calc .result .big{font-size:32px;font-weight:800;color:var(--green)}
+.calc .result .sub{color:var(--muted);font-size:13px;margin-top:6px}
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.step{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;position:relative}
+.step .num{position:absolute;top:-16px;right:20px;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff}
+.step h3{margin:16px 0 8px}
+.step p{color:var(--muted);font-size:14px}
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.testi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px}
+.testi .stars{color:var(--gold);margin-bottom:10px}
+.testi p{color:var(--muted);font-size:14px;font-style:italic;margin-bottom:14px}
+.testi .who{font-weight:700;font-size:14px}
+.testi .role{color:var(--muted);font-size:12px}
+/* FAQ */
+.faq{max-width:800px;margin:0 auto}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.faq-q{padding:18px 22px;cursor:pointer;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.faq-q:hover{color:var(--accent)}
+.faq-a{padding:0 22px 18px;color:var(--muted);font-size:14px;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-q span{transform:rotate(45deg)}
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
+footer a{color:var(--accent)}
+/* RESPONSIVE */
+@media(max-width:768px){
+ .hero-grid{grid-template-columns:1fr}
+ .hero h1{font-size:32px}
+ .calc-grid{grid-template-columns:1fr}
+ .navlinks{display:none}
+}
+/* LEAD MAGNET */
+.lead{background:linear-gradient(135deg,var(--accent2),var(--accent));border-radius:20px;padding:40px;text-align:center;color:#fff}
+.lead h2{font-size:30px;margin-bottom:12px}
+.lead p{opacity:.9;margin-bottom:24px}
+.lead input{padding:12px 16px;border-radius:8px;border:none;width:260px;max-width:100%;margin:6px}
+.lead .btn{background:#fff;color:var(--accent2);margin:6px}
+/* BADGE */
+.badge{display:inline-block;background:rgba(0,212,255,.12);color:var(--accent);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:16px;border:1px solid rgba(0,212,255,.3)}
+/* SUBSCRIPTION / MEMBER GATE */
+.sub-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.sub-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--gold);border-radius:18px;padding:28px;box-shadow:0 12px 40px rgba(245,197,24,.12)}
+.sub-card h3{color:var(--gold);margin-bottom:8px}
+.sub-price{font-size:42px;font-weight:900;color:var(--gold);margin:8px 0}
+.sub-features{list-style:none;margin:16px 0}
+.sub-features li{padding:6px 0 6px 22px;color:var(--muted);font-size:14px;position:relative}
+.sub-features li::before{content:'✓';position:absolute;right:0;color:var(--green);font-weight:800}
+#paypal-button-container-P-5W120923YC4158443NL7MXQY{min-height:50px}
+.member-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+.member-status{padding:14px;border-radius:10px;background:var(--bg);margin:12px 0;font-weight:700;font-size:14px;word-break:break-word}
+.member-status.active{color:var(--green);border:1px solid var(--green)}
+.member-status.none{color:var(--muted);border:1px solid var(--border)}
+.member-panel input{width:100%;padding:10px 12px;margin:8px 0;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)}
+.member-panel .btn{width:100%;margin-top:6px;font-size:13px}
+.locked{cursor:not-allowed!important;opacity:.5}
+@media(max-width:768px){.sub-wrap{grid-template-columns:1fr}}
+/* ADS — halal, engineering-only */
+.ad-slot{margin:26px 0}
+.ad-head{font-size:12px;color:var(--muted);margin-bottom:10px;text-align:center}
+.ad-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.ad-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px dashed var(--border);border-radius:14px;padding:18px;color:var(--text);text-decoration:none;transition:.2s;display:block}
+.ad-card:hover{border-color:var(--gold);transform:translateY(-3px)}
+.ad-icon{font-size:28px;margin-bottom:6px}
+.ad-title{font-weight:800;font-size:15px;margin-bottom:5px}
+.ad-desc{color:var(--muted);font-size:12px;min-height:34px}
+.ad-cta{display:inline-block;margin-top:10px;color:var(--gold);font-size:13px;font-weight:700}
+.ad-free{text-align:center;padding:14px;border:1px solid var(--green);border-radius:10px;color:var(--green);font-weight:700;font-size:13px;background:rgba(34,197,94,.06)}
+.lang-toggle{border:1px solid var(--border);border-radius:8px;padding:6px 12px!important;font-size:13px!important}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="container">
+  <div class="logo">EngineeringPro ⚡</div>
+  <div class="navlinks">
+    <a href="#products">Products</a>
+    <a href="#calculator">Calculator</a>
+    <a href="#how">How to start</a>
+    <a href="#faq">FAQ</a>
+    <a href="index.html" class="lang-toggle">العربية</a>
+    <a href="#subscribe" class="btn btn-gold" style="padding:8px 18px">Subscribe $5/month</a>
+    <a href="#lead" class="btn btn-primary" style="padding:8px 18px">Get a free gift</a>
+  </div>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="container">
+  <div class="hero-grid">
+    <div>
+      <div class="badge">🚀 Your first sale in 7 days</div>
+      <h1>Turn <span>your engineering skills</span> into steady income</h1>
+      <p>Professional templates, calculators and ready-to-use tools for engineers. Sell them on Etsy/Gumroad, or use them to win clients for your services. <strong>No design or coding experience needed.</strong></p>
+      <div class="hero-cta">
+        <a href="#products" class="btn btn-primary">Browse products →</a>
+        <a href="#calculator" class="btn btn-ghost">Try the free calculator</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="n">$0→$500</div><div class="l">First-month target</div></div>
+        <div class="stat"><div class="n">7</div><div class="l">Days to launch</div></div>
+        <div class="stat"><div class="n">100%</div><div class="l">Digital profit margin</div></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>💰 Example: profit calculator</h3>
+      <p style="color:var(--muted);font-size:14px">"ITR + Reports" bundle at $19 × 20 sales/month</p>
+      <div class="earn-box">
+        <div class="big">$380 / month</div>
+        <div style="color:var(--muted);font-size:13px">+ consulting service $100 × 3 = $300</div>
+        <div style="color:var(--green);font-weight:700;margin-top:8px">Total: $680/month from one product</div>
+      </div>
+      <p style="font-size:13px;color:var(--muted)">📈 With 5 products: $2,000–4,000/month potential</p>
+      <a href="#lead" class="btn btn-gold" style="width:100%;text-align:center">Start now — free</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<div id="adSlotTop" class="ad-slot"></div>
+
+<!-- PRODUCTS -->
+<section id="products">
+<div class="container">
+  <h2 class="section-title">📦 Ready-to-sell products</h2>
+  <p class="section-sub">Every product is ready to download and sell instantly. Rebrand it with your name.</p>
+  <div class="products-grid">
+
+    <div class="product">
+      <div class="tag">Bestseller</div>
+      <div class="icon">📋</div>
+      <h3>ITR + Commissioning Reports Bundle</h3>
+      <p>ITR forms, daily reports and punch lists — ready to print or use in Excel.</p>
+      <div class="price">$19 <span>/bundle</span></div>
+      <ul>
+        <li>15 ITR templates</li>
+        <li>5 report templates</li>
+        <li>Ready Excel templates</li>
+        <li>Free updates</li>
+      </ul>
+      <a href="products/itr_template.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">View / Buy</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">⚡</div>
+      <h3>Cable &amp; Load Calculator</h3>
+      <p>Web tool for voltage drop, design current and cable sizing.</p>
+      <div class="price">$29 <span>/tool</span></div>
+      <ul>
+        <li>Voltage drop calculation</li>
+        <li>Cable size selection</li>
+        <li>PDF export</li>
+        <li>Works offline</li>
+      </ul>
+      <a href="products/cable_calculator.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">View / Buy</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">📊</div>
+      <h3>Pro Dashboard (Excel/HTML)</h3>
+      <p>Project KPI board: progress, punch list, ITR and resources.</p>
+      <div class="price">$39 <span>/dashboard</span></div>
+      <ul>
+        <li>Interactive charts</li>
+        <li>ITR / punch tracking</li>
+        <li>Report export</li>
+        <li>Easy to customise</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">Buy now</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">🎯</div>
+      <h3>LinkedIn Kit for Engineers</h3>
+      <p>Post templates, banner, about section and a 30-day plan.</p>
+      <div class="price">$15 <span>/kit</span></div>
+      <ul>
+        <li>30 ready posts</li>
+        <li>Banner + images</li>
+        <li>Content calendar</li>
+        <li>Engagement tips</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">Buy now</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">📝</div>
+      <h3>CV + Cover Letter Templates</h3>
+      <p>Professional CV templates for engineers (Word/PDF).</p>
+      <div class="price">$12 <span>/bundle</span></div>
+      <ul>
+        <li>5 CV templates</li>
+        <li>3 cover letters</li>
+        <li>ATS-friendly</li>
+        <li>Easy to edit</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">Buy now</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">🔌</div>
+      <h3>Cable Schedule</h3>
+      <p>Excel/HTML template for project cable schedules (from–to, size, length, insulation).</p>
+      <div class="price">$15 <span>/template</span></div>
+      <ul>
+        <li>12 ready columns</li>
+        <li>Print / save as PDF</li>
+        <li>Add rows</li>
+        <li>Legend included</li>
+      </ul>
+      <a href="products/cable_schedule.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">View / Buy</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">📅</div>
+      <h3>Daily Commissioning Report</h3>
+      <p>Daily report template: manpower, activities, ITR/punch status and signatures.</p>
+      <div class="price">$12 <span>/template</span></div>
+      <ul>
+        <li>6 sections</li>
+        <li>Print / save as PDF</li>
+        <li>ITR / punch tracking</li>
+        <li>Signature fields</li>
+      </ul>
+      <a href="products/daily_report.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">View / Buy</a>
+    </div>
+
+    <div class="product">
+      <div class="icon">🎓</div>
+      <h3>Mini-Course: "Your first 30 days freelancing"</h3>
+      <p>Short course: how to land your first freelance client as an engineer.</p>
+      <div class="price">$49 <span>/course</span></div>
+      <ul>
+        <li>2 hours of video</li>
+        <li>Proposal templates</li>
+        <li>Platform list</li>
+        <li>Community support</li>
+      </ul>
+      <a href="#lead" class="btn btn-primary" style="width:100%;text-align:center">Buy now</a>
+    </div>
+
+    <div class="product">
+      <div class="tag">New</div>
+      <div class="icon">⚙️</div>
+      <h3>Classic Control Simulator (PLC/Contactors)</h3>
+      <p>Real simulator: contactors, switches, sensors, tanks and PLC ladder logic. 4 ready circuits (motor start/stop, tank level, star-delta, conveyor).</p>
+      <div class="price">$29 <span>/tool</span></div>
+      <ul>
+        <li>4 ready circuits</li>
+        <li>I/O monitor + ladder logic</li>
+        <li>Works offline (single HTML)</li>
+        <li>Animations (motor, tank level)</li>
+      </ul>
+      <a href="products/classic_control_simulator.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">View / Buy</a>
+    </div>
+
+    <div class="product">
+      <div class="tag">New</div>
+      <div class="icon">⚡</div>
+      <h3>DOL (Direct On Line) Simulator — Realistic</h3>
+      <p>Realistic DOL motor starter simulator: contactor, overload relay, seal-in, live electrical readings (current/voltage/power), thermal overload, E-STOP and ladder diagram.</p>
+      <div class="price">$34 <span>/tool</span></div>
+      <ul>
+        <li>Live readings (A, V, kW, rpm, °C)</li>
+        <li>Thermal overload trip + reset</li>
+        <li>E-STOP + seal-in + I/O monitor</li>
+        <li>Works offline (single HTML)</li>
+      </ul>
+      <a href="products/dol_simulator.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">View / Buy</a>
+    </div>
+
+    <div class="product">
+      <div class="tag">Most powerful</div>
+      <div class="icon">🧩</div>
+      <h3>Classic Control Circuit Builder</h3>
+      <p>Build your own circuit: drag components, wire them up and watch the simulation and alarms. Includes PLC ladder, VFD, generator/ATS, sensors and 5 motor types.</p>
+      <div class="price">$49 <span>/tool</span></div>
+      <ul>
+        <li>34+ components and 17+ ready circuits</li>
+        <li>PLC Ladder + VFD + ATS</li>
+        <li>Real alarms with Web Audio bell</li>
+        <li>Save / export / print — offline</li>
+      </ul>
+      <a href="products/classic_control.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">View / Buy</a>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="calculator" style="background:var(--bg2)">
+<div class="container">
+  <h2 class="section-title">🧮 Profit Calculator (free)</h2>
+  <p class="section-sub">See how much you could earn each month. Change the numbers and watch the result.</p>
+  <div class="calc">
+    <h3>💰 Digital Product Income Calculator</h3>
+    <div class="calc-grid">
+      <div><label>Product price ($)</label><input type="number" id="price" value="19" min="1"></div>
+      <div><label>Sales / month</label><input type="number" id="sales" value="20" min="0"></div>
+      <div><label>Platform fee (%)</label><input type="number" id="fee" value="5" min="0" max="50"></div>
+      <div><label>Service sales ($/month)</label><input type="number" id="svc" value="300" min="0"></div>
+    </div>
+    <div class="result">
+      <div class="big" id="rev">$0</div>
+      <div class="sub">Monthly net income from products</div>
+      <div style="margin-top:10px;font-weight:700">+ services: <span id="svcOut">$0</span> → total: <span id="tot" style="color:var(--gold)">$0</span></div>
+      <div style="margin-top:6px;color:var(--muted);font-size:12px">Yearly: <span id="year">$0</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div id="adSlotMid" class="ad-slot"></div>
+
+<!-- HOW -->
+<section id="how">
+<div class="container">
+  <h2 class="section-title">🗺️ How to start (7 days)</h2>
+  <p class="section-sub">A clear plan from zero to your first sale.</p>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3>Pick a niche</h3><p>Choose one area (ITR, cables, CV, LinkedIn). Don’t sell everything at once.</p></div>
+    <div class="step"><div class="num">2</div><h3>Prepare 3 products</h3><p>Use the ready templates, rebrand them and export to PDF/Excel.</p></div>
+    <div class="step"><div class="num">3</div><h3>Create a store</h3><p>Gumroad (free) or Etsy ($0.20/listing). Upload your products.</p></div>
+    <div class="step"><div class="num">4</div><h3>Market it</h3><p>LinkedIn posts 3x/week, TikTok/Reels and Facebook groups.</p></div>
+    <div class="step"><div class="num">5</div><h3>First sale 🎉</h3><p>Reply to comments, ask for reviews and improve your listing.</p></div>
+    <div class="step"><div class="num">6</div><h3>Scale up</h3><p>Add new products, bundles and upsell consulting services.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- SUBSCRIPTION -->
+<section id="subscribe" style="background:var(--bg2)">
+<div class="container">
+  <h2 class="section-title">🔓 EngineeringPro Pro Subscription</h2>
+  <p class="section-sub">Pay $5/month and unlock every tool and simulator. Renews automatically — cancel anytime.</p>
+  <div class="sub-wrap">
+    <div class="sub-card">
+      <h3>Full access to every tool</h3>
+      <div class="sub-price">$5 <span style="font-size:16px;color:var(--muted);font-weight:500">/ month</span></div>
+      <ul class="sub-features">
+        <li>All engineering simulators and calculators</li>
+        <li>Ready ITR and commissioning templates</li>
+        <li>New components and updates every month</li>
+        <li>Support included — cancel anytime</li>
+      </ul>
+      <div id="paypal-button-container-P-5W120923YC4158443NL7MXQY"></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px">🔒 Secure payment via PayPal. Charged at the start of each billing cycle.</p>
+    </div>
+    <div class="member-panel">
+      <h3 style="color:var(--accent)">My subscription status</h3>
+      <div id="memberStatus" class="member-status none">Not subscribed — site tools are locked</div>
+      <p style="font-size:13px;color:var(--muted)">After payment your status appears here on this device. If you subscribed elsewhere, paste your Subscription ID below:</p>
+      <input type="email" id="memberEmail" placeholder="Your email (optional)">
+      <input type="text" id="subIdInput" placeholder="Subscription ID — starts with P-">
+      <button class="btn btn-ghost" onclick="activateSubscription()">Activate access on this device</button>
+      <button class="btn btn-ghost" onclick="openSubscriptions()">Manage / cancel in PayPal</button>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px">💡 Note: final payment verification happens in your PayPal dashboard; this device only stores access for display.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- LEAD MAGNET -->
+<section id="lead">
+<div class="container">
+  <div class="lead">
+    <h2>🎁 Free gift: "50 digital products that sell on Etsy"</h2>
+    <p>Enter your email and get the PDF instantly (50 ideas + prices + keywords).</p>
+    <div>
+      <input type="email" placeholder="your@email.com" id="email">
+      <button class="btn" onclick="grabLead()">Send me the gift</button>
+    </div>
+    <p style="font-size:12px;margin-top:12px;opacity:.7">🔒 No spam. Unsubscribe with one click.</p>
+  </div>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+<div class="container">
+  <h2 class="section-title">⭐ What users say</h2>
+  <p class="section-sub">Examples — replace with real testimonials after your first sale.</p>
+  <div class="testi-grid">
+    <div class="testi"><div class="stars">★★★★★</div><p>"Sold 12 copies in the first week. The templates are 100% ready."</p><div class="who">Ahmed K.</div><div class="role">Electrical engineer, Dubai</div></div>
+    <div class="testi"><div class="stars">★★★★★</div><p>"The cable calculator saved me hours. Highly recommended."</p><div class="who">Sarah M.</div><div class="role">Engineer, KSA</div></div>
+    <div class="testi"><div class="stars">★★★★★</div><p>"The ready LinkedIn posts tripled my engagement."</p><div class="who">Youssef R.</div><div class="role">Freelancer</div></div>
+  </div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:var(--bg2)">
+<div class="container">
+  <h2 class="section-title">❓ Frequently asked questions</h2>
+  <div class="faq">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do I need design experience? <span>+</span></div><div class="faq-a">No. The templates are ready — just edit the text in Canva/Word and export.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Where do I sell? <span>+</span></div><div class="faq-a">Gumroad (easiest, free), Etsy (traffic), or your own site. Start with Gumroad.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How much can I earn in month one? <span>+</span></div><div class="faq-a">Realistically $50–300 if you market consistently. $1,000+ after three months.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Are payments secure? <span>+</span></div><div class="faq-a">Gumroad/Stripe/PayPal process payments. You receive the transfers.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I resell them? <span>+</span></div><div class="faq-a">The products are yours after purchase. You can sell them to your clients (PLR-style). Check the licence.</div></div>
+  </div>
+</div>
+</section>
+
+<div id="adSlotBottom" class="ad-slot"></div>
+
+<!-- HIRE ME -->
+<section id="hire" style="background:linear-gradient(135deg,var(--accent2),var(--accent));padding:60px 0;text-align:center;color:#fff">
+<div class="container">
+  <h2 style="font-size:32px;margin-bottom:12px">🛠️ Need Custom Work? Hire Me on Fiverr</h2>
+  <p style="opacity:.9;margin-bottom:24px;font-size:16px">ITR templates, commissioning docs, cable schedules, LinkedIn optimization, CV writing — delivered in 1-3 days.</p>
+  <a href="https://www.fiverr.com/mohamedgawad1" target="_blank" class="btn" style="background:#fff;color:var(--accent2);font-size:17px;padding:14px 32px">Hire Me on Fiverr →</a>
+  <p style="margin-top:16px;font-size:13px;opacity:.7">⭐ Fast delivery · Revisions included · Oil & Gas / Power / Construction</p>
+</div>
+</section>
+
+<footer>
+<div class="container">
+  <p>© 2026 EngineeringPro. Built to help you earn extra income.</p>
+  <p style="margin-top:8px"><a href="https://www.fiverr.com/mohamedgawad1" target="_blank">Fiverr</a> · <a href="legal.html#privacy">Privacy</a> · <a href="legal.html#terms">Terms</a> · <a href="legal.html#about">About</a> · <a href="legal.html#contact">Contact</a></p>
+</div>
+</footer>
+
+<script>
+function calc(){
+  const p=+document.getElementById('price').value||0;
+  const s=+document.getElementById('sales').value||0;
+  const f=+document.getElementById('fee').value||0;
+  const svc=+document.getElementById('svc').value||0;
+  const gross=p*s;
+  const net=gross*(1-f/100);
+  const tot=net+svc;
+  document.getElementById('rev').textContent='$'+net.toFixed(0);
+  document.getElementById('svcOut').textContent='$'+svc.toFixed(0);
+  document.getElementById('tot').textContent='$'+tot.toFixed(0);
+  document.getElementById('year').textContent='$'+(tot*12).toFixed(0);
+}
+['price','sales','fee','svc'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+calc();
+
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+
+function grabLead(){
+  const e=document.getElementById('email').value;
+  if(!e||!e.includes('@')){alert('Enter a valid email');return;}
+  alert('✅ Done! (In production: connect Mailchimp/ConvertKit). Email: '+e);
+}
+
+/* ===== PayPal subscription ($5/month) + member gate ===== */
+const PP_PLAN_ID='P-5W120923YC4158443NL7MXQY';
+const PP_STORE='engineeringpro_pro_member';
+function readMember(){try{return JSON.parse(localStorage.getItem(PP_STORE)||'null')}catch(e){return null}}
+function saveMember(m){localStorage.setItem(PP_STORE,JSON.stringify(m));applyGate()}
+function applyGate(){
+  const m=readMember();
+  const active=!!(m&&m.id&&/^P-/.test(m.id));
+  const st=document.getElementById('memberStatus');
+  if(st){
+    st.className='member-status '+(active?'active':'none');
+    st.textContent=active?('✅ Subscribed ('+m.id+') — full access to all tools'):'Not subscribed — site tools are locked';
+  }
+  document.querySelectorAll('.pro-link').forEach(function(a){
+    if(active){
+      if(a.dataset.realHref)a.href=a.dataset.realHref;
+      a.classList.remove('locked');
+    }else{
+      if(!a.dataset.realHref)a.dataset.realHref=a.href;
+      a.href='#subscribe';
+      a.classList.add('locked');
+    }
+  });
+  if(window.EngineeringProAds)window.EngineeringProAds.refresh();
+}
+function activateSubscription(){
+  const id=(document.getElementById('subIdInput').value||'').trim();
+  if(!/^P-/.test(id)){alert('Enter a valid Subscription ID starting with P-');return;}
+  saveMember({id:id,email:(document.getElementById('memberEmail').value||'').trim(),ts:Date.now()});
+  alert('✅ Access activated on this device.');
+}
+function openSubscriptions(){window.open('https://www.paypal.com/mep/dashboard#subscriptions','_blank')}
+document.addEventListener('DOMContentLoaded',applyGate);
+applyGate();
+</script>
+<script src="https://www.paypal.com/sdk/js?client-id=BAAHMhslVb_02VBpBPWnqQY2VWYQhRimjmf4aD4brzZi77CIwLcP3npG9RuzUU1Otd0KDy9g6llF_PoMFU&amp;vault=true&amp;intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script>
+if(window.paypal){
+  paypal.Buttons({
+    style:{shape:'rect',color:'gold',layout:'vertical',label:'subscribe'},
+    createSubscription:function(data,actions){
+      return actions.subscription.create({plan_id:PP_PLAN_ID});
+    },
+    onApprove:function(data,actions){
+      saveMember({id:data.subscriptionID,email:(document.getElementById('memberEmail').value||'').trim(),ts:Date.now()});
+      const st=document.getElementById('memberStatus');
+      if(st)st.scrollIntoView({behavior:'smooth',block:'center'});
+      alert('✅ Subscribed successfully! ID: '+data.subscriptionID+' — all tools are now unlocked.');
+    }
+  }).render('#paypal-button-container-P-5W120923YC4158443NL7MXQY');
+}
+</script>
+<script src="ads.js"></script>
+</body>
+</html>
