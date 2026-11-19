@@ -140,6 +140,15 @@ footer a{color:var(--accent)}
 .ad-cta{display:inline-block;margin-top:10px;color:var(--gold);font-size:13px;font-weight:700}
 .ad-free{text-align:center;padding:14px;border:1px solid var(--green);border-radius:10px;color:var(--green);font-weight:700;font-size:13px;background:rgba(34,197,94,.06)}
 .lang-toggle{border:1px solid var(--border);border-radius:8px;padding:6px 12px!important;font-size:13px!important}
+/* SIMULATOR SPOTLIGHT + HOW TO USE */
+.sim-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.sim-box,.how-box{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:26px}
+.sim-box{border-color:var(--gold);box-shadow:0 12px 40px rgba(245,197,24,.10)}
+.sim-box h3,.how-box h3{color:var(--gold);margin:12px 0}
+.sim-tags{color:var(--accent);font-size:13px;font-weight:700}
+.sim-box ul,.how-box ol{margin:14px 0 18px;padding-left:20px}
+.sim-box li,.how-box li{color:var(--muted);font-size:14px;padding:5px 0}
+@media(max-width:768px){.sim-wrap{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -152,6 +161,7 @@ footer a{color:var(--accent)}
     <a href="#calculator">Calculator</a>
     <a href="#how">How to start</a>
     <a href="#faq">FAQ</a>
+    <a href="#simulator">Simulator</a>
     <a href="index.html" class="lang-toggle">العربية</a>
     <a href="#subscribe" class="btn btn-gold" style="padding:8px 18px">Subscribe $5/month</a>
     <a href="#lead" class="btn btn-primary" style="padding:8px 18px">Get a free gift</a>
@@ -187,6 +197,37 @@ footer a{color:var(--accent)}
       </div>
       <p style="font-size:13px;color:var(--muted)">📈 With 5 products: $2,000–4,000/month potential</p>
       <a href="#lead" class="btn btn-gold" style="width:100%;text-align:center">Start now — free</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SIMULATOR SPOTLIGHT -->
+<section id="simulator" style="background:var(--bg2)">
+<div class="container">
+  <h2 class="section-title">🎛️ Classic Control Simulator — try it live</h2>
+  <p class="section-sub">Star-Delta, DOL, motors, PLC, contactors, sensors and ready circuits — in English and Arabic.</p>
+  <div class="sim-wrap">
+    <div class="sim-box">
+      <div class="sim-tags">⚙️ 4 ready circuits · 🌐 EN / AR · 💾 works offline</div>
+      <h3>Ready circuits to try</h3>
+      <ul>
+        <li>Star-Delta — reduced-voltage motor starting</li>
+        <li>DOL (Direct On Line) — direct start with thermal protection</li>
+        <li>Tank Level + Conveyor — sensors and levels</li>
+        <li>I/O Monitor + Ladder Logic — PLC and contactors</li>
+      </ul>
+      <a href="products/classic_control_simulator.html" class="btn btn-gold pro-link">Open the simulator →</a>
+    </div>
+    <div class="how-box">
+      <h3 style="color:var(--accent)">How do I use the tools?</h3>
+      <ol>
+        <li>Click “Subscribe $5/month” and pay securely with PayPal.</li>
+        <li>Your status unlocks automatically on this device.</li>
+        <li>Go to the Products section and click the simulator or any tool.</li>
+        <li>If you subscribed on another device, paste the Subscription ID in “My subscription status”.</li>
+      </ol>
+      <a href="#subscribe" class="btn btn-primary">Subscribe now</a>
     </div>
   </div>
 </div>
