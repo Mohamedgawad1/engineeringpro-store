@@ -1,18 +1,39 @@
 /* ============================================================
    EngineeringPro — Halal-safe ads
    No sex, no alcohol, no gambling, no tobacco, no haram content.
-   Every banner below is hand-picked and engineering-only.
-   To enable Google AdSense later, set adsenseClient + slots below.
+   Fallback banners are hand-picked and engineering-only.
+   Paid networks are OFF until you paste your approved IDs below.
+   Priority: AdSense > Carbon Ads > EthicalAds > Media.net > curated.
    ============================================================ */
 (function () {
   'use strict';
 
   var AD = {
-    /* ---- AdSense: leave empty until your account is approved ---- */
+    /* ---- Google AdSense (needs approval) ---- */
     adsenseClient: '',          // e.g. 'ca-pub-1234567890123456'
     adsenseSlots: { top: '', mid: '', bottom: '' },
 
-    /* ---- Curated, halal, engineering-only ads ---- */
+    /* ---- Carbon Ads — engineering/developer only, hand-curated ---- */
+    carbon: {
+      enabled: false,           // set true after signup
+      id: '',                   // your placement ID
+      script: ''                // full script URL given by Carbon
+    },
+
+    /* ---- EthicalAds — contextual, privacy-friendly, no tracking ---- */
+    ethicalAds: {
+      enabled: false,
+      id: ''                    // your publisher/placement ID
+    },
+
+    /* ---- Media.net — contextual ads (Yahoo/Bing), with category blocking ---- */
+    mediaNet: {
+      enabled: false,
+      client: '',
+      slots: { top: '', mid: '', bottom: '' }
+    },
+
+    /* ---- Curated, halal, engineering-only fallback ads ---- */
     items: [
       {
         id: 'fiverr',
@@ -67,10 +88,6 @@
 
   function renderCurated(slot) {
     if (!slot) return;
-    if (isMember()) {
-      slot.innerHTML = '<div class="ad-free">✅ Pro member — ad-free experience</div>';
-      return;
-    }
     var html = '<div class="ad-head">📢 Sponsored · engineering only · halal</div><div class="ad-grid">';
     AD.items.forEach(function (a) {
       html += '<a class="ad-card" data-ad-id="' + esc(a.id) + '" href="' + esc(a.href) + '"' +
@@ -88,7 +105,7 @@
   }
 
   function renderAdsense(slot, slotId) {
-    if (!AD.adsenseClient || !slotId || !slot) return;
+    if (!AD.adsenseClient || !slotId || !slot) return false;
     var ins = document.createElement('ins');
     ins.className = 'adsbygoogle';
     ins.style.display = 'block';
@@ -98,13 +115,68 @@
     ins.setAttribute('data-full-width-responsive', 'true');
     slot.appendChild(ins);
     try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { /* ignore */ }
+    return true;
+  }
+
+  function renderCarbon(slot) {
+    if (!AD.carbon.enabled || !AD.carbon.id || !slot) return false;
+    slot.innerHTML = '<div class="ad-head">📢 Sponsored · engineering only · halal</div>' +
+      '<div id="carbonads-container-' + esc(AD.carbon.id) + '"></div>';
+    if (AD.carbon.script) {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = AD.carbon.script;
+      document.head.appendChild(s);
+    }
+    return true;
+  }
+
+  function renderEthical(slot) {
+    if (!AD.ethicalAds.enabled || !AD.ethicalAds.id || !slot) return false;
+    slot.innerHTML = '<div class="ad-head">📢 Sponsored · engineering only · halal</div>' +
+      '<div data-ea-publisher="' + esc(AD.ethicalAds.id) + '" data-ea-type="image"></div>';
+    if (!document.getElementById('ethicalads-script')) {
+      var s = document.createElement('script');
+      s.id = 'ethicalads-script';
+      s.async = true;
+      s.src = 'https://media.ethicalads.io/media/client/ethicalads.min.js';
+      document.head.appendChild(s);
+    }
+    return true;
+  }
+
+  function renderMediaNet(slot, slotId) {
+    if (!AD.mediaNet.enabled || !AD.mediaNet.client || !slotId || !slot) return false;
+    var ins = document.createElement('ins');
+    ins.style.display = 'block';
+    ins.setAttribute('data-ad-client', AD.mediaNet.client);
+    ins.setAttribute('data-ad-slot', slotId);
+    slot.appendChild(ins);
+    if (!document.getElementById('medianet-script')) {
+      var s = document.createElement('script');
+      s.id = 'medianet-script';
+      s.async = true;
+      s.src = 'https://contextual.media.net/dmedianet.js?cid=' + encodeURIComponent(AD.mediaNet.client);
+      document.head.appendChild(s);
+    }
+    return true;
   }
 
   function init() {
     ['top', 'mid', 'bottom'].forEach(function (name) {
       var slot = document.getElementById('adSlot' + name.charAt(0).toUpperCase() + name.slice(1));
-      renderCurated(slot);
-      renderAdsense(slot, AD.adsenseSlots[name]);
+      if (!slot) return;
+      slot.innerHTML = '';
+      if (isMember()) {
+        slot.innerHTML = '<div class="ad-free">✅ Pro member — ad-free experience</div>';
+        return;
+      }
+      var done = false;
+      if (AD.adsenseClient && AD.adsenseSlots[name]) done = renderAdsense(slot, AD.adsenseSlots[name]);
+      if (!done) done = renderCarbon(slot);
+      if (!done) done = renderEthical(slot);
+      if (!done) done = renderMediaNet(slot, AD.mediaNet.slots[name]);
+      if (!done) renderCurated(slot);
     });
   }
 
