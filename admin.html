@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EngineeringPro — لوحة الإدارة</title>
+<style>
+:root{--bg:#0a0e1a;--card:#161c33;--accent:#00d4ff;--gold:#f5c518;--green:#22c55e;--text:#e8ecf4;--muted:#9aa3bf;--border:#2a3150}
+*{box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.8}
+.wrap{max-width:900px;margin:0 auto;padding:40px 20px}
+h1{color:var(--accent);font-size:28px}
+.sub{color:var(--muted);margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;display:block;color:var(--text);text-decoration:none;transition:.2s}
+.card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.card h3{color:var(--gold);margin:0 0 8px;font-size:17px}
+.card p{color:var(--muted);font-size:13px;margin:0}
+.info{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:26px}
+code{background:#0d1223;padding:3px 7px;border-radius:6px;color:var(--green);font-size:13px}
+a.back{display:inline-block;margin-bottom:18px;color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← العودة للموقع</a>
+  <h1>🔐 لوحة إدارة EngineeringPro</h1>
+  <p class="sub">كل اللي يخص الفلوس والمشتركين بيتم من حساب PayPal المرتبط بالموقع. الفلوس بتتحول لحسابك تلقائياً.</p>
+
+  <div class="grid">
+    <a class="card" href="https://www.paypal.com/billing/subscriptions" target="_blank" rel="noopener">
+      <h3>👥 المشتركين</h3>
+      <p>مين مشترك، مين Active، مين اتلغى، وتاريخ التجديد القادم لكل مشترك.</p>
+    </a>
+    <a class="card" href="https://www.paypal.com/billing/plans" target="_blank" rel="noopener">
+      <h3>📋 خطط الاشتراك</h3>
+      <p>خطة الـ $5/شهر — تعديل السعر، الإيقاف، أو نسخ رابط الاشتراك.</p>
+    </a>
+    <a class="card" href="https://www.paypal.com/business/activity" target="_blank" rel="noopener">
+      <h3>💰 المعاملات</h3>
+      <p>كل دفعة وصلت لحسابك، المبلغ، التاريخ، ورسوم PayPal.</p>
+    </a>
+    <a class="card" href="https://www.paypal.com/mep/dashboard" target="_blank" rel="noopener">
+      <h3>🏦 لوحة PayPal الرئيسية</h3>
+      <p>الرصيد، التحويل لحسابك البنكي، وإعدادات الاستلام.</p>
+    </a>
+  </div>
+
+  <div class="info">
+    <h3 style="color:var(--green);margin-top:0">الخطة الحالية</h3>
+    <p><strong>الاسم:</strong> EngineeringPro Pro - $5/month</p>
+    <p><strong>السعر:</strong> 5.00 USD كل 1 شهر — دورات غير محدودة — تجديد تلقائي</p>
+    <p><strong>Plan ID:</strong> <code>P-5W120923YC4158443NL7MXQY</code></p>
+    <p style="color:var(--muted);font-size:13px">زرار الاشتراك الموجود في الصفحة الرئيسية مرتبط بهذه الخطة مباشرة. أي مشترك بيدفع، بيظهر فوراً في صفحة «المشتركين» على PayPal مع حالة التجديد.</p>
+  </div>
+</div>
+</body>
+</html>

@@ -111,6 +111,23 @@ footer a{color:var(--accent)}
 .lead .btn{background:#fff;color:var(--accent2);margin:6px}
 /* BADGE */
 .badge{display:inline-block;background:rgba(0,212,255,.12);color:var(--accent);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:16px;border:1px solid rgba(0,212,255,.3)}
+/* SUBSCRIPTION / MEMBER GATE */
+.sub-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.sub-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--gold);border-radius:18px;padding:28px;box-shadow:0 12px 40px rgba(245,197,24,.12)}
+.sub-card h3{color:var(--gold);margin-bottom:8px}
+.sub-price{font-size:42px;font-weight:900;color:var(--gold);margin:8px 0}
+.sub-features{list-style:none;margin:16px 0}
+.sub-features li{padding:6px 0 6px 22px;color:var(--muted);font-size:14px;position:relative}
+.sub-features li::before{content:'✓';position:absolute;right:0;color:var(--green);font-weight:800}
+#paypal-button-container-P-5W120923YC4158443NL7MXQY{min-height:50px}
+.member-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+.member-status{padding:14px;border-radius:10px;background:var(--bg);margin:12px 0;font-weight:700;font-size:14px;word-break:break-word}
+.member-status.active{color:var(--green);border:1px solid var(--green)}
+.member-status.none{color:var(--muted);border:1px solid var(--border)}
+.member-panel input{width:100%;padding:10px 12px;margin:8px 0;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)}
+.member-panel .btn{width:100%;margin-top:6px;font-size:13px}
+.locked{cursor:not-allowed!important;opacity:.5}
+@media(max-width:768px){.sub-wrap{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -123,6 +140,7 @@ footer a{color:var(--accent)}
     <a href="#calculator">الحاسبة</a>
     <a href="#how">كيف أبدأ</a>
     <a href="#faq">الأسئلة</a>
+    <a href="#subscribe" class="btn btn-gold" style="padding:8px 18px">اشترك بـ $5/شهر</a>
     <a href="#lead" class="btn btn-primary" style="padding:8px 18px">احصل على هدية مجانية</a>
   </div>
 </div>
@@ -180,7 +198,7 @@ footer a{color:var(--accent)}
         <li>قوالب Excel جاهزة</li>
         <li>تحديثات مجانية</li>
       </ul>
-      <a href="products/itr_template.html" class="btn btn-primary" style="width:100%;text-align:center">عرض / شراء</a>
+      <a href="products/itr_template.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">عرض / شراء</a>
     </div>
 
     <div class="product">
@@ -194,7 +212,7 @@ footer a{color:var(--accent)}
         <li>تصدير PDF</li>
         <li>يعمل offline</li>
       </ul>
-      <a href="products/cable_calculator.html" class="btn btn-primary" style="width:100%;text-align:center">عرض / شراء</a>
+      <a href="products/cable_calculator.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">عرض / شراء</a>
     </div>
 
     <div class="product">
@@ -250,7 +268,7 @@ footer a{color:var(--accent)}
         <li>إضافة صفوف</li>
         <li>Legend included</li>
       </ul>
-      <a href="products/cable_schedule.html" class="btn btn-primary" style="width:100%;text-align:center">عرض / شراء</a>
+      <a href="products/cable_schedule.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">عرض / شراء</a>
     </div>
 
     <div class="product">
@@ -264,7 +282,7 @@ footer a{color:var(--accent)}
         <li>تتبع ITR/Punch</li>
         <li>توقيعات</li>
       </ul>
-      <a href="products/daily_report.html" class="btn btn-primary" style="width:100%;text-align:center">عرض / شراء</a>
+      <a href="products/daily_report.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">عرض / شراء</a>
     </div>
 
     <div class="product">
@@ -293,7 +311,7 @@ footer a{color:var(--accent)}
         <li>يعمل offline (HTML واحد)</li>
         <li>رسوم متحركة (motor، tank level)</li>
       </ul>
-      <a href="products/classic_control_simulator.html" class="btn btn-primary" style="width:100%;text-align:center">عرض / شراء</a>
+      <a href="products/classic_control_simulator.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">عرض / شراء</a>
     </div>
 
     <div class="product">
@@ -308,7 +326,7 @@ footer a{color:var(--accent)}
         <li>E-STOP + seal-in + I/O monitor</li>
         <li>يعمل offline (HTML واحد)</li>
       </ul>
-      <a href="products/dol_simulator.html" class="btn btn-primary" style="width:100%;text-align:center">عرض / شراء</a>
+      <a href="products/dol_simulator.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">عرض / شراء</a>
     </div>
 
     <div class="product">
@@ -323,7 +341,7 @@ footer a{color:var(--accent)}
         <li>إنذار حقيقي وجرس Web Audio</li>
         <li>حفظ/تصدير/طباعة — offline</li>
       </ul>
-      <a href="products/classic_control.html" class="btn btn-primary" style="width:100%;text-align:center">عرض / شراء</a>
+      <a href="products/classic_control.html" class="btn btn-primary pro-link" style="width:100%;text-align:center">عرض / شراء</a>
     </div>
 
   </div>
@@ -365,6 +383,38 @@ footer a{color:var(--accent)}
     <div class="step"><div class="num">4</div><h3>سوّق</h3><p>LinkedIn posts 3x/أسبوع، TikTok/Reels، Facebook groups.</p></div>
     <div class="step"><div class="num">5</div><h3>أول بيع 🎉</h3><p>رد على التعليقات، اطلب reviews، حسّن listing.</p></div>
     <div class="step"><div class="num">6</div><h3>وسّع</h3><p>أضف منتجات جديدة، bundle، upsell خدمة استشارية.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- SUBSCRIPTION -->
+<section id="subscribe" style="background:var(--bg2)">
+<div class="container">
+  <h2 class="section-title">🔓 اشتراك EngineeringPro Pro</h2>
+  <p class="section-sub">ادفع $5 شهرياً وافتح كل أدوات الموقع والمحاكيات. التجديد تلقائي والإلغاء في أي وقت.</p>
+  <div class="sub-wrap">
+    <div class="sub-card">
+      <h3>وصول كامل لكل الأدوات</h3>
+      <div class="sub-price">$5 <span style="font-size:16px;color:var(--muted);font-weight:500">/ شهر</span></div>
+      <ul class="sub-features">
+        <li>كل المحاكيات والحاسبات الهندسية</li>
+        <li>قوالب ITR وتقارير التكليف جاهزة</li>
+        <li>تحديثات ومكونات جديدة كل شهر</li>
+        <li>دعم وإلغاء اشتراك في أي وقت</li>
+      </ul>
+      <div id="paypal-button-container-P-5W120923YC4158443NL7MXQY"></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px">🔒 الدفع مؤمّن عبر PayPal. تُحصّل الرسوم في بداية كل دورة.</p>
+    </div>
+    <div class="member-panel">
+      <h3 style="color:var(--accent)">حالة اشتراكي</h3>
+      <div id="memberStatus" class="member-status none">غير مشترك — أدوات الموقع مقفولة</div>
+      <p style="font-size:13px;color:var(--muted)">بعد الدفع تظهر حالتك هنا تلقائياً على نفس الجهاز. لو اشتركت من جهاز تاني، الصق رقم الاشتراك هنا:</p>
+      <input type="email" id="memberEmail" placeholder="بريدك الإلكتروني (اختياري)">
+      <input type="text" id="subIdInput" placeholder="Subscription ID — يبدأ بـ P-">
+      <button class="btn btn-ghost" onclick="activateSubscription()">تفعيل الاشتراك على هذا الجهاز</button>
+      <button class="btn btn-ghost" onclick="openSubscriptions()">إدارة / إلغاء الاشتراك في PayPal</button>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px">💡 ملاحظة: التحقق النهائي من الدفع بيتم في لوحة PayPal؛ الحفظ هنا على الجهاز لعرض الوصول.</p>
+    </div>
   </div>
 </div>
 </section>
@@ -451,6 +501,57 @@ function grabLead(){
   const e=document.getElementById('email').value;
   if(!e||!e.includes('@')){alert('أدخل بريد صحيح');return;}
   alert('✅ تم! (في الإنتاج: اربط بـ Mailchimp/ConvertKit). بريد: '+e);
+}
+
+/* ===== PayPal subscription ($5/month) + member gate ===== */
+const PP_PLAN_ID='P-5W120923YC4158443NL7MXQY';
+const PP_STORE='engineeringpro_pro_member';
+function readMember(){try{return JSON.parse(localStorage.getItem(PP_STORE)||'null')}catch(e){return null}}
+function saveMember(m){localStorage.setItem(PP_STORE,JSON.stringify(m));applyGate()}
+function applyGate(){
+  const m=readMember();
+  const active=!!(m&&m.id&&/^P-/.test(m.id));
+  const st=document.getElementById('memberStatus');
+  if(st){
+    st.className='member-status '+(active?'active':'none');
+    st.textContent=active?('✅ مشترك ('+m.id+') — وصول كامل للأدوات'):'غير مشترك — أدوات الموقع مقفولة';
+  }
+  document.querySelectorAll('.pro-link').forEach(function(a){
+    if(active){
+      if(a.dataset.realHref)a.href=a.dataset.realHref;
+      a.classList.remove('locked');
+    }else{
+      if(!a.dataset.realHref)a.dataset.realHref=a.href;
+      a.href='#subscribe';
+      a.classList.add('locked');
+    }
+  });
+}
+function activateSubscription(){
+  const id=(document.getElementById('subIdInput').value||'').trim();
+  if(!/^P-/.test(id)){alert('أدخل Subscription ID صحيح يبدأ بـ P-');return;}
+  saveMember({id:id,email:(document.getElementById('memberEmail').value||'').trim(),ts:Date.now()});
+  alert('✅ تم تفعيل الوصول على هذا الجهاز.');
+}
+function openSubscriptions(){window.open('https://www.paypal.com/mep/dashboard#subscriptions','_blank')}
+document.addEventListener('DOMContentLoaded',applyGate);
+applyGate();
+</script>
+<script src="https://www.paypal.com/sdk/js?client-id=BAAHMhslVb_02VBpBPWnqQY2VWYQhRimjmf4aD4brzZi77CIwLcP3npG9RuzUU1Otd0KDy9g6llF_PoMFU&amp;vault=true&amp;intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script>
+if(window.paypal){
+  paypal.Buttons({
+    style:{shape:'rect',color:'gold',layout:'vertical',label:'subscribe'},
+    createSubscription:function(data,actions){
+      return actions.subscription.create({plan_id:PP_PLAN_ID});
+    },
+    onApprove:function(data,actions){
+      saveMember({id:data.subscriptionID,email:(document.getElementById('memberEmail').value||'').trim(),ts:Date.now()});
+      const st=document.getElementById('memberStatus');
+      if(st)st.scrollIntoView({behavior:'smooth',block:'center'});
+      alert('✅ تم الاشتراك بنجاح! رقم الاشتراك: '+data.subscriptionID+' — الوصول مفتوح لك الآن.');
+    }
+  }).render('#paypal-button-container-P-5W120923YC4158443NL7MXQY');
 }
 </script>
 </body>
